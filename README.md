@@ -1,2 +1,2 @@
-# monat-leicht
-Monat leicht - Katjuschas App zum Abnehmen über Stresabbau und Freude
+# EMONA-eicht
+EMONA leicht - Katjuschas App zum Abnehmen über Stressabbau und Freude
