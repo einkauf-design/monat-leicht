@@ -31,7 +31,9 @@ emona/
         └── index.php
 ```
 
-Nicht hochladen musst du `README.md`, `.gitignore` und `api/config.example.php`.
+Nicht hochladen musst du `README.md` und `.gitignore`. Die Datei `api/config.example.php` darf mit auf den Server, sie ist dort gesperrt und dient nur als Vorlage.
+
+Am einfachsten nimmst du die fertige ZIP-Datei `emona-leicht-upload.zip`: Sie enthält genau den Ordner `emona/` mit allem, was auf den Server gehört.
 
 Achte darauf, dass dein FTP-Programm auch die versteckten Dateien `.htaccess` hochlädt.
 
