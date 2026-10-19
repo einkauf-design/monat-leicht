@@ -1,0 +1,6 @@
+# Persönliche Daten und Einstellungen gehören nicht ins Repository
+api/config.php
+api/daten/*
+!api/daten/.htaccess
+!api/daten/index.php
+node_modules/

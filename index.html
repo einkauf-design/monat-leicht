@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="de" data-modus="tag">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>EMONA leicht</title>
+  <meta name="description" content="Deine leise Begleitung durch den Tag.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#f6efe2">
+  <meta name="color-scheme" content="light dark">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="EMONA">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/app.css">
+  <script>
+    // Schon vor dem ersten Zeichnen den Abendmodus setzen, damit abends nichts hell aufblitzt.
+    (function () {
+      try {
+        var e = JSON.parse(localStorage.getItem('emona.docs') || '{}').einstellungen;
+        var ab = (e && e.wert && e.wert.abendmodusAb) || '21:00';
+        var t = ab.split(':'), d = new Date(), m = d.getHours() * 60 + d.getMinutes();
+        if (m >= (+t[0]) * 60 + (+t[1]) || m < 300) document.documentElement.dataset.modus = 'abend';
+      } catch (x) {}
+    })();
+  </script>
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <a class="nur-vorleser" href="#inhalt">Zum Inhalt</a>
+  <header class="app-kopf">
+    <span class="app-name" id="app-name">EMONA leicht</span>
+    <div class="kopf-sammlung">
+      <a href="#mehr" class="zaehler" aria-label="Sterne"><span class="zaehler-symbol" aria-hidden="true">★</span><span id="kopf-sterne">0</span></a>
+      <a href="#mehr" class="zaehler" aria-label="Punkte"><span class="zaehler-symbol" aria-hidden="true">●</span><span id="kopf-punkte">0</span></a>
+      <span id="sync-punkt" class="sync-punkt" data-zustand="lokal" role="img" aria-label="Speicherstand"></span>
+    </div>
+  </header>
+  <main id="inhalt" class="inhalt" tabindex="-1"></main>
+  <nav id="navigation" class="navigation" aria-label="Hauptnavigation"></nav>
+  <noscript><p class="karte">Diese App braucht JavaScript.</p></noscript>
+</body>
+</html>
