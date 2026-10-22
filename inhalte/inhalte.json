@@ -1,9 +1,9 @@
 {
-  "version": 1,
+  "version": 2,
   "app": {
     "name": "EMONA leicht",
     "kurzname": "EMONA",
-    "untertitel": "Deine leise Begleitung durch den Tag"
+    "untertitel": "Ich begleite dich leise durch deinen Tag."
   },
 
   "texte": {
@@ -18,243 +18,272 @@
     "begruessung": {
       "nacht": "Schön, dass du da bist, {name}.",
       "morgen": "Guten Morgen, {name}.",
-      "tag": "Hallo, {name}.",
+      "tag": "Schön, dass du vorbeischaust, {name}.",
       "abend": "Guten Abend, {name}."
     },
 
+    "heute": {
+      "datum": "Heute ist {wochentag}, der {tag}. {monat}."
+    },
+
     "start": {
-      "titel": "Willkommen bei EMONA leicht",
-      "text": "Diese App begleitet dich leise durch den Tag. Sie zeigt dir, wie Anspannung, Schlaf und Gewicht zusammenhängen, und sie hilft dir, Freude fest in deinen Alltag zu holen. Nichts hier ist Pflicht.",
+      "titel": "Schön, dass du da bist.",
+      "text": "Diese App begleitet dich leise durch deinen Tag. Sie zeigt dir, wie Anspannung, Schlaf und Gewicht zusammenhängen.\n\nSie hilft dir auch, Freude fest in deinen Alltag zu holen. Nichts hier ist Pflicht.",
       "name_label": "Wie darf ich dich nennen?",
-      "name_platzhalter": "Dein Vorname",
-      "code_label": "Dein persönlicher Zugangscode",
-      "code_hilfe": "Mit dem Code werden deine Einträge sicher auf deinem Server gespeichert. Ohne Code bleibt alles nur auf diesem Gerät, und du kannst ihn später unter „Mehr“ eintragen.",
-      "code_platzhalter": "Zugangscode",
-      "los": "Los geht's",
-      "pruefe": "Ich prüfe den Code …",
-      "code_falsch": "Der Code passt leider nicht. Schau bitte noch einmal nach, oder trage ihn später ein.",
-      "kein_netz": "Gerade ist kein Netz da. Ich merke mir den Code und versuche es später noch einmal."
+      "name_platzhalter": "Hier steht dein Vorname.",
+      "code_label": "Wie lautet dein persönlicher Zugangscode?",
+      "code_hilfe": "Mit dem Code werden deine Einträge sicher auf deinem Server gespeichert.\n\nOhne Code bleibt alles nur auf diesem Gerät. Du kannst ihn später unter „Mehr“ eintragen.",
+      "code_platzhalter": "Hier steht dein Code.",
+      "los": "Fang einfach an",
+      "pruefe": "Ich prüfe gerade deinen Code …",
+      "code_falsch": "Der Code passt leider nicht. Schau bitte noch einmal nach, oder trag ihn später ein.",
+      "kein_netz": "Gerade ist kein Netz da. Ich merke mir deinen Code und versuche es später noch einmal."
     },
 
     "morgen": {
-      "titel": "Dein Morgen",
-      "einleitung": "Drei kleine Angaben, dann bist du schon fertig.",
-      "gewicht": "Gewicht",
+      "titel": "Dein Morgen beginnt hier.",
+      "einleitung": "Du brauchst nur drei kleine Angaben, dann bist du schon fertig.",
+      "gewicht": "Was zeigt deine Waage heute?",
       "gewicht_einheit": "kg",
-      "gewicht_hilfe": "Du siehst es später nur als Wochendurchschnitt.",
-      "einschlafzeit": "Eingeschlafen um",
-      "schlafdauer": "Geschlafen",
+      "gewicht_hilfe": "Du siehst dein Gewicht später nur als Wochendurchschnitt.",
+      "einschlafzeit": "Wann bist du gestern eingeschlafen?",
+      "schlafdauer": "Wie lange hast du geschlafen?",
       "stunden": "Stunden",
-      "speichern": "Eintragen",
+      "weniger": "Zieh eine Viertelstunde ab",
+      "mehr": "Leg eine Viertelstunde dazu",
+      "speichern": "Trag deinen Morgen ein",
       "fertig_titel": "Dein Morgen ist eingetragen.",
       "fertig_text": "Danke, dass du kurz bei dir warst. Jetzt darf der Tag kommen.",
-      "aendern": "Ändern"
+      "aendern": "Ändere deinen Eintrag"
     },
 
     "summen": {
       "knopf": "Summen im Kopf",
-      "knopf_hilfe": "Einmal tippen genügt.",
-      "danke": "Festgehalten. Dein Kopf darf jetzt kurz loslassen.",
-      "heute_schon": "Heute schon {anzahl}-mal bemerkt. Gut, dass du hinhörst.",
-      "heute_schon_eins": "Heute einmal bemerkt. Gut, dass du hinhörst.",
+      "knopf_hilfe": "Ein Tipp genügt, um es festzuhalten.",
+      "danke": "Ich habe es festgehalten. Dein Kopf darf jetzt kurz loslassen.",
+      "heute_schon": "Du hast es heute schon {anzahl}-mal bemerkt. Gut, dass du hinhörst.",
+      "heute_schon_eins": "Du hast es heute einmal bemerkt. Gut, dass du hinhörst.",
       "vorschlag_titel": "Wie wäre eine kleine Pause?",
-      "annehmen": "Gute Idee",
-      "anderer": "Etwas anderes",
-      "spaeter": "Jetzt nicht",
-      "angenommen": "Schön. Genieß deine Pause, sie gehört dir."
+      "annehmen": "Gönn dir die Pause",
+      "anderer": "Zeig mir etwas anderes",
+      "spaeter": "Lass es für jetzt",
+      "angenommen": "Schön, dass du dir die Pause nimmst. Sie gehört ganz dir."
     },
 
     "abendeintrag": {
       "titel": "Wie war dein Tag?",
-      "frage": "Tipp einfach an, wie es sich angefühlt hat.",
+      "frage": "Tipp einfach an, wie er sich angefühlt hat.",
       "stufen": ["ganz leicht", "eher leicht", "mittendrin", "eher angespannt", "sehr angespannt"],
-      "satz_label": "Ein Satz zum Tag, wenn du magst",
+      "satz_label": "Magst du einen Satz zu deinem Tag aufschreiben?",
       "satz_platzhalter": "Was war heute wichtig?",
-      "speichern": "Tag ablegen",
+      "speichern": "Leg deinen Tag ab",
       "fertig_titel": "Dein Tag ist abgelegt.",
       "fertig_text": "Du darfst jetzt landen. Alles Weitere hat Zeit bis morgen.",
-      "zum_abend": "Zum Abendregal",
-      "aendern": "Ändern"
+      "zum_abend": "Geh zum Abendregal",
+      "aendern": "Ändere deinen Eintrag"
     },
 
     "experiment": {
-      "titel": "Experiment des Monats",
-      "monat": "Im {monat}",
-      "notiz_label": "Deine Beobachtungen",
+      "titel": "Das ist dein Experiment des Monats.",
+      "monat": "Das ist dein Experiment im {monat}.",
+      "notiz_label": "Was beobachtest du bei deinem Experiment?",
       "notiz_platzhalter": "Was fällt dir auf?",
-      "bearbeiten": "Ändern",
-      "speichern": "Speichern",
-      "abbrechen": "Abbrechen",
+      "bearbeiten": "Ändere das Experiment",
+      "speichern": "Speichere das Experiment",
+      "abbrechen": "Lass es, wie es ist",
       "titel_label": "Was probierst du in diesem Monat aus?",
-      "hinweis": "Es ist ein Ausprobieren, keine Regel. Jede Beobachtung zählt.",
-      "gespeichert": "Gespeichert."
+      "hinweis": "Es ist ein Ausprobieren und keine Regel. Jede Beobachtung zählt.",
+      "gespeichert": "Deine Beobachtung ist gespeichert."
     },
 
     "freudeplaetze": {
-      "titel": "Deine Freude-Plätze für heute",
+      "titel": "Das sind deine Freude-Plätze für heute.",
       "leer": "Such dir in der Freude-Liste ein, zwei Dinge für heute aus. Sie warten dann hier auf dich.",
-      "zur_liste": "Freude-Plätze auswählen",
-      "genutzt": "genossen",
-      "nutzen": "Genossen",
-      "belohnung": "Ein Stern für dich. Zeit für dich ist gut angelegte Zeit."
+      "zur_liste": "Wähl deine Freude-Plätze aus",
+      "genutzt": "Du hast es genossen.",
+      "nutzen": "Hak es als genossen ab",
+      "belohnung": "Dafür bekommst du einen Stern. Zeit für dich ist gut angelegte Zeit."
     },
 
     "freude": {
-      "titel": "Deine Freude-Liste",
-      "einleitung": "Das sind die Dinge, die dir guttun. Tippe auf den Kreis, um etwas zu einem Freude-Platz für heute zu machen.",
-      "heute": "heute",
-      "pause": "passt als Pause",
-      "neu_label": "Neue Freude-Quelle",
-      "neu_platzhalter": "Zum Beispiel: Tee im Garten",
-      "hinzufuegen": "Hinzufügen",
-      "bearbeiten": "Bearbeiten",
-      "fertig": "Fertig",
-      "loeschen": "Entfernen",
+      "titel": "Das ist deine Freude-Liste.",
+      "einleitung": "Hier stehen die Dinge, die dir guttun.\n\nTipp auf den Kreis, wenn etwas heute ein Freude-Platz sein soll.",
+      "heute": "Heute ist es dabei.",
+      "heute_kurz": "Mach es zu einem Freude-Platz für heute",
+      "pause": "Das passt als Pause.",
+      "neu_label": "Was tut dir noch gut?",
+      "neu_platzhalter": "Zum Beispiel ein Tee im Garten.",
+      "hinzufuegen": "Füg es hinzu",
+      "bearbeiten": "Bearbeite deine Liste",
+      "fertig": "Schließ die Bearbeitung ab",
+      "loeschen": "Nimm es heraus",
       "loeschen_frage": "Möchtest du „{titel}“ wirklich aus deiner Liste nehmen?",
-      "pause_hilfe": "Freude-Quellen mit Pausen-Zeichen schlage ich dir vor, wenn es in deinem Kopf summt.",
-      "zaehler": "Insgesamt {anzahl}-mal genossen"
+      "symbol_wechseln": "Wechsle das Zeichen",
+      "titel_aendern": "Wie soll diese Freude-Quelle heißen?",
+      "pause_hilfe": "Freude-Quellen, die als Pause passen, schlage ich dir vor, wenn es in deinem Kopf summt.",
+      "zaehler": "Du hast es schon {anzahl}-mal genossen.",
+      "zaehler_eins": "Du hast es schon einmal genossen."
     },
 
     "abend": {
-      "titel": "Zeit zum Landen",
-      "einleitung": "Der Tag darf jetzt leiser werden. Hier sind ein paar Ideen, die dir beim Runterkommen helfen.",
-      "ideen_titel": "Ideen zum Runterkommen",
-      "regal_titel": "Abendregal",
-      "regal_text": "Ein ruhiges Sortierspiel. Kein Timer, kein Verlieren, nur Ordnung, die entsteht.",
-      "regal_start": "Regal einräumen",
-      "regal_weiter": "Weiter einräumen"
+      "titel": "Es ist Zeit zum Landen.",
+      "einleitung": "Der Tag darf jetzt leiser werden.\n\nHier findest du ein paar Ideen, die dir beim Runterkommen helfen.",
+      "ideen_titel": "Diese Ideen helfen dir beim Runterkommen.",
+      "regal_titel": "Das Abendregal wartet auf dich.",
+      "regal_text": "Es ist ein ruhiges Sortierspiel. Es gibt keinen Timer und kein Verlieren, nur Ordnung, die langsam entsteht.",
+      "regal_stand": "Im Abendregal hast du schon {sterne} Sterne und {punkte} Punkte gesammelt.",
+      "regal_stand_leer": "Dein erstes Regal steht schon bereit.",
+      "regal_start": "Räum das Regal ein",
+      "regal_weiter": "Räum weiter ein"
     },
 
     "regal": {
-      "anleitung": "Tippe auf eine Ware und dann auf das passende Fach.",
-      "anleitung_kurz": "Wähle eine Ware aus dem Korb.",
+      "anleitung": "Tipp auf eine Ware und dann auf das passende Fach.",
+      "anleitung_kurz": "Wähl eine Ware aus dem Korb.",
       "gewaehlt": "Wohin gehört {ware}?",
       "passt_woanders": "Das findet woanders ein schöneres Plätzchen.",
-      "korb": "Korb",
+      "korb": "Im Korb liegen die Waren, die noch einen Platz suchen.",
       "fertig_titel": "Regal {nummer} ist fertig.",
       "fertig_text": "Atme einmal langsam ein und wieder aus. Es gibt keine Eile.",
-      "atem": "Einatmen … ausatmen …",
-      "naechstes": "Nächstes Regal",
+      "atem": "Atme ein. Atme aus.",
+      "naechstes": "Räum das nächste Regal ein",
       "genug": "Für heute ist es gut",
-      "zurueck": "Zurück",
+      "zurueck": "Geh zurück",
       "sterne": "Sterne",
       "punkte": "Punkte",
-      "ruhige_hand": "Ruhige Hand: alles beim ersten Mal an den richtigen Platz.",
+      "ruhige_hand": "Du hast alles beim ersten Mal an den richtigen Platz gelegt. Das war eine ruhige Hand.",
       "gute_nacht": "Schön, dass du dir die Zeit genommen hast. Schlaf gut."
     },
 
     "verlauf": {
-      "titel": "Dein Verlauf",
-      "einleitung": "Hier siehst du, wie deine Wochen sich anfühlen. Es gibt nichts zu bewerten, nur etwas zu entdecken.",
-      "gewicht_titel": "Gewicht, Wochendurchschnitt",
-      "anspannung_titel": "Anspannung, Wochendurchschnitt",
-      "anspannung_skala": "1 ganz leicht · 5 sehr angespannt",
-      "zusammenhang_titel": "Anspannung und Einschlafen",
-      "zusammenhang_text": "Wann du in der Nacht nach einem Tag eingeschlafen bist, je nachdem, wie sich der Tag angefühlt hat.",
+      "titel": "Hier siehst du deinen Verlauf.",
+      "einleitung": "So fühlen sich deine Wochen an.\n\nEs gibt hier nichts zu bewerten, nur etwas zu entdecken.",
+      "gewicht_titel": "So sieht dein Gewicht im Wochendurchschnitt aus.",
+      "anspannung_titel": "So angespannt waren deine Wochen im Durchschnitt.",
+      "anspannung_skala": "Eins bedeutet ganz leicht, fünf bedeutet sehr angespannt.",
+      "zusammenhang_titel": "So hängen Anspannung und Einschlafen zusammen.",
+      "zusammenhang_text": "Hier siehst du, wann du nach einem Tag eingeschlafen bist, je nachdem, wie sich der Tag angefühlt hat.",
       "gruppe_leicht": "Leichte Tage",
       "gruppe_mittel": "Mittlere Tage",
       "gruppe_angespannt": "Angespannte Tage",
-      "nach_tagen": "aus {anzahl} Nächten",
-      "zusammenhang_satz": "Nach leichten Tagen bist du im Schnitt um {leicht} eingeschlafen, nach angespannten Tagen um {angespannt}.",
+      "nach_tagen": "{anzahl} Nächte",
+      "zusammenhang_satz": "Nach leichten Tagen bist du im Schnitt um {leicht} Uhr eingeschlafen, nach angespannten Tagen um {angespannt} Uhr.",
       "zu_wenig": "Sobald ein paar Abende und Morgen eingetragen sind, zeige ich dir hier den Zusammenhang.",
       "keine_daten": "Hier entsteht dein Verlauf, sobald die ersten Tage eingetragen sind.",
       "woche": "KW {kw}",
-      "aus_tagen": "aus {anzahl} Tagen",
-      "tabelle_zeigen": "Als Liste zeigen",
-      "tabelle_verbergen": "Liste verbergen",
+      "tipp_gewicht": "In KW {kw} lag dein Durchschnitt bei {wert} kg. Er stammt aus {anzahl} Tagen.",
+      "tipp_anspannung": "In KW {kw} lag deine Anspannung im Schnitt bei {wert}. Der Wert stammt aus {anzahl} Tagen.",
+      "tipp_zusammenhang": "Nach {gruppe} bist du im Schnitt um {zeit} Uhr eingeschlafen. Das zeigen {anzahl} Nächte.",
+      "tipp_gruppe_leicht": "leichten Tagen",
+      "tipp_gruppe_mittel": "mittleren Tagen",
+      "tipp_gruppe_angespannt": "angespannten Tagen",
+      "tipp_tag_leer": "Am {datum} hast du nichts eingetragen, und das ist völlig in Ordnung.",
+      "tipp_tag": "Am {datum} hast du deinen Tag mit „{wort}“ beschrieben.",
+      "tipp_tag_offen": "Am {datum} hast du keine Anspannung eingetragen.",
+      "tipp_summen": "Du hast {anzahl}-mal Summen bemerkt.",
+      "tipp_freude": "Du hast {anzahl}-mal etwas genossen.",
+      "tipp_summen_eins": "Du hast einmal Summen bemerkt.",
+      "tipp_freude_eins": "Du hast einmal etwas genossen.",
+      "tabelle_zeigen": "Zeig mir die Liste",
+      "tabelle_verbergen": "Verbirg die Liste",
+      "tabelle_text": "In der Liste siehst du jede Woche mit ihren Durchschnittswerten.",
       "spalte_woche": "Woche",
-      "spalte_gewicht": "Gewicht Ø",
-      "spalte_anspannung": "Anspannung Ø",
-      "spalte_einschlafen": "Eingeschlafen Ø",
-      "spalte_schlaf": "Schlaf Ø",
-      "letzte_tage_titel": "Die letzten zwei Wochen",
-      "letzte_tage_text": "Jeder Punkt ist ein Tag. Je größer der Punkt, desto angespannter war der Tag.",
-      "summen_kurz": "Summen",
-      "freude_kurz": "Freude"
+      "spalte_gewicht": "Gewicht",
+      "spalte_anspannung": "Anspannung",
+      "spalte_einschlafen": "Eingeschlafen",
+      "spalte_schlaf": "Schlaf",
+      "letzte_tage_titel": "So sahen deine letzten zwei Wochen aus.",
+      "letzte_tage_text": "Jeder Punkt ist ein Tag. Je größer der Punkt ist, desto angespannter war der Tag.\n\nEin kleiner Stern zeigt dir, dass du an diesem Tag etwas genossen hast."
     },
 
     "erfolge": {
-      "titel": "Kleine Erfolge",
+      "titel": "Das sind deine kleinen Erfolge.",
       "einleitung": "Hier sammelt sich die Zeit, die du dir selbst geschenkt hast.",
       "leer": "Deine ersten kleinen Erfolge sind schon unterwegs.",
       "weitere": "Es warten noch weitere kleine Überraschungen auf dich.",
-      "neu": "Neuer kleiner Erfolg",
-      "erreicht_am": "am {datum}"
+      "neu": "Ein neuer kleiner Erfolg ist da. {titel}",
+      "erreicht_am": "Das war am {datum}."
     },
 
     "mehr": {
-      "titel": "Mehr",
-      "sammlung_titel": "Deine Sammlung",
-      "einstellungen_titel": "Einstellungen",
-      "name": "Dein Name",
-      "abendmodus_ab": "Abendmodus ab",
+      "titel": "Hier findest du alles Weitere.",
+      "sammlung_titel": "Das hast du schon gesammelt.",
+      "sammlung_satz": "Du hast schon {sterne} Sterne und {punkte} Punkte gesammelt.",
+      "einstellungen_titel": "Hier stellst du die App für dich ein.",
+      "name": "Wie darf ich dich nennen?",
+      "abendmodus_ab": "Ab wann soll der Abendmodus beginnen?",
       "abendmodus_hilfe": "Ab dieser Uhrzeit wird die App dunkel und warm. Morgens um fünf wird sie wieder hell.",
-      "erinnerungen_titel": "Sanfte Erinnerungen",
-      "erinnerungen_text": "Höchstens zwei am Tag: morgens für deinen Eintrag und abends zum Landen. Wenn du etwas verpasst, frage ich nicht nach.",
-      "erinnerung_morgen": "Morgens um",
-      "erinnerung_abend": "Abends um",
-      "erinnerungen_an": "Erinnerungen einschalten",
-      "erinnerungen_aus": "Erinnerungen ausschalten",
+      "erinnerungen_titel": "Sanfte Erinnerungen begleiten dich, wenn du magst.",
+      "erinnerungen_text": "Du bekommst höchstens zwei Erinnerungen am Tag, eine am Morgen für deinen Eintrag und eine am Abend zum Landen.\n\nWenn du etwas verpasst, frage ich nicht nach.",
+      "erinnerung_morgen": "Wann möchtest du morgens erinnert werden?",
+      "erinnerung_abend": "Wann möchtest du abends erinnert werden?",
+      "erinnerungen_an": "Schalte die Erinnerungen ein",
+      "erinnerungen_aus": "Schalte die Erinnerungen aus",
       "erinnerungen_aktiv": "Die Erinnerungen sind eingeschaltet.",
       "erinnerungen_inaktiv": "Die Erinnerungen sind ausgeschaltet.",
-      "erinnerungen_iphone": "Auf dem iPhone funktionieren Erinnerungen nur, wenn die App auf dem Startbildschirm liegt und von dort geöffnet wurde.",
+      "erinnerungen_iphone": "Auf dem iPhone kommen Erinnerungen nur an, wenn die App auf deinem Startbildschirm liegt und du sie von dort öffnest.",
       "erinnerungen_nicht_moeglich": "Dieses Gerät oder dieser Browser kann leider keine Erinnerungen empfangen.",
       "erinnerungen_kein_code": "Für Erinnerungen braucht die App deinen Zugangscode, weil der Server sie verschickt.",
       "erinnerungen_abgelehnt": "Die Mitteilungen sind in den Einstellungen deines Handys ausgeschaltet. Dort kannst du sie für EMONA erlauben.",
-      "speichern": "Speichern",
-      "gespeichert": "Gespeichert.",
-      "sync_titel": "Speichern auf dem Server",
-      "code": "Zugangscode",
-      "code_speichern": "Code übernehmen",
+      "speichern": "Speichere deine Einstellungen",
+      "gespeichert": "Deine Einstellungen sind gespeichert.",
+      "zeit_gespeichert": "Die neue Uhrzeit ist gespeichert.",
+      "sync_titel": "So bleiben deine Einträge sicher.",
+      "code": "Wie lautet dein Zugangscode?",
+      "code_speichern": "Übernimm den Code",
+      "code_angenommen": "Dein Code passt, und alles ist auf dem Server gesichert.",
       "sync_ok": "Alles ist auf dem Server gesichert.",
-      "sync_ausstehend": "Einige Einträge warten noch und werden gesichert, sobald Netz da ist.",
+      "sync_ausstehend": "Einige Einträge warten noch. Ich sichere sie, sobald wieder Netz da ist.",
       "sync_lokal": "Ohne Zugangscode bleibt alles nur auf diesem Gerät.",
-      "sync_fehler": "Der Server antwortet gerade nicht. Deine Einträge sind sicher auf dem Gerät und werden später übertragen.",
-      "sync_code_falsch": "Der Zugangscode wird vom Server nicht angenommen.",
-      "sync_jetzt": "Jetzt synchronisieren",
-      "zuletzt": "Zuletzt gesichert: {zeit}",
-      "export_titel": "Export für die Monatsauswertung",
-      "export_text": "Lade deine Einträge als Datei herunter. CSV öffnet sich in Excel oder Numbers, JSON ist für die genaue Auswertung.",
-      "export_zeitraum": "Zeitraum",
-      "export_alle": "Alle Einträge",
-      "export_csv": "Als CSV laden",
-      "export_json": "Als JSON laden",
-      "installieren_titel": "Auf den Startbildschirm",
-      "installieren_iphone": "Tippe in Safari auf „Teilen“ und dann auf „Zum Home-Bildschirm“.",
-      "installieren_android": "Tippe im Browser-Menü auf „App installieren“ oder „Zum Startbildschirm hinzufügen“.",
-      "installieren_knopf": "Jetzt installieren",
-      "version": "Version {version}"
+      "sync_fehler": "Der Server antwortet gerade nicht. Deine Einträge sind sicher auf dem Gerät, und ich übertrage sie später.",
+      "sync_code_falsch": "Der Server nimmt deinen Zugangscode gerade nicht an.",
+      "sync_jetzt": "Gleich jetzt alles mit dem Server ab",
+      "zuletzt": "Die letzte Sicherung war am {datum} um {uhrzeit} Uhr.",
+      "export_titel": "Hier lädst du deine Einträge für die Monatsauswertung.",
+      "export_text": "Du kannst deine Einträge als Datei herunterladen.\n\nEine CSV-Datei öffnet sich in Excel oder Numbers. Eine JSON-Datei ist für die genaue Auswertung gedacht.",
+      "export_zeitraum": "Welchen Zeitraum möchtest du laden?",
+      "export_alle": "Ich möchte alle Einträge.",
+      "export_csv": "Lade die CSV-Datei",
+      "export_json": "Lade die JSON-Datei",
+      "installieren_titel": "Leg die App auf deinen Startbildschirm.",
+      "installieren_iphone": "Tipp in Safari auf „Teilen“ und dann auf „Zum Home-Bildschirm“.",
+      "installieren_android": "Tipp im Browser-Menü auf „App installieren“ oder auf „Zum Startbildschirm hinzufügen“.",
+      "installieren_knopf": "Installiere die App jetzt",
+      "version": "Du nutzt die Version {version}."
     },
 
     "belohnung": {
       "sterne": "Sterne",
       "punkte": "Punkte",
-      "pause_genommen": "Pause genommen. Plus fünf Punkte für dich.",
-      "abend_gelandet": "Gelandet. Plus fünf Punkte für dich."
+      "pause_genommen": "Du hast dir eine Pause genommen. Dafür bekommst du fünf Punkte.",
+      "abend_gelandet": "Du bist gelandet. Dafür bekommst du fünf Punkte."
     },
 
     "status": {
-      "offline": "Gerade ohne Netz. Alles wird auf dem Gerät gespeichert.",
-      "update": "Eine neue Version ist da. Sie wird beim nächsten Öffnen geladen."
+      "offline": "Gerade ist kein Netz da. Ich speichere alles auf deinem Gerät.",
+      "update": "Eine neue Version ist da. Sie wird beim nächsten Öffnen geladen.",
+      "server_fehler": "Der Server hat gerade nicht wie erwartet geantwortet. Deine Einträge sind sicher auf dem Gerät.",
+      "sync_punkt": "Hier siehst du, ob deine Einträge gesichert sind."
     },
 
     "allgemein": {
       "monate": ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+      "wochentage": ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
       "wochentage_kurz": ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
       "uhr": "Uhr",
       "ja": "ja",
       "nein": "nein",
-      "schliessen": "Schließen"
+      "schliessen": "Schließ das Fenster"
     }
   },
 
   "erinnerungen": {
     "morgen": {
-      "titel": "Guten Morgen",
+      "titel": "Guten Morgen.",
       "text": "Magst du kurz deinen Morgen eintragen? Es dauert nur einen Moment."
     },
     "abend": {
-      "titel": "Zeit zum Landen",
+      "titel": "Es ist Zeit zum Landen.",
       "text": "Der Tag darf jetzt leiser werden."
     }
   },
@@ -266,16 +295,16 @@
     { "titel": "Musik hören", "symbol": "🎶", "pause": true },
     { "titel": "Spanisch", "symbol": "🇪🇸", "pause": false },
     { "titel": "Ein gemütlicher Krimi", "symbol": "📖", "pause": true },
-    { "titel": "Powernap, eine halbe Stunde", "symbol": "😴", "pause": true }
+    { "titel": "Ein Powernap von einer halben Stunde", "symbol": "😴", "pause": true }
   ],
 
   "freudeSymbole": ["🐾", "🐴", "🐱", "🐶", "🐔", "🧶", "💃", "🎶", "🇪🇸", "📖", "😴", "🍵", "🌿", "🌸", "🚶‍♀️", "🛁", "🎨", "☀️", "🌙", "💛"],
 
   "pausenImpulse": [
-    "Dein Kopf hat heute schon viel getragen. Wie wäre es mit: {freude}?",
-    "Eine kleine Pause tut jetzt gut. Vielleicht: {freude}?",
-    "Du darfst kurz aussteigen. Was hältst du von: {freude}?",
-    "Das Summen darf leiser werden. Magst du dir {freude} gönnen?"
+    "Dein Kopf hat heute schon viel getragen. Vielleicht tut dir jetzt das gut: {freude}.",
+    "Eine kleine Pause darf jetzt sein. Wie wäre es hiermit: {freude}?",
+    "Du darfst kurz aussteigen. Magst du dir das hier gönnen: {freude}?",
+    "Das Summen darf leiser werden. Vielleicht hilft dir jetzt das: {freude}."
   ],
 
   "experimentStartwert": {
@@ -285,28 +314,28 @@
 
   "runterkommen": [
     {
-      "titel": "Handy auf Night Shift und Dunkelmodus",
-      "symbol": "🌙",
+      "titel": "Stell dein Handy auf Night Shift und Dunkelmodus.",
+      "symbol": "",
       "text": "Warmes Licht sagt deinem Körper, dass der Tag vorbei ist.",
       "schritte": [
         "Öffne die Einstellungen und dann „Anzeige & Helligkeit“.",
-        "Wähle „Dunkel“ aus.",
-        "Tippe auf „Night Shift“ und stelle einen Zeitplan ein, zum Beispiel ab 20 Uhr."
+        "Wähl dort „Dunkel“ aus.",
+        "Tipp auf „Night Shift“ und stell einen Zeitplan ein, zum Beispiel ab 20 Uhr."
       ]
     },
     {
-      "titel": "Ein Hörbuch oder ein ruhiger Podcast mit Schlaf-Timer",
-      "symbol": "🎧",
-      "text": "Am besten ein Krimi, den du schon kennst. Dann musst du nicht wach bleiben, um zu erfahren, wie er ausgeht.",
+      "titel": "Hör ein Hörbuch oder einen ruhigen Podcast mit Schlaf-Timer.",
+      "symbol": "",
+      "text": "Am besten nimmst du einen Krimi, den du schon kennst.\n\nDann musst du nicht wach bleiben, um zu erfahren, wie er ausgeht.",
       "schritte": [
         "Such dir eine Folge aus, die du schon kennst.",
-        "Stelle den Schlaf-Timer in deiner Hörbuch- oder Podcast-App auf 30 Minuten.",
+        "Stell den Schlaf-Timer in deiner Hörbuch- oder Podcast-App auf 30 Minuten.",
         "Leg das Handy mit dem Display nach unten weg."
       ]
     },
     {
-      "titel": "Ruhige Spiele ohne Zeitdruck",
-      "symbol": "🧺",
+      "titel": "Spiel etwas Ruhiges ohne Zeitdruck.",
+      "symbol": "",
       "text": "Spiele ohne Timer und ohne Verlieren beruhigen die Gedanken. Das Abendregal ist genau so ein Spiel.",
       "schritte": [],
       "regal": true
@@ -339,22 +368,22 @@
   },
 
   "erfolge": [
-    { "id": "frueh-3", "art": "fruehEingeschlafen", "grenze": "23:30", "anzahl": 3, "symbol": "🌙", "titel": "Drei Abende vor halb zwölf eingeschlafen" },
-    { "id": "frueh-10", "art": "fruehEingeschlafen", "grenze": "23:30", "anzahl": 10, "symbol": "🌙", "titel": "Zehn Abende vor halb zwölf eingeschlafen" },
-    { "id": "frueh-30", "art": "fruehEingeschlafen", "grenze": "23:30", "anzahl": 30, "symbol": "🌌", "titel": "Dreißig Abende vor halb zwölf eingeschlafen" },
-    { "id": "schlaf-5", "art": "langGeschlafen", "stunden": 7, "anzahl": 5, "symbol": "🛏️", "titel": "Fünf Nächte mit sieben Stunden Schlaf oder mehr" },
-    { "id": "schlaf-20", "art": "langGeschlafen", "stunden": 7, "anzahl": 20, "symbol": "🛏️", "titel": "Zwanzig Nächte mit sieben Stunden Schlaf oder mehr" },
-    { "id": "freude-1", "art": "freudeGenutzt", "anzahl": 1, "symbol": "💛", "titel": "Den ersten Freude-Platz genossen" },
-    { "id": "freude-5", "art": "freudeGenutzt", "anzahl": 5, "symbol": "💛", "titel": "Fünf Freude-Plätze genutzt" },
-    { "id": "freude-20", "art": "freudeGenutzt", "anzahl": 20, "symbol": "🌻", "titel": "Zwanzig Freude-Plätze genutzt" },
-    { "id": "freude-50", "art": "freudeGenutzt", "anzahl": 50, "symbol": "🌻", "titel": "Fünfzig Freude-Plätze genutzt" },
-    { "id": "pause-3", "art": "pausen", "anzahl": 3, "symbol": "☕", "titel": "Dreimal beim Summen eine Pause genommen" },
-    { "id": "pause-10", "art": "pausen", "anzahl": 10, "symbol": "🍃", "titel": "Zehnmal beim Summen eine Pause genommen" },
-    { "id": "abend-7", "art": "abende", "anzahl": 7, "symbol": "🕯️", "titel": "Sieben Abende bewusst gelandet" },
-    { "id": "abend-30", "art": "abende", "anzahl": 30, "symbol": "🕯️", "titel": "Dreißig Abende bewusst gelandet" },
-    { "id": "regal-1", "art": "regale", "anzahl": 1, "symbol": "🧺", "titel": "Das erste Abendregal eingeräumt" },
-    { "id": "regal-10", "art": "regale", "anzahl": 10, "symbol": "🧺", "titel": "Zehn Abendregale eingeräumt" },
-    { "id": "regal-30", "art": "regale", "anzahl": 30, "symbol": "🏡", "titel": "Dreißig Abendregale eingeräumt" },
-    { "id": "experiment-1", "art": "experimentNotiz", "anzahl": 1, "symbol": "🔍", "titel": "Die erste Beobachtung zum Experiment notiert" }
+    { "id": "frueh-3", "art": "fruehEingeschlafen", "grenze": "23:30", "anzahl": 3, "symbol": "🌙", "titel": "Du bist an drei Abenden vor halb zwölf eingeschlafen." },
+    { "id": "frueh-10", "art": "fruehEingeschlafen", "grenze": "23:30", "anzahl": 10, "symbol": "🌙", "titel": "Du bist an zehn Abenden vor halb zwölf eingeschlafen." },
+    { "id": "frueh-30", "art": "fruehEingeschlafen", "grenze": "23:30", "anzahl": 30, "symbol": "🌌", "titel": "Du bist an dreißig Abenden vor halb zwölf eingeschlafen." },
+    { "id": "schlaf-5", "art": "langGeschlafen", "stunden": 7, "anzahl": 5, "symbol": "🛏️", "titel": "Du hast fünf Nächte lang sieben Stunden oder mehr geschlafen." },
+    { "id": "schlaf-20", "art": "langGeschlafen", "stunden": 7, "anzahl": 20, "symbol": "🛏️", "titel": "Du hast zwanzig Nächte lang sieben Stunden oder mehr geschlafen." },
+    { "id": "freude-1", "art": "freudeGenutzt", "anzahl": 1, "symbol": "💛", "titel": "Du hast deinen ersten Freude-Platz genossen." },
+    { "id": "freude-5", "art": "freudeGenutzt", "anzahl": 5, "symbol": "💛", "titel": "Du hast fünf Freude-Plätze genutzt." },
+    { "id": "freude-20", "art": "freudeGenutzt", "anzahl": 20, "symbol": "🌻", "titel": "Du hast zwanzig Freude-Plätze genutzt." },
+    { "id": "freude-50", "art": "freudeGenutzt", "anzahl": 50, "symbol": "🌻", "titel": "Du hast fünfzig Freude-Plätze genutzt." },
+    { "id": "pause-3", "art": "pausen", "anzahl": 3, "symbol": "🍃", "titel": "Du hast dir dreimal eine Pause genommen, als es im Kopf summte." },
+    { "id": "pause-10", "art": "pausen", "anzahl": 10, "symbol": "🍃", "titel": "Du hast dir zehnmal eine Pause genommen, als es im Kopf summte." },
+    { "id": "abend-7", "art": "abende", "anzahl": 7, "symbol": "🕯️", "titel": "Du bist an sieben Abenden bewusst gelandet." },
+    { "id": "abend-30", "art": "abende", "anzahl": 30, "symbol": "🕯️", "titel": "Du bist an dreißig Abenden bewusst gelandet." },
+    { "id": "regal-1", "art": "regale", "anzahl": 1, "symbol": "🧺", "titel": "Du hast dein erstes Abendregal eingeräumt." },
+    { "id": "regal-10", "art": "regale", "anzahl": 10, "symbol": "🧺", "titel": "Du hast zehn Abendregale eingeräumt." },
+    { "id": "regal-30", "art": "regale", "anzahl": 30, "symbol": "🏡", "titel": "Du hast dreißig Abendregale eingeräumt." },
+    { "id": "experiment-1", "art": "experimentNotiz", "anzahl": 1, "symbol": "🔍", "titel": "Du hast deine erste Beobachtung zum Experiment notiert." }
   ]
 }

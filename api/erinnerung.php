@@ -21,7 +21,7 @@ if (PHP_SAPI !== 'cli') {
     $schluessel = (string) ($_GET['schluessel'] ?? '');
     $erwartet = (string) ($config['cron_schluessel'] ?? '');
     if ($erwartet === '' || strpos($erwartet, 'HIER-') === 0 || !hash_equals($erwartet, $schluessel)) {
-        emona_fehler(403, 'Kein Zugriff.');
+        emona_fehler(403, 'Für diese Adresse hast du leider keinen Zugriff.');
     }
 }
 
@@ -30,7 +30,7 @@ const EMONA_FENSTER_MINUTEN = 90;
 $ergebnis = emona_mit_daten(function (array &$daten) {
     $einstellungen = $daten['docs']['einstellungen']['wert'] ?? [];
     if (empty($einstellungen['erinnerungenAn']) || empty($daten['system']['abos'])) {
-        return ['gesendet' => [], 'hinweis' => 'Erinnerungen sind aus oder kein Gerät angemeldet.'];
+        return ['gesendet' => [], 'hinweis' => 'Die Erinnerungen sind ausgeschaltet, oder es ist noch kein Gerät angemeldet.'];
     }
 
     $heute = date('Y-m-d');

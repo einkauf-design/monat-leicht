@@ -1,7 +1,7 @@
 // Begrüßung beim allerersten Öffnen: Name und Zugangscode, beides freiwillig.
 
 import { t } from '../inhalte.js';
-import { esc } from '../util.js';
+import { esc, absaetze } from '../util.js';
 import { api, setzeGeraet, sync, vonVorneSynchronisieren } from '../speicher.js';
 import { einstellungen, setzeEinstellungen } from '../daten.js';
 
@@ -10,7 +10,7 @@ export function zeige(wurzel, { fertig }) {
     <section class="start">
       <div class="start-zeichen" aria-hidden="true">✦</div>
       <h1>${esc(t('start.titel'))}</h1>
-      <p>${esc(t('start.text'))}</p>
+      ${absaetze(t('start.text'))}
       <form class="formular karte" data-form="start">
         <label class="feld">
           <span class="feld-name">${esc(t('start.name_label'))}</span>
@@ -19,7 +19,7 @@ export function zeige(wurzel, { fertig }) {
         <label class="feld">
           <span class="feld-name">${esc(t('start.code_label'))}</span>
           <input type="password" name="code" autocomplete="current-password" placeholder="${esc(t('start.code_platzhalter'))}">
-          <span class="feld-hilfe">${esc(t('start.code_hilfe'))}</span>
+          ${t('start.code_hilfe').split(/\n\s*\n/).map((absatz) => `<span class="feld-hilfe">${esc(absatz)}</span>`).join('')}
         </label>
         <p class="hinweis" data-meldung hidden></p>
         <button class="knopf knopf-haupt" type="submit">${esc(t('start.los'))}</button>

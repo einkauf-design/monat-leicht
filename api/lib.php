@@ -14,7 +14,7 @@ function emona_config(): array
     }
     $datei = __DIR__ . '/config.php';
     if (!is_file($datei)) {
-        emona_fehler(500, 'Die Datei api/config.php fehlt. Bitte config.example.php kopieren und ausfüllen.');
+        emona_fehler(500, 'Die Datei api/config.php fehlt noch. Bitte kopier die Datei config.example.php und füll sie aus.');
     }
     $config = require $datei;
     $config['datenordner'] = rtrim($config['datenordner'] ?? (__DIR__ . '/daten'), '/');
@@ -54,7 +54,7 @@ function emona_mit_daten(callable $veraendern)
     $pfad = emona_pfad('emona-daten.json');
     $handle = fopen($pfad, 'c+');
     if ($handle === false) {
-        emona_fehler(500, 'Die Datendatei kann nicht geöffnet werden. Bitte Schreibrechte des Datenordners prüfen.');
+        emona_fehler(500, 'Ich kann die Datendatei gerade nicht öffnen. Bitte prüf die Schreibrechte des Datenordners.');
     }
     flock($handle, LOCK_EX);
     $inhalt = stream_get_contents($handle);
@@ -120,7 +120,7 @@ function emona_vapid(): array
     }
     $schluessel = openssl_pkey_new(['private_key_type' => OPENSSL_KEYTYPE_EC, 'curve_name' => 'prime256v1']);
     if ($schluessel === false) {
-        emona_fehler(500, 'Der Server kann keinen Schlüssel für Erinnerungen erzeugen (OpenSSL fehlt).');
+        emona_fehler(500, 'Der Server kann keinen Schlüssel für Erinnerungen erzeugen, weil OpenSSL fehlt.');
     }
     openssl_pkey_export($schluessel, $privatPem);
     $details = openssl_pkey_get_details($schluessel);

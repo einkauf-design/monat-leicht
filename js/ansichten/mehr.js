@@ -1,7 +1,7 @@
 // Ansicht „Mehr“: Sammlung und kleine Erfolge, Einstellungen, Erinnerungen, Server und Export.
 
 import { t } from '../inhalte.js';
-import { esc, ganz, ausKey, toast } from '../util.js';
+import { esc, absaetze, ganz, ausKey, toast } from '../util.js';
 import { einstellungen, setzeEinstellungen } from '../daten.js';
 import { gesamt, erreichteErfolge, offeneErfolgeAnzahl } from '../belohnung.js';
 import { geraetDaten, setzeGeraet, syncZustand, sync, api, vonVorneSynchronisieren } from '../speicher.js';
@@ -31,8 +31,10 @@ function syncText() {
   };
   let text = texte[z.art] || '';
   if (z.zuletzt && z.art !== 'lokal') {
-    const zeit = new Date(z.zuletzt).toLocaleString('de-DE', { day: 'numeric', month: 'numeric', hour: '2-digit', minute: '2-digit' });
-    text += ` ${t('mehr.zuletzt', { zeit })}`;
+    const wann = new Date(z.zuletzt);
+    const datum = wann.toLocaleDateString('de-DE', { day: 'numeric', month: 'long' });
+    const uhrzeit = wann.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+    text += ` ${t('mehr.zuletzt', { datum, uhrzeit })}`;
   }
   return text;
 }
@@ -47,7 +49,7 @@ function erinnerungsBereich(e) {
   return `
     <section class="karte" aria-labelledby="erinnerung-titel">
       <h2 id="erinnerung-titel">${esc(t('mehr.erinnerungen_titel'))}</h2>
-      <p>${esc(t('mehr.erinnerungen_text'))}</p>
+      ${absaetze(t('mehr.erinnerungen_text'))}
       <form class="formular" data-form="zeiten">
         <div class="feld-reihe">
           <label class="feld">
@@ -84,7 +86,8 @@ export function zeige(wurzel, ctx) {
 
     <section class="karte karte-sammlung" aria-labelledby="sammlung-titel">
       <h2 id="sammlung-titel">${esc(t('mehr.sammlung_titel'))}</h2>
-      <div class="sammlung">
+      <p>${esc(t('mehr.sammlung_satz', { sterne: ganz(summe.sterne), punkte: ganz(summe.punkte) }))}</p>
+      <div class="sammlung" aria-hidden="true">
         <div class="sammlung-wert"><span class="sammlung-symbol" aria-hidden="true">★</span><span class="sammlung-zahl" data-zahl="sterne">${ganz(summe.sterne)}</span><span class="sammlung-name">${esc(t('belohnung.sterne'))}</span></div>
         <div class="sammlung-wert"><span class="sammlung-symbol" aria-hidden="true">●</span><span class="sammlung-zahl" data-zahl="punkte">${ganz(summe.punkte)}</span><span class="sammlung-name">${esc(t('belohnung.punkte'))}</span></div>
       </div>
@@ -133,7 +136,7 @@ export function zeige(wurzel, ctx) {
 
     <section class="karte" aria-labelledby="export-titel">
       <h2 id="export-titel">${esc(t('mehr.export_titel'))}</h2>
-      <p>${esc(t('mehr.export_text'))}</p>
+      ${absaetze(t('mehr.export_text'))}
       <label class="feld">
         <span class="feld-name">${esc(t('mehr.export_zeitraum'))}</span>
         <select name="monat" data-feld="export-monat">
@@ -181,7 +184,7 @@ export function zeige(wurzel, ctx) {
           'kein-code': t('mehr.erinnerungen_kein_code'),
           abgelehnt: t('mehr.erinnerungen_abgelehnt'),
         }[fehler.message] || t('mehr.erinnerungen_nicht_moeglich');
-        toast(meldung, '🔔');
+        toast(meldung);
       }
       ctx.zeichne();
     }
@@ -191,7 +194,7 @@ export function zeige(wurzel, ctx) {
     const form = ev.target.closest('form');
     if (form?.dataset.form === 'zeiten' && ev.target.value) {
       setzeEinstellungen({ [ev.target.name]: ev.target.value });
-      toast(t('mehr.gespeichert'), '🔔');
+      toast(t('mehr.zeit_gespeichert'));
     }
   };
 
@@ -200,7 +203,7 @@ export function zeige(wurzel, ctx) {
     const form = ev.target;
     if (form.dataset.form === 'einstellungen') {
       setzeEinstellungen({ name: form.elements.namedItem('name').value.trim(), abendmodusAb: form.abendmodusAb.value || '21:00' });
-      toast(t('mehr.gespeichert'), '✓');
+      toast(t('mehr.gespeichert'));
       ctx.modusPruefen();
       ctx.zeichne();
     }
@@ -218,14 +221,14 @@ export function zeige(wurzel, ctx) {
         setzeGeraet({ code });
         vonVorneSynchronisieren();
         await sync();
-        toast(t('mehr.sync_ok'), '✓');
+        toast(t('mehr.code_angenommen'));
       } catch (fehler) {
         if (fehler.status === 0) {
           setzeGeraet({ code });
           vonVorneSynchronisieren();
-          toast(t('start.kein_netz'), '☁️');
+          toast(t('start.kein_netz'));
         } else {
-          toast(fehler.status === 401 ? t('start.code_falsch') : fehler.message, '🔑');
+          toast(fehler.status === 401 ? t('start.code_falsch') : fehler.message);
         }
       }
       ctx.zeichne();

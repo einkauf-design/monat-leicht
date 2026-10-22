@@ -84,8 +84,15 @@ h1 { font-size: 1.85rem; letter-spacing: -0.01em; }
 h2 { font-size: 1.3rem; }
 h3 { font-size: 1.1rem; margin-top: 1.2em; }
 
-p, li, .feld-hilfe, .hinweis, figcaption, summary {
+p, li, .feld-hilfe, .hinweis, figcaption, summary,
+.feld-name, .ueberzeile, .summen-zusatz, .regal-meldung, .marke, .heute-marke, .abzeichen,
+.erfolg-titel, .freude-titel, .idee-titel, .vorschlag-text, .sync-text, .tipp, #toast {
   text-wrap: pretty;
+}
+
+/* Knöpfe und kurze Schilder brechen gleichmäßig um. */
+button, .knopf, .knopf-text, .fach-schild, .skala-wort {
+  text-wrap: balance;
 }
 p { margin: 0 0 0.8em; }
 
@@ -219,10 +226,8 @@ a { color: var(--pflaume); }
 .ueberzeile {
   margin: 0 0 4px;
   color: var(--text-3);
-  font-size: 0.84rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
 
 .karte {
@@ -240,10 +245,13 @@ a { color: var(--pflaume); }
 
 .karte-kopf {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
+  column-gap: 12px;
 }
+.karte-kopf > :first-child { flex: 1 1 14em; }
+.karte-kopf > .knopf-text { margin-top: -8px; margin-bottom: 4px; padding-left: 0; }
 .karte-kopf h2, .karte-kopf p { margin-bottom: 0.5em; }
 
 .karte-experiment {
@@ -426,7 +434,7 @@ input:focus, textarea:focus, select:focus { border-color: var(--pflaume); outlin
 
 .freude-platz {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr;
   align-items: center;
   gap: 12px;
   padding: 12px 14px;
@@ -436,7 +444,7 @@ input:focus, textarea:focus, select:focus { border-color: var(--pflaume); outlin
 .freude-platz.genutzt { background: var(--gold-weich); }
 .freude-titel { font-weight: 600; }
 
-.abzeichen { color: var(--gold); font-weight: 600; font-size: 0.9rem; white-space: nowrap; }
+.abzeichen { color: var(--gold); font-weight: 600; font-size: 0.9rem; max-width: 9em; text-align: right; }
 
 .freude-zeile {
   display: grid;
@@ -457,7 +465,7 @@ input:focus, textarea:focus, select:focus { border-color: var(--pflaume); outlin
 .freude-text { display: grid; gap: 2px; min-width: 0; }
 .freude-info { display: flex; flex-wrap: wrap; gap: 6px; }
 .marke { font-size: 0.8rem; color: var(--text-3); }
-.heute-marke { font-size: 0.8rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.05em; }
+.heute-marke { font-size: 0.82rem; font-weight: 700; color: var(--gold); max-width: 7.5em; text-align: right; }
 
 .platz-wahl {
   border: 0;
@@ -810,3 +818,7 @@ input:focus, textarea:focus, select:focus { border-color: var(--pflaume); outlin
 .regal[style*="--faecher:3"] { grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 10px; }
 .regal[style*="--faecher:3"] .fach { min-height: 150px; padding-inline: 4px; }
 .regal[style*="--faecher:3"] .fach-schild { font-size: 0.72rem; padding: 3px 7px; }
+
+.feld .feld-hilfe + .feld-hilfe { margin-top: 0.5em; }
+.tabelle-text { margin-top: 14px; }
+.freude-platz > .knopf, .freude-platz > .abzeichen { grid-column: 2; justify-self: start; text-align: left; max-width: none; }

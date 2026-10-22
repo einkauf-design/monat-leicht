@@ -126,7 +126,7 @@ function nachAenderung(herkunft) {
     kopfAktualisieren();
     // Erfolge, die durch Daten vom Server entstehen, werden still gesammelt.
     if (herkunft === 'server') return;
-    neu.forEach((erfolg, i) => setTimeout(() => toast(`${t('erfolge.neu')}: ${erfolg.titel}`, erfolg.symbol), 1600 + i * 4000));
+    neu.forEach((erfolg, i) => setTimeout(() => toast(t('erfolge.neu', { titel: erfolg.titel }), erfolg.symbol), 1600 + i * 4000));
   }, 300);
   // Daten vom Server: Ansicht neu zeichnen, solange gerade nicht getippt oder gespielt wird.
   if (herkunft === 'server') {
@@ -165,13 +165,14 @@ async function los() {
   try {
     await ladeInhalte();
   } catch {
-    wurzel.innerHTML = '<p class="karte">Die Inhalte konnten nicht geladen werden. Bitte die Verbindung prüfen und die App neu öffnen.</p>';
+    wurzel.innerHTML = '<p class="karte">Ich konnte die Inhalte gerade nicht laden. Bitte prüf deine Verbindung und öffne die App noch einmal.</p>';
     return;
   }
   document.title = inhalt('app.name');
   $('#app-name').textContent = inhalt('app.name');
   $('#kopf-sterne').parentElement.setAttribute('aria-label', t('belohnung.sterne'));
   $('#kopf-punkte').parentElement.setAttribute('aria-label', t('belohnung.punkte'));
+  $('#sync-punkt').setAttribute('aria-label', t('status.sync_punkt'));
   baueNavigation();
   modusPruefen();
   setInterval(modusPruefen, 30 * 1000);
@@ -179,7 +180,7 @@ async function los() {
   beiAenderung(nachAenderung);
 
   const offlineHinweis = () => {
-    if (!navigator.onLine) toast(t('status.offline'), '☁️');
+    if (!navigator.onLine) toast(t('status.offline'));
     else sync();
   };
   window.addEventListener('online', offlineHinweis);

@@ -189,3 +189,12 @@ export function herunterladen(dateiname, inhalt, typ) {
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 2000);
 }
+
+// Macht aus einem Text mit Leerzeilen mehrere Absätze.
+export function absaetze(text, klasse = '') {
+  const attr = klasse ? ` class="${klasse}"` : '';
+  return String(text ?? '')
+    .split(/\n\s*\n/)
+    .map((absatz) => `<p${attr}>${esc(absatz.trim())}</p>`)
+    .join('');
+}

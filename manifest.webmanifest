@@ -1,7 +1,7 @@
 {
   "name": "EMONA leicht",
   "short_name": "EMONA",
-  "description": "Deine leise Begleitung durch den Tag.",
+  "description": "Ich begleite dich leise durch deinen Tag.",
   "lang": "de",
   "start_url": "./#heute",
   "scope": "./",

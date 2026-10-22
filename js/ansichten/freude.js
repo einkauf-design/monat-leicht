@@ -1,7 +1,7 @@
 // Ansicht „Freude“: die eigene Freude-Liste bearbeiten und Freude-Plätze für heute wählen.
 
 import { t, inhalt } from '../inhalte.js';
-import { esc, $ } from '../util.js';
+import { esc, absaetze, $ } from '../util.js';
 import {
   freudeListe, speichereFreude, neueFreude, wechsleFreudePlatz, tag, heuteKey, freudeZaehler,
 } from '../daten.js';
@@ -21,8 +21,8 @@ export function zeige(wurzel, ctx) {
       if (bearbeiten) {
         return `
           <li class="freude-zeile bearbeiten" data-id="${esc(f.id)}">
-            <button class="symbol-wahl" data-aktion="symbol" aria-label="Symbol wechseln">${esc(f.symbol || '💛')}</button>
-            <input class="freude-eingabe" data-feld="titel" type="text" value="${esc(f.titel)}" maxlength="80" aria-label="${esc(t('freude.neu_label'))}">
+            <button class="symbol-wahl" data-aktion="symbol" aria-label="${esc(t('freude.symbol_wechseln'))}">${esc(f.symbol || '💛')}</button>
+            <input class="freude-eingabe" data-feld="titel" type="text" value="${esc(f.titel)}" maxlength="80" aria-label="${esc(t('freude.titel_aendern'))}">
             <label class="schalter-klein">
               <input type="checkbox" data-feld="pause" ${f.pause ? 'checked' : ''}>
               <span>${esc(t('freude.pause'))}</span>
@@ -34,7 +34,7 @@ export function zeige(wurzel, ctx) {
       const anzahl = zaehler[f.id] || 0;
       return `
         <li class="freude-zeile ${istPlatz ? 'ist-platz' : ''}">
-          <button class="platz-wahl" data-aktion="platz" data-id="${esc(f.id)}" role="switch" aria-checked="${istPlatz}" aria-label="${esc(f.titel)}: ${esc(t('freude.heute'))}">
+          <button class="platz-wahl" data-aktion="platz" data-id="${esc(f.id)}" role="switch" aria-checked="${istPlatz}" aria-label="${esc(f.titel)}. ${esc(t('freude.heute_kurz'))}.">
             <span class="platz-kreis" aria-hidden="true">${genutzt.has(f.id) ? '★' : istPlatz ? '✓' : ''}</span>
           </button>
           <span class="symbol gross" aria-hidden="true">${esc(f.symbol || '💛')}</span>
@@ -42,7 +42,7 @@ export function zeige(wurzel, ctx) {
             <span class="freude-titel">${esc(f.titel)}</span>
             <span class="freude-info">
               ${f.pause ? `<span class="marke">🍃 ${esc(t('freude.pause'))}</span>` : ''}
-              ${anzahl ? `<span class="marke">${esc(t('freude.zaehler', { anzahl }))}</span>` : ''}
+              ${anzahl ? `<span class="marke">${esc(t(anzahl === 1 ? 'freude.zaehler_eins' : 'freude.zaehler', { anzahl }))}</span>` : ''}
             </span>
           </span>
           ${istPlatz ? `<span class="heute-marke">${esc(t('freude.heute'))}</span>` : ''}
@@ -53,7 +53,7 @@ export function zeige(wurzel, ctx) {
   wurzel.innerHTML = `
     <header class="seiten-kopf">
       <h1>${esc(t('freude.titel'))}</h1>
-      <p class="leise">${esc(t('freude.einleitung'))}</p>
+      ${absaetze(t('freude.einleitung'), 'leise')}
     </header>
     <section class="karte">
       <div class="karte-kopf">

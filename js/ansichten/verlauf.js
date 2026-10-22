@@ -3,7 +3,7 @@
 
 import { t, inhalt } from '../inhalte.js';
 import {
-  esc, zahl, mittelwert, isoWoche, wochenMontag, plusTage, logischerTag, ausKey,
+  esc, absaetze, zahl, mittelwert, isoWoche, wochenMontag, plusTage, logischerTag, ausKey,
   einschlafMinuten, minutenZuZeit, $,
 } from '../util.js';
 import { alleTage } from '../daten.js';
@@ -89,7 +89,7 @@ function gewichtDiagramm(wochen) {
   const letzter = mitWert[mitWert.length - 1];
   const punkte = mitWert
     .map((w) => {
-      const tipp = `${t('verlauf.woche', { kw: w.kw })}: ${zahl(w.gewicht, 1)} kg, ${t('verlauf.aus_tagen', { anzahl: w.gewichtTage })}`;
+      const tipp = t('verlauf.tipp_gewicht', { kw: w.kw, wert: zahl(w.gewicht, 1), anzahl: w.gewichtTage });
       return `<g class="punkt-gruppe" tabindex="0" data-tipp="${esc(tipp)}">
           <circle class="trefferflaeche" cx="${xPos(w.i)}" cy="${y(w.gewicht)}" r="16"/>
           <circle class="punkt punkt-petrol" cx="${xPos(w.i)}" cy="${y(w.gewicht)}" r="4.5"/>
@@ -121,7 +121,7 @@ function anspannungDiagramm(wochen) {
       const unten = y(0);
       const r = Math.min(4, (unten - oben) / 2);
       const x = xPos(i) - breite / 2;
-      const tipp = `${t('verlauf.woche', { kw: w.kw })}: ${zahl(w.anspannung, 1)}, ${t('verlauf.aus_tagen', { anzahl: w.anspannungTage })}`;
+      const tipp = t('verlauf.tipp_anspannung', { kw: w.kw, wert: zahl(w.anspannung, 1), anzahl: w.anspannungTage });
       return `<g class="punkt-gruppe" tabindex="0" data-tipp="${esc(tipp)}">
           <rect class="trefferflaeche" x="${x - 6}" y="${RAND.oben}" width="${breite + 12}" height="${unten - RAND.oben}"/>
           <path class="saeule" d="M${x},${unten} V${oben + r} Q${x},${oben} ${x + r},${oben} H${x + breite - r} Q${x + breite},${oben} ${x + breite},${oben + r} V${unten} Z"/>
@@ -158,7 +158,7 @@ function zusammenhangDiagramm(gruppen) {
       const yy = 34 + i * 46;
       const name = `<text class="beschriftung" x="0" y="${yy + 4}">${esc(g.name)}</text><text class="achse-text" x="0" y="${yy + 19}">${esc(t('verlauf.nach_tagen', { anzahl: g.anzahl }))}</text>`;
       if (g.mittel === null) return name;
-      const tipp = `${g.name}: ${minutenZuZeit(g.mittel)} ${t('allgemein.uhr')}, ${t('verlauf.nach_tagen', { anzahl: g.anzahl })}`;
+      const tipp = t('verlauf.tipp_zusammenhang', { gruppe: t(`verlauf.tipp_gruppe_${g.id}`), zeit: minutenZuZeit(g.mittel), anzahl: g.anzahl });
       return `${name}
         <line class="spur" x1="${links}" x2="${rechts}" y1="${yy}" y2="${yy}"/>
         <g class="punkt-gruppe" tabindex="0" data-tipp="${esc(tipp)}">
@@ -184,16 +184,21 @@ function letzteTage(tage) {
     const tg = nachDatum[datum] || {};
     const d = ausKey(datum);
     const stufe = tg.anspannung || 0;
-    const teile = [`${kurz[d.getDay()]} ${d.getDate()}.`];
-    if (stufe) teile.push(`${t('verlauf.spalte_anspannung').replace(' Ø', '')} ${stufe}`);
-    if ((tg.summen || []).length) teile.push(`${t('verlauf.summen_kurz')} ${tg.summen.length}×`);
-    if ((tg.freudeGenutzt || []).length) teile.push(`${t('verlauf.freude_kurz')} ${tg.freudeGenutzt.length}×`);
+    const datumText = `${inhalt('texte.allgemein.wochentage')[d.getDay()]}, ${d.getDate()}. ${inhalt('texte.allgemein.monate')[d.getMonth()]}`;
+    const etwas = stufe || (tg.summen || []).length || (tg.freudeGenutzt || []).length;
+    const teile = [];
+    if (stufe) teile.push(t('verlauf.tipp_tag', { datum: datumText, wort: inhalt('texte.abendeintrag.stufen')[stufe - 1] }));
+    else teile.push(t(etwas ? 'verlauf.tipp_tag_offen' : 'verlauf.tipp_tag_leer', { datum: datumText }));
+    const summen = (tg.summen || []).length;
+    const freude = (tg.freudeGenutzt || []).length;
+    if (summen) teile.push(t(summen === 1 ? 'verlauf.tipp_summen_eins' : 'verlauf.tipp_summen', { anzahl: summen }));
+    if (freude) teile.push(t(freude === 1 ? 'verlauf.tipp_freude_eins' : 'verlauf.tipp_freude', { anzahl: freude }));
     zellen.push(`
-      <li class="tag-zelle" tabindex="0" data-tipp="${esc(teile.join(' · '))}">
+      <li class="tag-zelle" tabindex="0" data-tipp="${esc(teile.join(' '))}">
         <span class="tag-punkt ${stufe ? '' : 'leer'}" style="--stufe:${stufe}" aria-hidden="true"></span>
         <span class="tag-name">${kurz[d.getDay()]}</span>
         ${(tg.freudeGenutzt || []).length ? '<span class="tag-freude" aria-hidden="true">★</span>' : '<span class="tag-freude" aria-hidden="true"></span>'}
-        <span class="nur-vorleser">${esc(teile.join(', '))}</span>
+        <span class="nur-vorleser">${esc(teile.join(' '))}</span>
       </li>`);
   }
   return `<ol class="tage-streifen">${zellen.join('')}</ol>`;
@@ -241,7 +246,7 @@ export function zeige(wurzel) {
   wurzel.innerHTML = `
     <header class="seiten-kopf">
       <h1>${esc(t('verlauf.titel'))}</h1>
-      <p class="leise">${esc(t('verlauf.einleitung'))}</p>
+      ${absaetze(t('verlauf.einleitung'), 'leise')}
     </header>
 
     <section class="karte" aria-labelledby="v-gewicht">
@@ -264,7 +269,7 @@ export function zeige(wurzel) {
 
     <section class="karte" aria-labelledby="v-tage">
       <h2 id="v-tage">${esc(t('verlauf.letzte_tage_titel'))}</h2>
-      <p class="leise klein">${esc(t('verlauf.letzte_tage_text'))}</p>
+      ${absaetze(t('verlauf.letzte_tage_text'), 'leise klein')}
       ${letzteTage(tage)}
     </section>
 
@@ -272,7 +277,7 @@ export function zeige(wurzel) {
       <button class="knopf knopf-zweit" data-aktion="tabelle" aria-expanded="${tabelleOffen}">
         ${esc(tabelleOffen ? t('verlauf.tabelle_verbergen') : t('verlauf.tabelle_zeigen'))}
       </button>
-      ${tabelleOffen ? tabelle(wochen) : ''}
+      ${tabelleOffen ? `<p class="leise klein tabelle-text">${esc(t('verlauf.tabelle_text'))}</p>${tabelle(wochen)}` : ''}
     </section>
     <div class="tipp" role="tooltip" hidden></div>`;
 

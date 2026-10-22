@@ -2,7 +2,7 @@
 // Sorgt dafür, dass die App ohne Netz startet, Updates automatisch ankommen und Erinnerungen erscheinen.
 // Bei jeder neuen Fassung die Nummer in CACHE_NAME erhöhen.
 
-const CACHE_NAME = 'emona-leicht-1.0.0';
+const CACHE_NAME = 'emona-leicht-1.1.0';
 
 const DATEIEN = [
   './',
@@ -88,7 +88,10 @@ async function erinnerungsText() {
     /* Ersatztext unten */
   }
   const art = new Date().getHours() < 14 ? 'morgen' : 'abend';
-  const ersatz = { morgen: { titel: 'Guten Morgen', text: '' }, abend: { titel: 'Zeit zum Landen', text: '' } };
+  const ersatz = {
+    morgen: { titel: 'Guten Morgen.', text: 'Magst du kurz deinen Morgen eintragen?' },
+    abend: { titel: 'Es ist Zeit zum Landen.', text: 'Der Tag darf jetzt leiser werden.' },
+  };
   return { art, ...(inhalte?.erinnerungen?.[art] || ersatz[art]) };
 }
 

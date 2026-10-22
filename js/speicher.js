@@ -4,6 +4,8 @@
 // Jedes Dokument trägt die Zeit seiner letzten Änderung. Beim Abgleich gewinnt immer die neuere Fassung.
 // Änderungen werden sofort lokal gespeichert und später an den Server geschickt.
 
+import { t } from './inhalte.js';
+
 const LS_DOCS = 'emona.docs';
 const LS_AUSSTEHEND = 'emona.ausstehend';
 const LS_SEIT = 'emona.seit';
@@ -125,7 +127,7 @@ export async function api(aktion, daten = {}, { code = geraet.code, roh = false 
     /* keine JSON-Antwort */
   }
   if (!antwort.ok || !inhalt?.ok) {
-    throw new ApiFehler(inhalt?.fehler || `Fehler ${antwort.status}`, antwort.status);
+    throw new ApiFehler(inhalt?.fehler || t('status.server_fehler'), antwort.status);
   }
   return inhalt;
 }

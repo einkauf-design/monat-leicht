@@ -19,13 +19,13 @@ require __DIR__ . '/lib.php';
 $config = emona_config();
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
-    emona_fehler(405, 'Bitte per POST anfragen.');
+    emona_fehler(405, 'Diese Adresse antwortet nur auf POST-Anfragen.');
 }
 
 $roh = file_get_contents('php://input', false, null, 0, 4 * 1024 * 1024);
 $anfrage = json_decode((string) $roh, true);
 if (!is_array($anfrage)) {
-    emona_fehler(400, 'Die Anfrage ist kein gültiges JSON.');
+    emona_fehler(400, 'Die Anfrage ist leider kein gültiges JSON.');
 }
 
 emona_code_pruefen((string) ($anfrage['code'] ?? ''));
@@ -57,7 +57,7 @@ switch ($anfrage['aktion'] ?? '') {
         emona_export($anfrage);
 
     default:
-        emona_fehler(400, 'Unbekannte Aktion.');
+        emona_fehler(400, 'Diese Aktion kennt die Schnittstelle nicht.');
 }
 
 /* ---------- Zugangscode mit sanfter Sperre gegen Durchprobieren ---------- */
@@ -67,7 +67,7 @@ function emona_code_pruefen(string $code): void
     $config = emona_config();
     $erwartet = (string) ($config['zugangscode'] ?? '');
     if ($erwartet === '' || $erwartet === 'HIER-DEINEN-CODE-EINTRAGEN') {
-        emona_fehler(500, 'In api/config.php ist noch kein Zugangscode eingetragen.');
+        emona_fehler(500, 'In der Datei api/config.php steht noch kein Zugangscode. Bitte trag dort deinen Code ein.');
     }
 
     $sperrDatei = emona_pfad('sperre.json');
@@ -80,14 +80,14 @@ function emona_code_pruefen(string $code): void
         }
     }
     if (($sperre[$wer]['anzahl'] ?? 0) >= 8) {
-        emona_fehler(429, 'Zu viele Versuche. Bitte in einer Viertelstunde noch einmal probieren.');
+        emona_fehler(429, 'Es gab gerade zu viele Versuche. Bitte probier es in einer Viertelstunde noch einmal.');
     }
 
     if (!hash_equals($erwartet, $code)) {
         $sperre[$wer] = ['anzahl' => ($sperre[$wer]['anzahl'] ?? 0) + 1, 'seit' => $sperre[$wer]['seit'] ?? $jetzt];
         file_put_contents($sperrDatei, json_encode($sperre), LOCK_EX);
         sleep(1);
-        emona_fehler(401, 'Der Zugangscode passt nicht.');
+        emona_fehler(401, 'Dein Zugangscode passt leider nicht.');
     }
     if (isset($sperre[$wer])) {
         unset($sperre[$wer]);
@@ -138,7 +138,7 @@ function emona_abo_speichern(array $anfrage): void
 {
     $abo = $anfrage['abo'] ?? null;
     if (!is_array($abo) || empty($abo['endpoint']) || !preg_match('#^https://#', (string) $abo['endpoint'])) {
-        emona_fehler(400, 'Das Gerät konnte nicht für Erinnerungen angemeldet werden.');
+        emona_fehler(400, 'Ich konnte dein Gerät leider nicht für Erinnerungen anmelden.');
     }
     emona_mit_daten(function (array &$daten) use ($abo) {
         $abos = array_filter($daten['system']['abos'], fn ($a) => ($a['endpoint'] ?? '') !== $abo['endpoint']);

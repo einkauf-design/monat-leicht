@@ -2,7 +2,7 @@
 // Die Reihenfolge der Karten richtet sich nach der Tageszeit.
 
 import { t, inhalt, fuelle } from '../inhalte.js';
-import { esc, zahl, leseZahl, zufall, toast, sternchen, ausKey, $, $$ } from '../util.js';
+import { esc, absaetze, zahl, leseZahl, zufall, toast, sternchen, ausKey, $, $$ } from '../util.js';
 import {
   einstellungen, heuteKey, tag, aendereTag, morgenErledigt, letzterWert,
   summenFesthalten, pauseGenommen, freudeListe, freudeNach, freudeGenossen,
@@ -25,8 +25,11 @@ function tageszeit(ctx) {
 
 function datumZeile(datum) {
   const d = ausKey(datum);
-  const wochentage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
-  return `${wochentage[d.getDay()]}, ${d.getDate()}. ${inhalt('texte.allgemein.monate')[d.getMonth()]}`;
+  return t('heute.datum', {
+    wochentag: inhalt('texte.allgemein.wochentage')[d.getDay()],
+    tag: d.getDate(),
+    monat: inhalt('texte.allgemein.monate')[d.getMonth()],
+  });
 }
 
 function stunden(wert) {
@@ -40,10 +43,10 @@ function morgenKarte(heute) {
     return `
       <section class="karte karte-ruhig" aria-labelledby="morgen-titel">
         <div class="karte-kopf">
-          <h2 id="morgen-titel"><span class="symbol" aria-hidden="true">☀️</span> ${esc(t('morgen.fertig_titel'))}</h2>
+          <h2 id="morgen-titel">${esc(t('morgen.fertig_titel'))}</h2>
           <button class="knopf-text" data-aktion="morgen-aendern">${esc(t('morgen.aendern'))}</button>
         </div>
-        <p>${esc(t('morgen.fertig_text'))}</p>
+        ${absaetze(t('morgen.fertig_text'))}
       </section>`;
   }
   const gewicht = heute.gewicht !== undefined ? zahl(heute.gewicht, 1) : '';
@@ -51,7 +54,7 @@ function morgenKarte(heute) {
   const dauer = heute.schlafdauer ?? letzterWert('schlafdauer') ?? 7;
   return `
     <section class="karte" aria-labelledby="morgen-titel">
-      <h2 id="morgen-titel"><span class="symbol" aria-hidden="true">☀️</span> ${esc(t('morgen.titel'))}</h2>
+      <h2 id="morgen-titel">${esc(t('morgen.titel'))}</h2>
       <p class="leise">${esc(t('morgen.einleitung'))}</p>
       <form class="formular" data-form="morgen" novalidate>
         <label class="feld">
@@ -69,9 +72,9 @@ function morgenKarte(heute) {
         <div class="feld">
           <span class="feld-name" id="dauer-name">${esc(t('morgen.schlafdauer'))}</span>
           <div class="stepper" role="group" aria-labelledby="dauer-name">
-            <button type="button" class="stepper-knopf" data-aktion="dauer" data-schritt="-0.25" aria-label="weniger">−</button>
+            <button type="button" class="stepper-knopf" data-aktion="dauer" data-schritt="-0.25" aria-label="${esc(t('morgen.weniger'))}">−</button>
             <output class="stepper-wert" data-dauer="${dauer}">${esc(stunden(dauer))}</output>
-            <button type="button" class="stepper-knopf" data-aktion="dauer" data-schritt="0.25" aria-label="mehr">+</button>
+            <button type="button" class="stepper-knopf" data-aktion="dauer" data-schritt="0.25" aria-label="${esc(t('morgen.mehr'))}">+</button>
           </div>
         </div>
         <button class="knopf knopf-haupt" type="submit">${esc(t('morgen.speichern'))}</button>
@@ -112,7 +115,7 @@ function experimentKarte() {
   if (experimentBearbeiten) {
     return `
       <section class="karte karte-experiment" aria-labelledby="ex-titel">
-        <h2 id="ex-titel"><span class="symbol" aria-hidden="true">🔍</span> ${esc(t('experiment.titel'))}</h2>
+        <h2 id="ex-titel">${esc(t('experiment.titel'))}</h2>
         <form class="formular" data-form="experiment">
           <label class="feld">
             <span class="feld-name">${esc(t('experiment.titel_label'))}</span>
@@ -128,11 +131,11 @@ function experimentKarte() {
   return `
     <section class="karte karte-experiment" aria-labelledby="ex-titel">
       <div class="karte-kopf">
-        <p class="ueberzeile" id="ex-titel">${esc(t('experiment.titel'))} · ${esc(t('experiment.monat', { monat: monatName }))}</p>
+        <p class="ueberzeile" id="ex-titel">${esc(t('experiment.monat', { monat: monatName }))}</p>
         <button class="knopf-text" data-aktion="experiment-bearbeiten">${esc(t('experiment.bearbeiten'))}</button>
       </div>
       <h2 class="experiment-name">${esc(ex.titel)}</h2>
-      ${ex.beschreibung ? `<p>${esc(ex.beschreibung)}</p>` : ''}
+      ${ex.beschreibung ? absaetze(ex.beschreibung) : ''}
       <p class="leise klein">${esc(t('experiment.hinweis'))}</p>
       <label class="feld">
         <span class="feld-name">${esc(t('experiment.notiz_label'))}</span>
@@ -173,7 +176,7 @@ function abendKarte(heute) {
     return `
       <section class="karte karte-abend" aria-labelledby="abend-titel">
         <div class="karte-kopf">
-          <h2 id="abend-titel"><span class="symbol" aria-hidden="true">🌙</span> ${esc(t('abendeintrag.fertig_titel'))}</h2>
+          <h2 id="abend-titel">${esc(t('abendeintrag.fertig_titel'))}</h2>
           <button class="knopf-text" data-aktion="abend-aendern">${esc(t('abendeintrag.aendern'))}</button>
         </div>
         <p>${esc(t('abendeintrag.fertig_text'))}</p>
@@ -182,7 +185,7 @@ function abendKarte(heute) {
   }
   return `
     <section class="karte karte-abend" aria-labelledby="abend-titel">
-      <h2 id="abend-titel"><span class="symbol" aria-hidden="true">🌙</span> ${esc(t('abendeintrag.titel'))}</h2>
+      <h2 id="abend-titel">${esc(t('abendeintrag.titel'))}</h2>
       <p class="leise">${esc(t('abendeintrag.frage'))}</p>
       <div class="skala" role="radiogroup" aria-labelledby="abend-titel">
         ${stufen
@@ -259,7 +262,7 @@ function binde(wurzel, ctx, datum) {
       summenFesthalten();
       neuerVorschlag();
       ctx.zeichne();
-      toast(t('summen.danke'), '🫧');
+      toast(t('summen.danke'));
       return;
     }
     if (aktion === 'pause-anderer') { neuerVorschlag(vorschlag?.id); ctx.zeichne(); return; }
@@ -317,7 +320,7 @@ function binde(wurzel, ctx, datum) {
       sternchen(knopf, 5);
       abendBearbeiten = false;
       ctx.zeichne();
-      toast(t('belohnung.abend_gelandet'), '🌙');
+      toast(t('belohnung.abend_gelandet'));
     }
     if (form.dataset.form === 'experiment') {
       const titel = form.titel.value.trim();
