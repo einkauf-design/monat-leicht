@@ -104,6 +104,18 @@ Die wichtigsten Bereiche der Inhaltsdatei:
 | `erfolge` | kleine Erfolge mit Art, Anzahl und Text |
 | `erinnerungen` | Titel und Text der beiden Erinnerungen |
 
+## Rückblicke, Fragen und Info-Texte
+
+**Rückblicke:** Sobald sieben Tage mit Eintrag zusammengekommen sind, entsteht ein Rückblick. Gezählt werden Tage mit Eintrag, nicht Kalendertage. Jeder Rückblick merkt sich seine sieben Tage, die gestellten Fragen und die Antworten (Dokumente `rueckblick:1`, `rueckblick:2` …). Die Beobachtungen darin berechnet die App jedes Mal frisch aus den Einträgen.
+
+**Fragenkatalog:** In `inhalte/inhalte.json` stehen unter `fragen` alle Fragen. Jede Frage hat eine `stufe` (hineinfinden, wahrnehmen, vertiefen), ein `thema` und optional `bedingungen`. Unter `fragenRegeln` steht, welche Bedingungen es gibt und wie viele Fragen ein Rückblick stellt. Unter `signale` stehen Wörter, auf die spätere Fragen behutsam eingehen, zum Beispiel wenn jemand schreibt, dass sie hastig isst. Neue Fragen lassen sich einfach anhängen, eine neue `id` genügt.
+
+So wählt die App aus: Der erste Rückblick ist zum Hineinfinden und fragt nach dem Kaffee-Experiment. Ab dem zweiten Rückblick kommen Fragen zum Wahrnehmen. Vertiefende Fragen erscheinen erst, wenn schon mindestens vier Fragen beantwortet wurden. Eine Frage kommt frühestens nach zwei weiteren Rückblicken wieder.
+
+**Info-Texte:** Unter `infos` stehen die Hintergrundtexte zu den kleinen „i“-Zeichen. Alle sind mit `"pruefung": "zu prüfen"` markiert und haben Quellen zum Nachlesen. Bitte vor dem Einsatz im Kurs durchsehen. Ist ein Text geprüft, kann der Eintrag zum Beispiel auf `"geprüft am 1. November 2026"` geändert werden.
+
+**Beobachtungen zum Experiment:** Jede Beobachtung ist ein eigenes Dokument (`beobachtung:2026-10-23-…`) mit Datum. Frühere Monatsnotizen aus Version 1.1 werden beim ersten Start einmalig als Beobachtung mit dem Datum dieses Tages übernommen (`beobachtung:uebernommen-2026-10`). Die alte Notiz bleibt zusätzlich im Experiment gespeichert.
+
 ## Export für die Monatsauswertung
 
 In der App unter „Mehr“ lässt sich ein Monat oder alles als CSV (für Excel oder Numbers) oder als JSON herunterladen.
@@ -137,9 +149,11 @@ Der Aufbau ist offen für Erweiterungen:
 | `js/daten.js` | Tage, Freude-Liste, Experimente, Einstellungen |
 | `js/belohnung.js` | Sterne, Punkte und kleine Erfolge |
 | `js/regal.js` | das Abendregal |
+| `js/rueckblick.js` | Rückblicke, Auswertung und Auswahl der Fragen |
+| `js/info.js` | Info-Zeichen und Info-Fenster |
 | `js/erinnerung.js` | Anmeldung für Erinnerungen |
 | `js/export.js` | Export als CSV und JSON |
-| `js/ansichten/*.js` | die Ansichten Heute, Verlauf, Freude, Abend, Mehr und die Begrüßung |
+| `js/ansichten/*.js` | die Ansichten Heute, Verlauf, Freude, Abend, Mehr, Rückblick und die Begrüßung |
 | `sw.js` | Offline-Betrieb, Updates und Anzeige der Erinnerungen |
 | `api/index.php` | Schnittstelle: Code prüfen, Abgleich, Export, Erinnerungs-Anmeldung |
 | `api/erinnerung.php` | verschickt die Erinnerungen (Cronjob) |

@@ -168,11 +168,12 @@ function emona_export(array $anfrage): void
     $name = 'emona-' . ($monat ?: 'alle') . '-' . date('Y-m-d');
 
     if (($anfrage['format'] ?? 'json') === 'csv') {
-        $zeilen = [['datum', 'gewicht_kg', 'einschlafzeit', 'schlafdauer_h', 'anspannung_1_bis_5', 'summen', 'summen_anzahl', 'pausen', 'freude_genutzt', 'satz']];
+        $zeilen = [['datum', 'gewicht_kg', 'taille_cm', 'einschlafzeit', 'schlafdauer_h', 'anspannung_1_bis_5', 'summen', 'summen_anzahl', 'pausen', 'freude_genutzt', 'satz', 'koerper']];
         foreach ($tage as $datum => $tag) {
             $zeilen[] = [
                 $datum,
                 isset($tag['gewicht']) ? str_replace('.', ',', (string) $tag['gewicht']) : '',
+                isset($tag['taille']) ? str_replace('.', ',', (string) $tag['taille']) : '',
                 $tag['einschlafzeit'] ?? '',
                 isset($tag['schlafdauer']) ? str_replace('.', ',', (string) $tag['schlafdauer']) : '',
                 $tag['anspannung'] ?? '',
@@ -181,6 +182,7 @@ function emona_export(array $anfrage): void
                 (int) ($tag['pausen'] ?? 0),
                 count($tag['freudeGenutzt'] ?? []),
                 $tag['satz'] ?? '',
+                $tag['koerper'] ?? '',
             ];
         }
         $csv = "\xEF\xBB\xBF";

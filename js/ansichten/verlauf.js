@@ -7,6 +7,8 @@ import {
   einschlafMinuten, minutenZuZeit, $,
 } from '../util.js';
 import { alleTage } from '../daten.js';
+import { infoKnopf } from '../info.js';
+import { rueckblicke, ordnung, datumKurz } from '../rueckblick.js';
 
 const WOCHEN = 8;
 let tabelleOffen = false;
@@ -34,6 +36,7 @@ function wochenDaten(tage) {
       anspannungTage: tageDerWoche.filter((tg) => tg.anspannung).length,
       einschlaf: mittelwert(einschlaf),
       schlaf: mittelwert(tageDerWoche.map((tg) => tg.schlafdauer)),
+      taille: mittelwert(tageDerWoche.map((tg) => tg.taille)),
     });
   }
   return wochen;
@@ -73,35 +76,35 @@ function wochenAchse(wochen, hoehe) {
     .join('');
 }
 
-function gewichtDiagramm(wochen) {
-  const mitWert = wochen.map((w, i) => ({ ...w, i })).filter((w) => w.gewicht !== null);
-  if (!mitWert.length) return `<p class="leise">${esc(t('verlauf.keine_daten'))}</p>`;
-  const H = 170;
-  const werte = mitWert.map((w) => w.gewicht);
+// Ein ruhiges Liniendiagramm für Wochendurchschnitte (Gewicht oder Taillenumfang).
+function linienDiagramm(wochen, { feld, spielraum, tipp, titel, leer, hoehe = 170 }) {
+  const mitWert = wochen.map((w, i) => ({ ...w, i, wert: w[feld] })).filter((w) => w.wert !== null);
+  if (!mitWert.length) return `<p class="leise">${esc(leer)}</p>`;
+  const H = hoehe;
+  const werte = mitWert.map((w) => w.wert);
   // Großzügiger Spielraum, damit kleine Schwankungen ruhig aussehen.
-  const min = Math.floor(Math.min(...werte) - 2);
-  const max = Math.ceil(Math.max(...werte) + 2);
+  const min = Math.floor(Math.min(...werte) - spielraum);
+  const max = Math.ceil(Math.max(...werte) + spielraum);
   const y = (v) => RAND.oben + (1 - (v - min) / (max - min)) * (H - RAND.oben - RAND.unten);
   const linien = [min, (min + max) / 2, max]
     .map((v) => `<line class="gitter" x1="${RAND.links}" x2="${B - RAND.rechts}" y1="${y(v)}" y2="${y(v)}"/><text class="achse-text" x="${RAND.links - 6}" y="${y(v) + 4}" text-anchor="end">${zahl(v, 0)}</text>`)
     .join('');
-  const pfad = mitWert.map((w, j) => `${j ? 'L' : 'M'}${xPos(w.i)},${y(w.gewicht)}`).join(' ');
+  const pfad = mitWert.map((w, j) => `${j ? 'L' : 'M'}${xPos(w.i)},${y(w.wert)}`).join(' ');
   const letzter = mitWert[mitWert.length - 1];
   const punkte = mitWert
     .map((w) => {
-      const tipp = t('verlauf.tipp_gewicht', { kw: w.kw, wert: zahl(w.gewicht, 1), anzahl: w.gewichtTage });
-      return `<g class="punkt-gruppe" tabindex="0" data-tipp="${esc(tipp)}">
-          <circle class="trefferflaeche" cx="${xPos(w.i)}" cy="${y(w.gewicht)}" r="16"/>
-          <circle class="punkt punkt-petrol" cx="${xPos(w.i)}" cy="${y(w.gewicht)}" r="4.5"/>
+      return `<g class="punkt-gruppe" tabindex="0" data-tipp="${esc(tipp(w))}">
+          <circle class="trefferflaeche" cx="${xPos(w.i)}" cy="${y(w.wert)}" r="16"/>
+          <circle class="punkt punkt-petrol" cx="${xPos(w.i)}" cy="${y(w.wert)}" r="4.5"/>
         </g>`;
     })
     .join('');
   return `
-    <svg class="diagramm" viewBox="0 0 ${B} ${H}" role="img" aria-label="${esc(t('verlauf.gewicht_titel'))}">
+    <svg class="diagramm" viewBox="0 0 ${B} ${H}" role="img" aria-label="${esc(titel)}">
       ${linien}
       <path class="linie linie-petrol" d="${pfad}"/>
       ${punkte}
-      <text class="wert-text" x="${xPos(letzter.i)}" y="${y(letzter.gewicht) - 11}" text-anchor="middle">${zahl(letzter.gewicht, 1)}</text>
+      <text class="wert-text" x="${xPos(letzter.i)}" y="${y(letzter.wert) - 11}" text-anchor="middle">${zahl(letzter.wert, 1)}</text>
       ${wochenAchse(wochen, H)}
     </svg>`;
 }
@@ -214,6 +217,7 @@ function tabelle(wochen) {
         <td>${w.anspannung !== null ? zahl(w.anspannung, 1) : '–'}</td>
         <td>${w.einschlaf !== null ? minutenZuZeit(w.einschlaf) : '–'}</td>
         <td>${w.schlaf !== null ? `${zahl(w.schlaf, 1)} h` : '–'}</td>
+        <td>${w.taille !== null ? `${zahl(w.taille, 1)} cm` : '–'}</td>
       </tr>`,
     )
     .join('');
@@ -226,10 +230,33 @@ function tabelle(wochen) {
           <th scope="col">${esc(t('verlauf.spalte_anspannung'))}</th>
           <th scope="col">${esc(t('verlauf.spalte_einschlafen'))}</th>
           <th scope="col">${esc(t('verlauf.spalte_schlaf'))}</th>
+          <th scope="col">${esc(t('verlauf.spalte_taille'))}</th>
         </tr></thead>
         <tbody>${zeilen}</tbody>
       </table>
     </div>`;
+}
+
+function rueckblickListe() {
+  const alle = rueckblicke().reverse();
+  const liste = alle.length
+    ? `<ul class="rueckblick-liste">${alle
+        .map((rb) => {
+          const tage = [...(rb.tage || [])].sort();
+          const von = datumKurz(tage[0]);
+          const bis = datumKurz(tage[tage.length - 1]);
+          const text = t('rueckblick.liste_eintrag', { ordnung: ordnung(rb.nummer), von, bis });
+          const neu = rb.gelesen ? '' : '<span class="symbol" aria-hidden="true">✨</span> ';
+          return `<li><a class="rueckblick-link" href="#rueckblick/${rb.nummer}">${neu}${esc(text.charAt(0).toUpperCase() + text.slice(1))}</a></li>`;
+        })
+        .join('')}</ul>`
+    : `<p>${esc(t('rueckblick.liste_leer'))}</p>`;
+  return `
+    <section class="karte" aria-labelledby="v-rueckblicke">
+      <h2 id="v-rueckblicke">${esc(t('rueckblick.liste_titel'))} ${infoKnopf('rueckblick')}</h2>
+      <p class="leise">${esc(t('rueckblick.hinweis_sieben'))}</p>
+      ${liste}
+    </section>`;
 }
 
 export function zeige(wurzel) {
@@ -249,19 +276,37 @@ export function zeige(wurzel) {
       ${absaetze(t('verlauf.einleitung'), 'leise')}
     </header>
 
+    ${rueckblickListe()}
+
     <section class="karte" aria-labelledby="v-gewicht">
-      <h2 id="v-gewicht" class="diagramm-titel"><span class="farbmarke farbe-petrol" aria-hidden="true"></span>${esc(t('verlauf.gewicht_titel'))}</h2>
-      ${gewichtDiagramm(wochen)}
+      <h2 id="v-gewicht" class="diagramm-titel"><span class="farbmarke farbe-petrol" aria-hidden="true"></span><span>${esc(t('verlauf.gewicht_titel'))} ${infoKnopf('gewicht')}</span></h2>
+      ${linienDiagramm(wochen, {
+        feld: 'gewicht',
+        spielraum: 2,
+        titel: t('verlauf.gewicht_titel'),
+        leer: t('verlauf.keine_daten'),
+        tipp: (w) => t('verlauf.tipp_gewicht', { kw: w.kw, wert: zahl(w.gewicht, 1), anzahl: w.gewichtTage }),
+      })}
+      <h3 id="v-taille" class="diagramm-titel"><span class="farbmarke farbe-petrol" aria-hidden="true"></span><span>${esc(t('verlauf.taille_titel'))} ${infoKnopf('taille')}</span></h3>
+      <p class="leise klein">${esc(t('verlauf.taille_text'))}</p>
+      ${linienDiagramm(wochen, {
+        feld: 'taille',
+        spielraum: 3,
+        hoehe: 140,
+        titel: t('verlauf.taille_titel'),
+        leer: t('verlauf.taille_leer'),
+        tipp: (w) => t('verlauf.tipp_taille', { kw: w.kw, wert: zahl(w.taille, 1) }),
+      })}
     </section>
 
     <section class="karte" aria-labelledby="v-anspannung">
-      <h2 id="v-anspannung" class="diagramm-titel"><span class="farbmarke farbe-pflaume" aria-hidden="true"></span>${esc(t('verlauf.anspannung_titel'))}</h2>
+      <h2 id="v-anspannung" class="diagramm-titel"><span class="farbmarke farbe-pflaume" aria-hidden="true"></span><span>${esc(t('verlauf.anspannung_titel'))} ${infoKnopf('anspannung')}</span></h2>
       <p class="leise klein">${esc(t('verlauf.anspannung_skala'))}</p>
       ${anspannungDiagramm(wochen)}
     </section>
 
     <section class="karte" aria-labelledby="v-zusammenhang">
-      <h2 id="v-zusammenhang">${esc(t('verlauf.zusammenhang_titel'))}</h2>
+      <h2 id="v-zusammenhang">${esc(t('verlauf.zusammenhang_titel'))} ${infoKnopf('einschlafzeit')}</h2>
       <p class="leise klein">${esc(t('verlauf.zusammenhang_text'))}</p>
       ${zusammenhangDiagramm(gruppen)}
       ${satz}

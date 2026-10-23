@@ -4,6 +4,7 @@ import { t, inhalt } from '../inhalte.js';
 import { esc, absaetze, ganz } from '../util.js';
 import { regalStand } from '../daten.js';
 import { starteRegal } from '../regal.js';
+import { infoKnopf } from '../info.js';
 
 let imSpiel = false;
 
@@ -25,6 +26,7 @@ export function zeige(wurzel, ctx) {
           </summary>
           <div class="idee-inhalt">
             ${absaetze(idee.text)}
+            ${idee.info ? `<p class="info-zeile">${infoKnopf(idee.info)}</p>` : ''}
             ${idee.schritte?.length ? `<ol class="schritte">${idee.schritte.map((s) => `<li>${esc(s)}</li>`).join('')}</ol>` : ''}
             ${idee.regal ? `<button class="knopf knopf-zweit" data-aktion="regal">${esc(t('abend.regal_start'))}</button>` : ''}
           </div>
@@ -40,7 +42,7 @@ export function zeige(wurzel, ctx) {
     </header>
 
     <section class="karte karte-regal" aria-labelledby="regal-titel">
-      <h2 id="regal-titel"><span class="symbol" aria-hidden="true">🧺</span> ${esc(t('abend.regal_titel'))}</h2>
+      <h2 id="regal-titel"><span class="symbol" aria-hidden="true">🧺</span> ${esc(t('abend.regal_titel'))} ${infoKnopf('abendregal')}</h2>
       ${absaetze(t('abend.regal_text'))}
       <p class="leise">${esc(stand.regale ? t('abend.regal_stand', { sterne: ganz(stand.sterne), punkte: ganz(stand.punkte) }) : t('abend.regal_stand_leer'))}</p>
       <button class="knopf knopf-haupt" data-aktion="regal">${esc(stand.regale ? t('abend.regal_weiter') : t('abend.regal_start'))}</button>

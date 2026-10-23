@@ -3,16 +3,22 @@
 import { ladeInhalte, inhalt, t } from './inhalte.js';
 import { $, esc, ganz, rattern, toast, sternchen, zeitZuMinuten } from './util.js';
 import { beiAenderung, sync, syncZustand } from './speicher.js';
-import { einstellungen } from './daten.js';
+import { einstellungen, uebernimmAlteNotizen } from './daten.js';
 import { gesamt, pruefeErfolge } from './belohnung.js';
+import { pruefeRueckblicke } from './rueckblick.js';
+import { infoAktivieren } from './info.js';
 import * as heute from './ansichten/heute.js';
 import * as verlauf from './ansichten/verlauf.js';
 import * as freude from './ansichten/freude.js';
 import * as abend from './ansichten/abend.js';
 import * as mehr from './ansichten/mehr.js';
 import * as start from './ansichten/start.js';
+import * as rueckblickAnsicht from './ansichten/rueckblick.js';
 
-const ANSICHTEN = { heute, verlauf, freude, abend, mehr };
+const ANSICHTEN = { heute, verlauf, freude, abend, mehr, rueckblick: rueckblickAnsicht };
+const NAVIGATION = ['heute', 'verlauf', 'freude', 'abend', 'mehr'];
+// Unterseiten zeigen in der Navigation auf ihren Bereich.
+const BEREICH = { rueckblick: 'verlauf' };
 const SYMBOLE = {
   heute: '<path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/><circle cx="12" cy="12" r="4"/>',
   verlauf: '<path d="M4 19h16"/><path d="M5 15l4-4 4 3 6-7"/>',
@@ -22,6 +28,9 @@ const SYMBOLE = {
 };
 
 let aktuell = 'heute';
+let parameter = '';
+// Rückblicke und Übernahmen erst, nachdem einmal mit dem Server abgeglichen wurde.
+let bereit = false;
 let abendmodusAn = false;
 let angezeigt = null;
 let wurzel;
@@ -70,7 +79,7 @@ function kopfAktualisieren() {
 /* ---------- Navigation ---------- */
 
 function baueNavigation() {
-  $('#navigation').innerHTML = Object.keys(ANSICHTEN)
+  $('#navigation').innerHTML = NAVIGATION
     .map(
       (name) => `
       <a href="#${name}" class="nav-punkt" data-ansicht="${name}">
@@ -85,6 +94,7 @@ function ctx() {
   return {
     zeichne,
     abendmodus: () => abendmodusAn,
+    param: parameter,
     modusPruefen,
   };
 }
@@ -94,8 +104,9 @@ export function zeichne() {
 }
 
 function route() {
-  const name = location.hash.slice(1);
+  const [name, param = ''] = location.hash.slice(1).split('/');
   const neu = ANSICHTEN[name] ? name : 'heute';
+  parameter = param;
   if (neu !== aktuell && ANSICHTEN[aktuell].verlassen) ANSICHTEN[aktuell].verlassen();
   aktuell = neu;
   // Eine frische Fläche, damit keine Ereignisse der vorherigen Ansicht hängen bleiben.
@@ -103,7 +114,7 @@ function route() {
   wurzel.replaceWith(frisch);
   wurzel = frisch;
   for (const a of document.querySelectorAll('.nav-punkt')) {
-    if (a.dataset.ansicht === aktuell) a.setAttribute('aria-current', 'page');
+    if (a.dataset.ansicht === (BEREICH[aktuell] || aktuell)) a.setAttribute('aria-current', 'page');
     else a.removeAttribute('aria-current');
   }
   wurzel.classList.add('neu-geoeffnet');
@@ -122,11 +133,17 @@ function nachAenderung(herkunft) {
   }
   clearTimeout(erfolgTimer);
   erfolgTimer = setTimeout(() => {
+    const neueRueckblicke = bereit ? pruefeRueckblicke() : [];
+    if (neueRueckblicke.length && herkunft !== 'server') {
+      toast(t('rueckblick.toast_neu'), '✨');
+      if (aktuell === 'heute' && !document.activeElement?.matches('input, textarea, select')) zeichne();
+    }
     const neu = pruefeErfolge();
     kopfAktualisieren();
     // Erfolge, die durch Daten vom Server entstehen, werden still gesammelt.
     if (herkunft === 'server') return;
-    neu.forEach((erfolg, i) => setTimeout(() => toast(t('erfolge.neu', { titel: erfolg.titel }), erfolg.symbol), 1600 + i * 4000));
+    const versatz = neueRueckblicke.length ? 4000 : 0;
+    neu.forEach((erfolg, i) => setTimeout(() => toast(t('erfolge.neu', { titel: erfolg.titel }), erfolg.symbol), 1600 + versatz + i * 4000));
   }, 300);
   // Daten vom Server: Ansicht neu zeichnen, solange gerade nicht getippt oder gespielt wird.
   if (herkunft === 'server') {
@@ -134,6 +151,14 @@ function nachAenderung(herkunft) {
     const spielt = ANSICHTEN[aktuell].beschaeftigt?.();
     if (!tippt && !spielt) zeichne();
   }
+}
+
+// Nach dem ersten Abgleich: alte Notizen übernehmen und fällige Rückblicke anlegen.
+async function vorbereiten() {
+  try { await sync(); } catch { /* ohne Netz geht es lokal weiter */ }
+  bereit = true;
+  uebernimmAlteNotizen();
+  if (pruefeRueckblicke().length && aktuell === 'heute') zeichne();
 }
 
 /* ---------- Service Worker und Updates ---------- */
@@ -174,6 +199,7 @@ async function los() {
   $('#kopf-punkte').parentElement.setAttribute('aria-label', t('belohnung.punkte'));
   $('#sync-punkt').setAttribute('aria-label', t('status.sync_punkt'));
   baueNavigation();
+  infoAktivieren();
   modusPruefen();
   setInterval(modusPruefen, 30 * 1000);
   kopfAktualisieren();
@@ -198,6 +224,7 @@ async function los() {
     document.body.classList.remove('erststart');
     window.addEventListener('hashchange', route);
     route();
+    vorbereiten();
   };
 
   let gestartet = false;
@@ -207,7 +234,6 @@ async function los() {
     start.zeige(wurzel, { fertig: starten });
   } else {
     starten();
-    sync();
   }
   registriereServiceWorker();
 }

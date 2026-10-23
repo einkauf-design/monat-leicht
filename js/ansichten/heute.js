@@ -6,8 +6,10 @@ import { esc, absaetze, zahl, leseZahl, zufall, toast, sternchen, ausKey, $, $$ 
 import {
   einstellungen, heuteKey, tag, aendereTag, morgenErledigt, letzterWert,
   summenFesthalten, pauseGenommen, freudeListe, freudeNach, freudeGenossen,
-  experiment, speichereExperiment,
+  experiment, speichereExperiment, beobachtungen, speichereBeobachtung,
 } from '../daten.js';
+import { infoKnopf, infoFuerExperiment } from '../info.js';
+import { rueckblicke, ungelesenerRueckblick, ordnung } from '../rueckblick.js';
 
 let morgenBearbeiten = false;
 let abendBearbeiten = false;
@@ -32,6 +34,23 @@ function datumZeile(datum) {
   });
 }
 
+function datumLang(key) {
+  const d = ausKey(key);
+  return `${inhalt('texte.allgemein.wochentage')[d.getDay()]}, ${d.getDate()}. ${inhalt('texte.allgemein.monate')[d.getMonth()]}`;
+}
+
+// Ein Satz zur Grundhaltung, der jeden Tag wechselt.
+function haltungsSatz(datum) {
+  const saetze = inhalt('texte.haltung.saetze', []);
+  if (!saetze.length) return '';
+  const tagNummer = Math.floor(ausKey(datum).getTime() / 86400000);
+  return saetze[tagNummer % saetze.length];
+}
+
+function feldKopf(text, info, id = '') {
+  return `<span class="feld-kopf"><span class="feld-name"${id ? ` id="${id}"` : ''}>${esc(text)}</span>${info ? infoKnopf(info) : ''}</span>`;
+}
+
 function stunden(wert) {
   return `${zahl(wert, 2).replace(/,?0+$/, '')} ${t('morgen.stunden')}`;
 }
@@ -52,13 +71,14 @@ function morgenKarte(heute) {
   const gewicht = heute.gewicht !== undefined ? zahl(heute.gewicht, 1) : '';
   const einschlaf = heute.einschlafzeit ?? letzterWert('einschlafzeit') ?? '23:00';
   const dauer = heute.schlafdauer ?? letzterWert('schlafdauer') ?? 7;
+  const taille = heute.taille !== undefined ? zahl(heute.taille, 1).replace(/,0$/, '') : '';
   return `
     <section class="karte" aria-labelledby="morgen-titel">
       <h2 id="morgen-titel">${esc(t('morgen.titel'))}</h2>
       <p class="leise">${esc(t('morgen.einleitung'))}</p>
       <form class="formular" data-form="morgen" novalidate>
         <label class="feld">
-          <span class="feld-name">${esc(t('morgen.gewicht'))}</span>
+          ${feldKopf(t('morgen.gewicht'), 'gewicht')}
           <span class="eingabe-mit-einheit">
             <input name="gewicht" type="text" inputmode="decimal" autocomplete="off" value="${esc(gewicht)}" aria-describedby="gewicht-hilfe">
             <span class="einheit">${esc(t('morgen.gewicht_einheit'))}</span>
@@ -66,17 +86,34 @@ function morgenKarte(heute) {
           <span class="feld-hilfe" id="gewicht-hilfe">${esc(t('morgen.gewicht_hilfe'))}</span>
         </label>
         <label class="feld">
-          <span class="feld-name">${esc(t('morgen.einschlafzeit'))}</span>
+          ${feldKopf(t('morgen.einschlafzeit'), 'einschlafzeit')}
           <input name="einschlafzeit" type="time" value="${esc(einschlaf)}">
         </label>
         <div class="feld">
-          <span class="feld-name" id="dauer-name">${esc(t('morgen.schlafdauer'))}</span>
+          ${feldKopf(t('morgen.schlafdauer'), 'schlafdauer', 'dauer-name')}
           <div class="stepper" role="group" aria-labelledby="dauer-name">
             <button type="button" class="stepper-knopf" data-aktion="dauer" data-schritt="-0.25" aria-label="${esc(t('morgen.weniger'))}">−</button>
             <output class="stepper-wert" data-dauer="${dauer}">${esc(stunden(dauer))}</output>
             <button type="button" class="stepper-knopf" data-aktion="dauer" data-schritt="0.25" aria-label="${esc(t('morgen.mehr'))}">+</button>
           </div>
         </div>
+        <details class="koerper-bereich" ${heute.taille !== undefined || heute.koerper ? 'open' : ''}>
+          <summary>${esc(t('morgen.koerper_zusammenfassung'))}</summary>
+          <div class="koerper-felder">
+            <label class="feld">
+              ${feldKopf(t('morgen.taille'), 'taille')}
+              <span class="eingabe-mit-einheit">
+                <input name="taille" type="text" inputmode="decimal" autocomplete="off" value="${esc(taille)}" aria-describedby="taille-hilfe">
+                <span class="einheit">${esc(t('morgen.taille_einheit'))}</span>
+              </span>
+              <span class="feld-hilfe" id="taille-hilfe">${esc(t('morgen.taille_hilfe'))}</span>
+            </label>
+            <label class="feld">
+              ${feldKopf(t('morgen.koerper'), 'koerper')}
+              <textarea name="koerper" rows="2" maxlength="600" placeholder="${esc(t('morgen.koerper_platzhalter'))}">${esc(heute.koerper || '')}</textarea>
+            </label>
+          </div>
+        </details>
         <button class="knopf knopf-haupt" type="submit">${esc(t('morgen.speichern'))}</button>
       </form>
     </section>`;
@@ -104,7 +141,7 @@ function summenKarte(heute) {
         <span class="summen-wellen" aria-hidden="true"></span>
         <span class="summen-text">${esc(t('summen.knopf'))}</span>
       </button>
-      <p class="summen-zusatz">${esc(zusatz)}</p>
+      <p class="summen-zusatz">${esc(zusatz)} ${infoKnopf('summen')}</p>
       ${vorschlagHtml}
     </section>`;
 }
@@ -134,13 +171,67 @@ function experimentKarte() {
         <p class="ueberzeile" id="ex-titel">${esc(t('experiment.monat', { monat: monatName }))}</p>
         <button class="knopf-text" data-aktion="experiment-bearbeiten">${esc(t('experiment.bearbeiten'))}</button>
       </div>
-      <h2 class="experiment-name">${esc(ex.titel)}</h2>
+      <h2 class="experiment-name">${esc(ex.titel)} ${infoKnopf(infoFuerExperiment(ex.titel))}</h2>
       ${ex.beschreibung ? absaetze(ex.beschreibung) : ''}
       <p class="leise klein">${esc(t('experiment.hinweis'))}</p>
+      ${beobachtungsBereich()}
+    </section>`;
+}
+
+function beobachtungsEintrag(b, mitDatum) {
+  return `
+    <li class="beobachtung">
+      ${mitDatum ? `<p class="beobachtung-datum">${esc(t('experiment.eintrag_datum', { datum: datumLang(b.datum) }))}</p>` : ''}
+      ${absaetze(b.text, 'beobachtung-text')}
+      ${mitDatum && b.experiment ? `<p class="leise klein">${esc(t('experiment.eintrag_experiment', { titel: b.experiment }))}</p>` : ''}
+    </li>`;
+}
+
+function beobachtungsBereich() {
+  const datum = heuteKey();
+  const alle = beobachtungen();
+  const heutige = alle.filter((b) => b.datum === datum);
+  const fruehere = alle.filter((b) => b.datum !== datum);
+  return `
+    <form class="formular beobachtung-form" data-form="beobachtung">
       <label class="feld">
-        <span class="feld-name">${esc(t('experiment.notiz_label'))}</span>
-        <textarea name="notiz" rows="3" data-feld="experiment-notiz" placeholder="${esc(t('experiment.notiz_platzhalter'))}">${esc(ex.notiz)}</textarea>
+        ${feldKopf(t('experiment.notiz_label'), 'beobachtungen')}
+        <textarea name="beobachtung" rows="3" maxlength="1500" placeholder="${esc(t('experiment.notiz_platzhalter'))}" aria-describedby="beobachtung-hilfe"></textarea>
+        <span class="feld-hilfe" id="beobachtung-hilfe">${esc(t('experiment.notiz_hilfe'))}</span>
       </label>
+      <button class="knopf knopf-zweit" type="submit">${esc(t('experiment.notiz_speichern'))}</button>
+    </form>
+    ${heutige.length ? `
+      <div class="beobachtungen-heute">
+        <p class="feld-name">${esc(t('experiment.heute_notiert'))}</p>
+        <ul class="beobachtungen">${heutige.map((b) => beobachtungsEintrag(b, false)).join('')}</ul>
+      </div>` : ''}
+    ${fruehere.length ? `
+      <details class="fruehere-beobachtungen">
+        <summary>${esc(t('experiment.fruehere_zeigen'))}</summary>
+        <p class="leise klein">${esc(t('experiment.fruehere_titel'))}</p>
+        <ul class="beobachtungen">${fruehere.map((b) => beobachtungsEintrag(b, true)).join('')}</ul>
+      </details>` : ''}`;
+}
+
+function rueckblickKarte() {
+  const neu = ungelesenerRueckblick();
+  if (neu) {
+    return `
+      <section class="karte karte-rueckblick" aria-labelledby="rb-titel">
+        <h2 id="rb-titel"><span class="symbol" aria-hidden="true">✨</span> ${esc(t('rueckblick.neu_titel'))}</h2>
+        <p>${esc(t('rueckblick.neu_text'))}</p>
+        <a class="knopf knopf-haupt" href="#rueckblick/${neu.nummer}">${esc(t('rueckblick.oeffnen'))}</a>
+      </section>`;
+  }
+  return '';
+}
+
+function hinweisSiebenKarte() {
+  if (rueckblicke().length) return '';
+  return `
+    <section class="karte karte-ruhig karte-hinweis">
+      <p>${esc(t('rueckblick.hinweis_sieben'))} ${infoKnopf('rueckblick')}</p>
     </section>`;
 }
 
@@ -165,7 +256,7 @@ function freudeKarte(heute) {
     : `<p>${esc(t('freudeplaetze.leer'))}</p><a class="knopf knopf-zweit" href="#freude">${esc(t('freudeplaetze.zur_liste'))}</a>`;
   return `
     <section class="karte" aria-labelledby="freude-titel">
-      <h2 id="freude-titel"><span class="symbol" aria-hidden="true">💛</span> ${esc(t('freudeplaetze.titel'))}</h2>
+      <h2 id="freude-titel"><span class="symbol" aria-hidden="true">💛</span> ${esc(t('freudeplaetze.titel'))} ${infoKnopf('freude')}</h2>
       ${inhaltHtml}
     </section>`;
 }
@@ -185,7 +276,7 @@ function abendKarte(heute) {
   }
   return `
     <section class="karte karte-abend" aria-labelledby="abend-titel">
-      <h2 id="abend-titel">${esc(t('abendeintrag.titel'))}</h2>
+      <h2 id="abend-titel">${esc(t('abendeintrag.titel'))} ${infoKnopf('anspannung')}</h2>
       <p class="leise">${esc(t('abendeintrag.frage'))}</p>
       <div class="skala" role="radiogroup" aria-labelledby="abend-titel">
         ${stufen
@@ -230,10 +321,14 @@ export function zeige(wurzel, ctx) {
     karten.push(summenKarte(heute));
   }
 
+  karten.unshift(rueckblickKarte());
+  karten.push(hinweisSiebenKarte());
+
   wurzel.innerHTML = `
     <header class="seiten-kopf">
       <p class="ueberzeile">${esc(datumZeile(datum))}</p>
       <h1>${esc(gruss)}</h1>
+      <p class="haltung">${esc(haltungsSatz(datum))}</p>
     </header>
     ${karten.join('')}`;
 
@@ -299,7 +394,13 @@ function binde(wurzel, ctx, datum) {
       const gewicht = leseZahl(form.gewicht.value);
       const einschlafzeit = form.einschlafzeit.value || null;
       const dauer = Number($('.stepper-wert', form).dataset.dauer);
+      const taille = leseZahl(form.taille.value);
+      const koerper = form.koerper.value.trim();
       aendereTag(datum, (tg) => {
+        if (taille !== null && taille > 30 && taille < 250) tg.taille = Math.round(taille * 10) / 10;
+        else delete tg.taille;
+        if (koerper) tg.koerper = koerper;
+        else delete tg.koerper;
         if (gewicht !== null && gewicht > 20 && gewicht < 400) tg.gewicht = Math.round(gewicht * 10) / 10;
         else delete tg.gewicht;
         if (einschlafzeit) tg.einschlafzeit = einschlafzeit;
@@ -322,6 +423,13 @@ function binde(wurzel, ctx, datum) {
       ctx.zeichne();
       toast(t('belohnung.abend_gelandet'));
     }
+    if (form.dataset.form === 'beobachtung') {
+      const text = form.beobachtung.value.trim();
+      if (!text) return;
+      speichereBeobachtung(text);
+      ctx.zeichne();
+      toast(t('experiment.gespeichert'), '🔍');
+    }
     if (form.dataset.form === 'experiment') {
       const titel = form.titel.value.trim();
       if (titel) speichereExperiment(experiment().monat, { titel, beschreibung: titel === experiment().titel ? experiment().beschreibung : '' });
@@ -329,15 +437,6 @@ function binde(wurzel, ctx, datum) {
       ctx.zeichne();
     }
   };
-
-  // Die Notiz zum Experiment speichert sich beim Verlassen des Feldes von selbst.
-  const notiz = $('[data-feld="experiment-notiz"]', wurzel);
-  if (notiz) {
-    notiz.onchange = () => {
-      speichereExperiment(experiment().monat, { notiz: notiz.value.trim() });
-      toast(t('experiment.gespeichert'), '🔍');
-    };
-  }
 }
 
 function neuerVorschlag(ausserId) {

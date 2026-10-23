@@ -37,7 +37,7 @@ export function aendereTag(datum, fn) {
 }
 
 export function morgenErledigt(t) {
-  return t.gewicht !== undefined || t.einschlafzeit !== undefined || t.schlafdauer !== undefined;
+  return t.gewicht !== undefined || t.einschlafzeit !== undefined || t.schlafdauer !== undefined || t.taille !== undefined || t.koerper !== undefined;
 }
 
 // Alle Tage mit Einträgen, aufsteigend sortiert.
@@ -142,4 +142,64 @@ export function regalStand() {
 
 export function aendereRegal(fn) {
   aendere('regal', (r) => fn({ regale: 0, sterne: 0, punkte: 0, ...r }), {});
+}
+
+/* ---------- Beobachtungen zum Experiment (Tagebuch) ---------- */
+
+// Jede Beobachtung ist ein eigenes Dokument, damit nichts überschrieben wird.
+export function beobachtungen() {
+  return schluesselMit('beobachtung:')
+    .map((k) => ({ schluessel: k, ...lies(k, {}) }))
+    .filter((b) => b.text)
+    .sort((a, b) => (a.datum + (a.zeit || '') < b.datum + (b.zeit || '') ? 1 : -1));
+}
+
+export function speichereBeobachtung(text) {
+  const datum = heuteKey();
+  const ex = experiment(datum.slice(0, 7));
+  schreibe(`beobachtung:${datum}-${neueId()}`, {
+    datum,
+    zeit: jetztZeit(),
+    text,
+    monat: ex.monat,
+    experiment: ex.titel,
+  });
+}
+
+// Die frühere Monatsnotiz wird einmalig als erste Beobachtung mit dem heutigen Datum übernommen.
+// Der feste Schlüssel sorgt dafür, dass das auch auf mehreren Geräten nur einmal geschieht.
+export function uebernimmAlteNotizen() {
+  for (const k of schluesselMit('experiment:')) {
+    const monat = k.slice(11);
+    const ex = lies(k, {});
+    const ziel = `beobachtung:uebernommen-${monat}`;
+    if (!(ex.notiz || '').trim() || lies(ziel)) continue;
+    schreibe(ziel, {
+      datum: heuteKey(),
+      zeit: jetztZeit(),
+      text: ex.notiz.trim(),
+      monat,
+      experiment: ex.titel,
+      uebernommen: true,
+    });
+  }
+}
+
+/* ---------- Tage mit Eintrag ---------- */
+
+const EINTRAGS_FELDER = ['gewicht', 'einschlafzeit', 'schlafdauer', 'anspannung', 'satz', 'taille', 'koerper'];
+
+export function hatEintrag(t) {
+  return (
+    EINTRAGS_FELDER.some((f) => t[f] !== undefined && t[f] !== null && t[f] !== '') ||
+    (t.summen || []).length > 0 ||
+    (t.freudeGenutzt || []).length > 0
+  );
+}
+
+// Alle Tage, an denen etwas eingetragen wurde, auch nur eine Beobachtung. Aufsteigend sortiert.
+export function eintragsTage() {
+  const tage = new Set(alleTage().filter(hatEintrag).map((t) => t.datum));
+  for (const b of beobachtungen()) tage.add(b.datum);
+  return [...tage].sort();
 }

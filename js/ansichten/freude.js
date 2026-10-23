@@ -2,6 +2,7 @@
 
 import { t, inhalt } from '../inhalte.js';
 import { esc, absaetze, $ } from '../util.js';
+import { infoKnopf } from '../info.js';
 import {
   freudeListe, speichereFreude, neueFreude, wechsleFreudePlatz, tag, heuteKey, freudeZaehler,
 } from '../daten.js';
@@ -52,7 +53,7 @@ export function zeige(wurzel, ctx) {
 
   wurzel.innerHTML = `
     <header class="seiten-kopf">
-      <h1>${esc(t('freude.titel'))}</h1>
+      <h1>${esc(t('freude.titel'))} ${infoKnopf('freude')}</h1>
       ${absaetze(t('freude.einleitung'), 'leise')}
     </header>
     <section class="karte">

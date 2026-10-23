@@ -3,7 +3,8 @@
 
 import { lies, schreibe, schluesselMit } from './speicher.js';
 import { inhalt } from './inhalte.js';
-import { alleTage, regalStand } from './daten.js';
+import { alleTage, regalStand, beobachtungen } from './daten.js';
+import { antwortenGesamt } from './rueckblick.js';
 import { einschlafMinuten, datumKey } from './util.js';
 
 export function statistik() {
@@ -16,8 +17,10 @@ export function statistik() {
     pausen += tag.pausen || 0;
     if (tag.anspannung) abende += 1;
   }
-  const notizen = schluesselMit('experiment:').filter((k) => (lies(k, {}).notiz || '').trim()).length;
-  return { tage, freudeGenutzt, pausen, abende, notizen, regal: regalStand() };
+  // Beobachtungen aus dem Tagebuch; alte Monatsnotizen zählen mit, bis sie übernommen sind.
+  const alteNotizen = schluesselMit('experiment:').filter((k) => (lies(k, {}).notiz || '').trim()).length;
+  const notizen = Math.max(beobachtungen().length, alteNotizen);
+  return { tage, freudeGenutzt, pausen, abende, notizen, antworten: antwortenGesamt(), regal: regalStand() };
 }
 
 export function gesamt(s = statistik()) {
@@ -51,6 +54,8 @@ function fortschritt(erfolg, s) {
       return s.regal.regale;
     case 'experimentNotiz':
       return s.notizen;
+    case 'rueckblickAntwort':
+      return s.antworten;
     default:
       return 0;
   }

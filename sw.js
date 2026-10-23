@@ -2,7 +2,7 @@
 // Sorgt dafür, dass die App ohne Netz startet, Updates automatisch ankommen und Erinnerungen erscheinen.
 // Bei jeder neuen Fassung die Nummer in CACHE_NAME erhöhen.
 
-const CACHE_NAME = 'emona-leicht-1.1.0';
+const CACHE_NAME = 'emona-leicht-1.2.0';
 
 const DATEIEN = [
   './',
@@ -20,12 +20,15 @@ const DATEIEN = [
   'js/erinnerung.js',
   'js/export.js',
   'js/version.js',
+  'js/rueckblick.js',
+  'js/info.js',
   'js/ansichten/heute.js',
   'js/ansichten/verlauf.js',
   'js/ansichten/freude.js',
   'js/ansichten/abend.js',
   'js/ansichten/mehr.js',
   'js/ansichten/start.js',
+  'js/ansichten/rueckblick.js',
   'icons/icon.svg',
   'icons/icon-192.png',
   'icons/icon-512.png',
