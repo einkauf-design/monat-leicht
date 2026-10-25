@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
 
   "app": {
     "name": "EMONA leicht",
@@ -148,7 +148,10 @@
       "regal_stand": "Im Abendregal hast du schon {sterne} Sterne und {punkte} Punkte gesammelt.",
       "regal_stand_leer": "Dein erstes Regal steht schon bereit.",
       "regal_start": "Räum das Regal ein",
-      "regal_weiter": "Räum weiter ein"
+      "regal_weiter": "Räum weiter ein",
+      "runterkommen_titel": "Diese Spiele helfen dir beim Runterkommen.",
+      "knobeln_titel": "Diese Spiele sind zum Knobeln.",
+      "nach_spiel": "Leg dein Handy jetzt weg und stell das Display dunkel. Der Abend darf leise ausklingen."
     },
 
     "regal": {
@@ -166,7 +169,10 @@
       "sterne": "Sterne",
       "punkte": "Punkte",
       "ruhige_hand": "Du hast alles beim ersten Mal an den richtigen Platz gelegt. Das war eine ruhige Hand.",
-      "gute_nacht": "Schön, dass du dir die Zeit genommen hast. Schlaf gut."
+      "gute_nacht": "Schön, dass du dir die Zeit genommen hast. Schlaf gut.",
+      "pause_ohne_atem": "Lass dir einen Moment Zeit, bevor du weitermachst.",
+      "spielname": "Abendregal",
+      "beschreibung": "Du sortierst Waren in die passenden Fächer. Es gibt keinen Timer und kein Verlieren."
     },
 
     "verlauf": {
@@ -272,7 +278,13 @@
       "installieren_iphone": "Tipp in Safari auf „Teilen“ und dann auf „Zum Home-Bildschirm“.",
       "installieren_android": "Tipp im Browser-Menü auf „App installieren“ oder auf „Zum Startbildschirm hinzufügen“.",
       "installieren_knopf": "Installiere die App jetzt",
-      "version": "Du nutzt die Version {version}."
+      "version": "Du nutzt die Version {version}.",
+      "erinnerung_mittag": "Wann möchtest du mittags ans Essen erinnert werden?",
+      "erinnerung_mittag_hilfe": "Diese Erinnerung kommt nur, solange dein Experiment mit der Ess-Erinnerung läuft.",
+      "wiegetag": "An welchem Tag in der Woche möchtest du dich wiegen?",
+      "wiegetag_hilfe": "An diesem Tag fragt dich die App nach deinem Gewicht. An den anderen Tagen nicht.",
+      "kennenlernen_titel": "Ich lerne dich gern besser kennen.",
+      "kennenlernen_text": "Mit deinen Angaben passe ich Experimente, Fragen und Hinweise an dich an."
     },
 
     "belohnung": {
@@ -386,7 +398,201 @@
     "info": {
       "knopf": "Hier erfährst du, warum das sinnvoll ist.",
       "hinweis": "Dieser Text ist eine allgemeine Information und ersetzt keine ärztliche Beratung. Wenn dich etwas beschäftigt, sprich gern mit deiner Hausarztpraxis.",
-      "schliessen": "Schließ den Hinweis"
+      "schliessen": "Schließ den Hinweis",
+      "quellen_titel": "Hier findest du Quellen zum Nachlesen."
+    },
+
+    "seiten": {
+      "weiter": "Weiter",
+      "zurueck": "Zurück",
+      "stand": "Du bist auf Seite {nummer} von {gesamt}."
+    },
+
+    "lob": {
+      "saetze": [
+        "Schön, dass du da warst. Jeder Eintrag zählt, auch ein halber.",
+        "Das war genug für heute, und es zählt.",
+        "Danke, dass du kurz bei dir warst.",
+        "Jeder kleine Eintrag hilft dir, dich besser kennenzulernen.",
+        "Du warst heute kurz bei dir, und das ist richtig gut."
+      ]
+    },
+
+    "kennenlernen": {
+      "titel": "Darf ich dich ein bisschen kennenlernen?",
+      "text": "Bevor wir loslegen, möchte ich dich ein bisschen kennenlernen. Es gibt keine richtigen oder falschen Antworten, und du kannst alles später unter ‚Mehr‘ ändern.",
+      "los": "Fang mit der ersten Frage an",
+      "nicht_sagen": "Möchte ich nicht sagen",
+      "noch_nicht": "Darüber habe ich noch nicht nachgedacht",
+      "mehrfach": "Du kannst mehrere Antworten antippen.",
+      "einfach": "Ein Tipp genügt.",
+      "spaeter": "Ich mache später weiter",
+      "abgebrochen": "Deine Antworten sind gespeichert. Unter „Mehr“ kannst du jederzeit weitermachen.",
+      "freitext_label": "Magst du noch etwas ergänzen?",
+      "freitext_platzhalter": "Hier ist Platz für deine eigenen Worte.",
+      "einwilligung_titel": "Die nächste Frage betrifft deine Gesundheit.",
+      "einwilligung_text": "Deine Antworten bleiben in der App und werden nur genutzt, um sie für dich passend zu machen. Du kannst die Frage überspringen und deine Zustimmung jederzeit unter ‚Mehr‘ zurücknehmen.",
+      "zustimmen": "Ich stimme zu",
+      "ueberspringen": "Frage überspringen",
+      "zeiten_titel": "Wann möchtest du erinnert werden?",
+      "zeiten_text": "Weil deine Tage anders verlaufen als bei vielen anderen, stellst du die Zeiten am besten selbst ein. Du kannst sie später unter „Mehr“ ändern.",
+      "freude_titel": "Diese Freude-Plätze könnten gut zu dir passen.",
+      "freude_text": "Ich habe sie aus dem ausgesucht, was dir guttut.",
+      "freude_uebernehmen": "Nimm sie als Freude-Plätze für heute",
+      "freude_uebernommen": "Deine Freude-Plätze für heute warten auf dich.",
+      "danke": "Danke, dass du mir so viel über dich erzählt hast.",
+      "angebot_titel": "Magst du mir ein paar Fragen beantworten?",
+      "angebot_text": "Mit ein paar kurzen Fragen kann ich EMONA leicht besser auf dich abstimmen. Deine Einträge und dein Experiment bleiben, wie sie sind.",
+      "angebot_jetzt": "Jetzt",
+      "angebot_spaeter": "Später",
+      "angebot_spaeter_hinweis": "Du findest die Fragen jederzeit unter „Mehr“.",
+      "zum_experiment": "Schau dir dein Experiment an",
+      "frage_von": "Das ist Frage {nummer} von {gesamt}.",
+      "zeiten_speichern": "Übernimm die Zeiten",
+      "zeiten_gespeichert": "Deine Erinnerungszeiten sind gespeichert.",
+      "zurueck_angaben": "Zurück zu deinen Angaben"
+    },
+
+    "experimentwahl": {
+      "vorschlag_titel": "Dieses Experiment könnte gut zu dir passen.",
+      "vorschlag_text": "Es ist eine Einladung für einen Monat und keine Regel.",
+      "ja": "Ja, das probiere ich",
+      "anderes": "Zeig mir ein anderes",
+      "eigenes": "Ich möchte mein eigenes Experiment machen",
+      "bleiben": "Ich bleibe bei meinem jetzigen Experiment",
+      "liste_titel": "Hier sind alle Experimente.",
+      "liste_text": "Tipp auf das Experiment, das dich anspricht.",
+      "gestartet": "Dein Experiment beginnt heute und läuft einen Monat. Schön, dass du es ausprobierst.",
+      "geblieben": "Dein Experiment läuft einfach weiter.",
+      "eigen_titel": "Hier gestaltest du dein eigenes Experiment.",
+      "eigen_text": "Drei kurze Angaben reichen. Die grauen Sätze sind nur Beispiele.",
+      "eigen_was": "Was probierst du aus?",
+      "eigen_was_beispiel": "Ich trinke morgens zuerst ein Glas Wasser.",
+      "eigen_wann": "Wann oder wie oft machst du es?",
+      "eigen_wann_beispiel": "Jeden Morgen nach dem Aufstehen.",
+      "eigen_woran": "Woran merkst du, ob es dir guttut?",
+      "eigen_woran_beispiel": "Ich fühle mich wacher.",
+      "eigen_verbot": "Magst du es als etwas formulieren, das du ausprobierst, statt als etwas, das du dir verbietest?",
+      "eigen_speichern": "Starte dein eigenes Experiment",
+      "eigen_leer": "Magst du zuerst aufschreiben, was du ausprobierst?",
+      "eigen_wann_anzeige": "So möchtest du es ausprobieren: {text}",
+      "eigen_woran_anzeige": "Daran merkst du, ob es dir guttut: {text}",
+      "laeuft": "Dein Experiment läuft noch bis zum {ende}.",
+      "vorbei": "Dein Monat mit diesem Experiment ist vorbei. Im nächsten Rückblick schauen wir gemeinsam darauf, was du behalten möchtest.",
+      "wechseln": "Wähl ein anderes Experiment",
+      "keins_titel": "Magst du ein Experiment für die nächsten Wochen auswählen?",
+      "keins_text": "Ein Experiment ist eine kleine Veränderung auf Zeit. Du probierst etwas aus und schaust, wie es dir damit geht.",
+      "keins_knopf": "Such dir ein Experiment aus",
+      "behalten_frage": "Dein Experiment „{titel}“ ist einen Monat gelaufen. Was möchtest du davon behalten?",
+      "naechstes_titel": "Magst du als Nächstes etwas Neues ausprobieren?",
+      "naechstes_text": "Du kannst ein neues Experiment wählen oder bei deinem jetzigen bleiben. Beides ist gut.",
+      "naechstes_knopf": "Zeig mir ein neues Experiment"
+    },
+
+    "notizen": {
+      "titel": "Hier stehen deine Notizen.",
+      "text": "Mit dem Stift kannst du jede Notiz ändern oder löschen.",
+      "leer": "Sobald du Beobachtungen, Körper-Notizen oder Antworten aufschreibst, findest du sie hier.",
+      "kopf_beobachtung": "Am {datum}, hast du zu deinem Experiment notiert:",
+      "kopf_koerper": "Am {datum}, hast du an deinem Körper bemerkt:",
+      "kopf_antwort": "Im {ordnung} Rückblick hast du auf die Frage „{frage}“ geantwortet:",
+      "stift": "Bearbeite diese Notiz",
+      "bearbeiten_titel": "Hier kannst du deine Notiz ändern.",
+      "speichern": "Speichern",
+      "abbrechen": "Abbrechen",
+      "loeschen": "Lösch diese Notiz",
+      "frage_beobachtung": "Möchtest du diese Beobachtung wirklich löschen?",
+      "frage_koerper": "Möchtest du diese Körper-Notiz wirklich löschen?",
+      "frage_antwort": "Möchtest du diese Antwort wirklich löschen?",
+      "ja_loeschen": "Ja, lösch sie",
+      "nein": "Lass sie stehen",
+      "geloescht": "Die Notiz ist gelöscht.",
+      "rueckgaengig": "Rückgängig",
+      "wieder_da": "Die Notiz ist wieder da.",
+      "gespeichert": "Deine Änderung ist gespeichert."
+    },
+
+    "angaben": {
+      "knopf": "Meine Angaben ansehen und löschen",
+      "titel": "Das hast du mir über dich erzählt.",
+      "text": "Du kannst jede Antwort ändern oder alles löschen. Deine Einträge bleiben davon unberührt.",
+      "keine": "Hier hast du noch nichts geantwortet.",
+      "nicht_sagen": "Das möchtest du nicht sagen, und das ist völlig in Ordnung.",
+      "noch_nicht": "Darüber hast du noch nicht nachgedacht.",
+      "aendern": "Ändere diese Antwort",
+      "einwilligung_ja": "Du hast am {datum} zugestimmt, dass die App deine Angaben zur Gesundheit nutzt.",
+      "einwilligung_nein": "Du hast der Frage zur Gesundheit nicht zugestimmt. Die App kennt dazu keine Angaben.",
+      "zuruecknehmen": "Nimm deine Zustimmung zurück",
+      "zurueckgenommen": "Deine Zustimmung ist zurückgenommen, und deine Angaben zur Gesundheit sind gelöscht.",
+      "zustimmen_neu": "Beantworte die Frage zur Gesundheit",
+      "alles_loeschen": "Lösch alle meine Angaben",
+      "alles_frage": "Möchtest du wirklich alle deine Angaben löschen? Deine Einträge bleiben erhalten.",
+      "alles_ja": "Ja, lösch meine Angaben",
+      "alles_nein": "Lass sie stehen",
+      "alles_geloescht": "Deine Angaben sind gelöscht.",
+      "neu_beantworten": "Beantworte die Fragen noch einmal",
+      "weitermachen": "Beantworte die übrigen Fragen"
+    },
+
+    "erinnerung_spaeter": {
+      "frage": "Passt es gerade nicht?",
+      "knopf": "Erinnere mich in einer Stunde noch einmal",
+      "ok": "Gut, ich erinnere dich in einer Stunde noch einmal.",
+      "fehler": "Das hat gerade nicht geklappt. Schau einfach vorbei, wenn es besser passt."
+    },
+
+    "gesundheit": {
+      "gewicht_hinweis": "Wenn deine Schilddrüse oder Medikamente mitspielen, sagt die Waage gerade wenig aus. Bei Fragen dazu ist deine Ärztin die richtige Ansprechpartnerin."
+    },
+
+    "wollfaeden": {
+      "name": "Wollfäden",
+      "beschreibung": "Du spannst farbige Fäden zwischen zwei gleichen Knöpfen. Die Fäden kreuzen sich nicht, und am Ende ist jedes Feld gefüllt.",
+      "stufe_frage": "Wie groß soll dein Brett heute sein?",
+      "stufen": {
+        "ruhig": "Ruhig, fünf mal fünf Felder",
+        "knifflig": "Knifflig, sieben mal sieben Felder",
+        "wach": "Wach, neun mal neun Felder"
+      },
+      "anleitung": "Zieh mit dem Finger von einem Knopf zum gleichfarbigen Knopf. Tipp auf einen Faden, um ihn wieder aufzulösen.",
+      "tipp": "Kleiner Tipp",
+      "frei": "Alle Paare sind verbunden. Magst du schauen, ob noch Felder frei sind?",
+      "geloest_titel": "Alle Fäden sind gespannt.",
+      "geloest_text": "Das hast du in deinem eigenen Tempo geschafft.",
+      "nochmal": "Spann ein neues Brett",
+      "zurueck": "Geh zurück zum Abend",
+      "faden": "Faden {nummer}"
+    },
+
+    "bildpaare": {
+      "name": "Bildpaare",
+      "beschreibung": "Du deckst zwei Karten auf. Gleiche Bilder bleiben offen liegen, alle anderen drehen sich wieder um.",
+      "groesse_frage": "Mit wie vielen Karten möchtest du spielen?",
+      "groessen": {
+        "12": "Mit zwölf Karten",
+        "16": "Mit sechzehn Karten",
+        "20": "Mit zwanzig Karten"
+      },
+      "anleitung": "Tipp nacheinander auf zwei Karten.",
+      "verdeckt": "Diese Karte liegt verdeckt.",
+      "geloest_titel": "Alle Paare liegen offen.",
+      "geloest_text": "Schön, dass du dir die Zeit genommen hast.",
+      "nochmal": "Leg die Karten neu aus",
+      "zurueck": "Geh zurück zum Abend",
+      "motive": {
+        "pferd": "Pferd",
+        "hund": "Hund",
+        "feder": "Feder",
+        "blatt": "Blatt",
+        "mond": "Mond",
+        "stern": "Stern",
+        "sonne": "Sonne",
+        "blume": "Blume",
+        "tanne": "Tanne",
+        "katze": "Katze",
+        "vogel": "Vogel",
+        "pilz": "Pilz"
+      }
     }
   },
 
@@ -399,6 +605,16 @@
     "abend": {
       "titel": "Es ist Zeit zum Landen.",
       "text": "Der Tag darf jetzt leiser werden."
+    },
+
+    "mittag": {
+      "titel": "Zeit für dein Mittagessen.",
+      "text": "Magst du dir jetzt einen Moment zum Essen nehmen?"
+    },
+
+    "spaeter": {
+      "titel": "Hier ist deine Erinnerung von vorhin.",
+      "text": "Schau einfach vorbei, wenn es gerade passt."
     }
   },
 
@@ -496,13 +712,24 @@
       {"id": "blumen", "name": "Blumen", "waren": ["🌷", "🌻", "🌹", "🌼", "🌸", "💐"]},
       {"id": "leseecke", "name": "Lese- und Musikecke", "waren": ["📚", "📖", "🎧", "📻", "🎻", "🎼"]},
       {"id": "garten", "name": "Garten", "waren": ["🪴", "🌱", "🧺", "🪣", "🌿", "🍂"]}
-    ]
+    ],
+    "atemNichtBei": ["meditation"]
   },
 
   "belohnungen": {
     "punkteFreudePlatz": 10,
     "punktePause": 5,
-    "punkteAbend": 5
+    "punkteAbend": 5,
+    "punkteWollfaeden": {
+      "ruhig": 20,
+      "knifflig": 35,
+      "wach": 50
+    },
+    "punkteBildpaare": {
+      "12": 15,
+      "16": 25,
+      "20": 35
+    }
   },
 
   "erfolge": [
@@ -571,15 +798,18 @@
       "anzahl": 1,
       "symbol": "🌱",
       "titel": "Du hast dir zum ersten Mal Zeit für eine Frage aus dem Rückblick genommen."
-    }
+    },
+    {"id": "wolle-1", "art": "wollfaeden", "anzahl": 1, "symbol": "🧶", "titel": "Du hast dein erstes Brett mit Wollfäden gespannt."},
+    {"id": "bildpaare-1", "art": "bildpaare", "anzahl": 1, "symbol": "🌙", "titel": "Du hast zum ersten Mal alle Bildpaare gefunden."},
+    {"id": "experiment-eigen", "art": "eigenesExperiment", "anzahl": 1, "symbol": "🌱", "titel": "Du hast dein erstes eigenes Experiment begonnen."}
   ],
 
   "infos": {
-    "_hinweis": "Alle Info-Texte sind als „zu prüfen“ markiert. Bitte vor dem Einsatz im Kurs durchsehen und bei Bedarf fachlich prüfen lassen. Die Quellen sind Ausgangspunkte zum Nachlesen und ebenfalls zu prüfen.",
+    "_hinweis": "Alle Info-Texte wurden am 25.10.2026 an einer zweiten Quelle geprüft. Vor einem Verkauf der App sollte sie zusätzlich eine Fachperson lesen.",
     "kaffee": {
       "titel": "So kann Kaffee bei Anspannung anders wirken.",
-      "pruefung": "zu prüfen",
-      "text": "Koffein regt das Nervensystem an. Es blockiert im Gehirn den Botenstoff Adenosin, der uns müde macht, und es kann die Ausschüttung von Stresshormonen wie Cortisol erhöhen.\n\nDer Körper baut Koffein nur langsam ab. Nach etwa fünf Stunden ist ungefähr die Hälfte noch wirksam, bei manchen Menschen deutlich länger. Ein Kaffee am Nachmittag kann deshalb abends noch das Einschlafen und den tiefen Schlaf beeinflussen, auch wenn du ihn kaum spürst.\n\nWenn du ohnehin angespannt bist oder schlecht schläfst, kann sich das gegenseitig verstärken. Du schläfst unruhiger, bist am nächsten Tag müder, greifst eher zum Kaffee, und der Kreis beginnt von vorn.\n\nDeshalb kann Kaffee heute anders wirken als früher, auch wenn du ihn jahrelang gut vertragen hast. Auch weniger Schlaf, hormonelle Veränderungen oder Medikamente können beeinflussen, wie dein Körper auf Koffein reagiert.\n\nDas Experiment „Kaffee nur bis mittags“ ist kein Verbot. Es ist eine Einladung, eine Zeit lang zu beobachten, wie es dir damit geht.",
+      "pruefung": "geprüft am 25.10.2026",
+      "text": "Koffein regt das Nervensystem an. Es blockiert im Gehirn den Botenstoff Adenosin, der uns müde macht, und es kann die Ausschüttung von Stresshormonen wie Cortisol erhöhen, vor allem wenn du sonst wenig Kaffee trinkst.\n\nDer Körper baut Koffein nur langsam ab. Nach etwa vier Stunden ist im Durchschnitt noch die Hälfte wirksam, je nach Mensch dauert es zwei bis acht Stunden. Ein Kaffee am Nachmittag kann deshalb abends noch das Einschlafen und den tiefen Schlaf beeinflussen, auch wenn du ihn kaum spürst.\n\nWenn du ohnehin angespannt bist oder schlecht schläfst, kann sich das gegenseitig verstärken. Du schläfst unruhiger, bist am nächsten Tag müder, greifst eher zum Kaffee, und der Kreis beginnt von vorn.\n\nDeshalb kann Kaffee heute anders wirken als früher, auch wenn du ihn jahrelang gut vertragen hast. Auch weniger Schlaf, hormonelle Veränderungen oder Medikamente können beeinflussen, wie dein Körper auf Koffein reagiert.\n\nDas Experiment „Kaffee nur bis mittags“ ist kein Verbot. Es ist eine Einladung, eine Zeit lang zu beobachten, wie es dir damit geht.",
       "quellen": [
         "Drake C. u. a. (2013): Caffeine effects on sleep taken 0, 3, or 6 hours before going to bed. Journal of Clinical Sleep Medicine 9(11), 1195–1200.",
         "Lovallo W. R. u. a. (2005): Caffeine stimulation of cortisol secretion across the waking hours in relation to caffeine intake levels. Psychosomatic Medicine 67(5), 734–739.",
@@ -588,7 +818,7 @@
     },
     "experiment": {
       "titel": "Darum gibt es ein Experiment des Monats.",
-      "pruefung": "zu prüfen",
+      "pruefung": "geprüft am 25.10.2026",
       "text": "Ein Experiment ist eine kleine Veränderung auf Zeit. Du probierst etwas aus und beobachtest, was passiert, ohne dass daraus eine Regel wird.\n\nKleine, klar umrissene Schritte lassen sich leichter in den Alltag einbauen als große Vorsätze. Ein Monat ist lang genug, um einen Unterschied zu bemerken, und kurz genug, um neugierig zu bleiben.\n\nAm Ende entscheidest du selbst, was du davon behalten möchtest.",
       "quellen": [
         "Lally P. u. a. (2010): How are habits formed: Modelling habit formation in the real world. European Journal of Social Psychology 40(6), 998–1009."
@@ -596,22 +826,26 @@
     },
     "beobachtungen": {
       "titel": "Darum lohnt es sich, Beobachtungen aufzuschreiben.",
-      "pruefung": "zu prüfen",
+      "pruefung": "geprüft am 25.10.2026",
       "text": "Was wir aufschreiben, nehmen wir genauer wahr. Kurze Notizen helfen, Zusammenhänge zu erkennen, die im Alltag sonst untergehen.\n\nEin einziger Satz reicht völlig. Es gibt keine richtigen oder falschen Beobachtungen, nur deine.",
       "quellen": []
     },
     "gewicht": {
       "titel": "Darum siehst du dein Gewicht nur als Wochendurchschnitt.",
-      "pruefung": "zu prüfen",
-      "text": "Das Körpergewicht schwankt von Tag zu Tag, oft um ein bis zwei Kilogramm. Das hat meistens nichts mit Fettgewebe zu tun, denn der Körper speichert und verliert ständig Wasser.\n\nMehr Wasser lagert er zum Beispiel ein nach salzigem Essen, bei einer Erkältung, bei Stress und wenig Schlaf, in bestimmten Phasen des Zyklus, in den Wechseljahren, nach ungewohnter Bewegung oder durch manche Medikamente. Auch der Darminhalt und die Uhrzeit spielen eine Rolle.\n\nEin einzelner Tageswert sagt deshalb wenig. Der Durchschnitt einer Woche gleicht diese Schwankungen aus und zeigt ruhiger, wie es dir über die Zeit geht.\n\nWenn du magst, wiegst du dich morgens nach dem Aufstehen und vor dem Frühstück. Dann lassen sich die Werte am besten vergleichen.",
+      "pruefung": "geprüft am 25.10.2026",
+      "text": "Das Körpergewicht schwankt innerhalb weniger Tage oft um ein bis zwei Kilogramm. Das hat meistens nichts mit Fettgewebe zu tun, denn der Körper speichert und verliert ständig Wasser.\n\nMehr Wasser lagert er zum Beispiel ein nach salzigem Essen, bei einer Erkältung, bei Stress und wenig Schlaf, in bestimmten Phasen des Zyklus, in den Wechseljahren, nach ungewohnter Bewegung oder durch manche Medikamente. Auch der Darminhalt und die Uhrzeit spielen eine Rolle.\n\nEin einzelner Tageswert sagt deshalb wenig. Der Durchschnitt einer Woche gleicht diese Schwankungen aus und zeigt ruhiger, wie es dir über die Zeit geht.\n\nWenn du magst, wiegst du dich morgens nach dem Aufstehen und vor dem Frühstück. Dann lassen sich die Werte am besten vergleichen.",
       "quellen": [
         "White C. P. u. a. (2011): Fluid retention over the menstrual cycle: 1-year data from the prospective ovulation cohort. Obstetrics and Gynecology International, Artikel 138451."
-      ]
+      ],
+      "zusatz": {
+        "wechseljahre": "In den Wechseljahren lagert der Körper oft mehr Wasser ein. Deshalb schwankt das Gewicht jetzt häufiger, und das ist ganz normal.",
+        "schilddruese": "Wenn deine Schilddrüse oder Medikamente mitspielen, sagt die Waage gerade wenig aus. Bei Fragen dazu ist deine Ärztin die richtige Ansprechpartnerin."
+      }
     },
     "taille": {
       "titel": "Der Taillenumfang verrät oft mehr als die Waage.",
-      "pruefung": "zu prüfen",
-      "text": "Die Waage zeigt nur das Gesamtgewicht. Sie unterscheidet nicht zwischen Wasser, Muskeln, Knochen und Fettgewebe.\n\nDer Taillenumfang zeigt dagegen, wie sich der Bauchraum verändert. Die Weltgesundheitsorganisation und Fachgesellschaften nutzen ihn als einfachen Hinweis auf Fettgewebe im Bauchraum, das für die Gesundheit eine besondere Rolle spielt. Oft verändert sich die Taille, auch wenn sich auf der Waage kaum etwas tut, zum Beispiel wenn du dich mehr bewegst oder besser schläfst.\n\nSo misst du am besten: morgens, im Stehen, nach einem ruhigen Ausatmen, mit einem weichen Maßband in der Mitte zwischen der untersten Rippe und dem Beckenknochen. Miss möglichst immer an derselben Stelle. Einmal pro Woche reicht völlig.\n\nAuch hier gilt: Der Wert ist eine Beobachtung und keine Bewertung.",
+      "pruefung": "geprüft am 25.10.2026",
+      "text": "Die Waage zeigt nur das Gesamtgewicht. Sie unterscheidet nicht zwischen Wasser, Muskeln, Knochen und Fettgewebe.\n\nDer Taillenumfang zeigt dagegen, wie sich der Bauchraum verändert. Die Weltgesundheitsorganisation und Fachgesellschaften nutzen ihn als einfachen Hinweis auf Fettgewebe im Bauchraum, das für die Gesundheit eine besondere Rolle spielt. Oft verändert sich die Taille, auch wenn sich auf der Waage kaum etwas tut, zum Beispiel wenn du dich mehr bewegst.\n\nSo misst du am besten: morgens, im Stehen, nach einem ruhigen Ausatmen, mit einem weichen Maßband in der Mitte zwischen der untersten Rippe und dem Beckenknochen. Miss möglichst immer an derselben Stelle. Einmal pro Woche reicht völlig.\n\nAuch hier gilt: Der Wert ist eine Beobachtung und keine Bewertung.",
       "quellen": [
         "World Health Organization (2011): Waist circumference and waist–hip ratio. Report of a WHO expert consultation, Genf, 8.–11. Dezember 2008.",
         "Ross R. u. a. (2020): Waist circumference as a vital sign in clinical practice. Nature Reviews Endocrinology 16, 177–189."
@@ -619,13 +853,13 @@
     },
     "koerper": {
       "titel": "Darum lohnt es sich, deinen Körper zu beobachten.",
-      "pruefung": "zu prüfen",
+      "pruefung": "geprüft am 25.10.2026",
       "text": "Wie deine Kleidung sitzt, wie beweglich du dich fühlst, wie erholt du aufwachst: Solche Beobachtungen zeigen Veränderungen oft früher und freundlicher als jede Zahl.\n\nSie lenken den Blick darauf, wie es dir geht, und nicht nur darauf, was du wiegst. Du kannst hier alles notieren, was dir auffällt, auch Dinge, die dich freuen.",
       "quellen": []
     },
     "einschlafzeit": {
       "titel": "Darum zählt die Einschlafzeit.",
-      "pruefung": "zu prüfen",
+      "pruefung": "geprüft am 25.10.2026",
       "text": "Wann du einschläfst, verrät viel darüber, wie der Tag in dir nachklingt. Nach anstrengenden Tagen fällt es vielen schwer, abzuschalten, und der Schlaf verschiebt sich nach hinten.\n\nWenig Schlaf kann am nächsten Tag Hunger und Appetit verstärken, besonders auf Süßes und sehr Energiereiches. Auch die Gereiztheit nimmt oft zu.\n\nHier geht es nicht um eine perfekte Uhrzeit. Es geht darum, zu sehen, ob deine Tage und deine Nächte zusammenhängen. Eine ungefähre Uhrzeit reicht völlig.",
       "quellen": [
         "Spiegel K. u. a. (2004): Sleep curtailment in healthy young men is associated with decreased leptin levels, elevated ghrelin levels, and increased hunger and appetite. Annals of Internal Medicine 141(11), 846–850."
@@ -633,7 +867,7 @@
     },
     "schlafdauer": {
       "titel": "Darum ist die Schlafdauer wichtig.",
-      "pruefung": "zu prüfen",
+      "pruefung": "geprüft am 25.10.2026",
       "text": "Im Schlaf erholen sich Körper und Nervensystem. Fachgesellschaften empfehlen Erwachsenen in der Regel mindestens sieben Stunden Schlaf, der persönliche Bedarf ist aber sehr unterschiedlich.\n\nWer über längere Zeit zu wenig schläft, fühlt sich oft gestresster und hat eher Heißhunger. Deshalb lohnt es sich, die Schlafdauer neben Anspannung und Gewicht im Blick zu haben.\n\nEine Schätzung reicht völlig. Es geht um ein Gefühl für deine Nächte, nicht um genaue Minuten.",
       "quellen": [
         "Watson N. F. u. a. (2015): Recommended amount of sleep for a healthy adult. A joint consensus statement of the American Academy of Sleep Medicine and Sleep Research Society. Sleep 38(6), 843–844."
@@ -641,13 +875,13 @@
     },
     "anspannung": {
       "titel": "Darum trägst du abends deine Anspannung ein.",
-      "pruefung": "zu prüfen",
+      "pruefung": "geprüft am 25.10.2026",
       "text": "Anspannung zeigt sich nicht nur im Kopf, sondern auch im Körper, im Schlaf und beim Essen. Viele essen unter Druck schneller, nebenbei oder mehr, andere haben kaum Appetit.\n\nMit einem kurzen Blick am Abend entsteht mit der Zeit ein Bild davon, wie deine Tage sich anfühlen und was sie beeinflusst. Du musst dafür nicht lange nachdenken.\n\nEs gibt keine richtige oder falsche Zahl. Jede Stufe ist einfach eine Beschreibung deines Tages.",
       "quellen": ["Adam T. C., Epel E. S. (2007): Stress, eating and the reward system. Physiology & Behavior 91(4), 449–458."]
     },
     "summen": {
       "titel": "Darum hältst du das Summen im Kopf fest.",
-      "pruefung": "zu prüfen",
+      "pruefung": "geprüft am 25.10.2026",
       "text": "Mit Summen im Kopf ist das Gefühl gemeint, wenn Gedanken kreisen und innerlich alles ein bisschen zu viel ist.\n\nWenn du es bemerkst und kurz festhältst, entsteht ein kleiner Abstand. Schon das Benennen eines Gefühls kann helfen, nicht ganz darin aufzugehen.\n\nMit der Zeit siehst du, zu welchen Zeiten oder an welchen Tagen es häufiger summt, und was dir dann guttut.",
       "quellen": [
         "Lieberman M. D. u. a. (2007): Putting feelings into words: Affect labeling disrupts amygdala activity in response to affective stimuli. Psychological Science 18(5), 421–428."
@@ -655,19 +889,19 @@
     },
     "freude": {
       "titel": "Darum bekommt Freude einen festen Platz.",
-      "pruefung": "zu prüfen",
+      "pruefung": "geprüft am 25.10.2026",
       "text": "Kleine angenehme Tätigkeiten sind kein Luxus. In der Psychologie ist gut untersucht, dass bewusst eingeplante angenehme Aktivitäten die Stimmung heben und helfen können, mit Belastungen besser umzugehen.\n\nWenn Freude einen festen Platz im Tag hat, wird sie weniger leicht vom Alltag verdrängt. Manchmal wird dadurch auch Essen seltener zum einzigen Trost.\n\nEs kommt nicht darauf an, wie viele Freude-Plätze du nutzt. Jeder einzelne zählt.",
       "quellen": ["Cuijpers P. u. a. (2007): Behavioral activation treatments of depression: A meta-analysis. Clinical Psychology Review 27(3), 318–326."]
     },
     "rueckblick": {
       "titel": "Darum schaut die App nach sieben Einträgen zurück.",
-      "pruefung": "zu prüfen",
+      "pruefung": "geprüft am 25.10.2026",
       "text": "Sieben Einträge sind genug, um erste Muster zu erkennen, und wenig genug, um nicht den Überblick zu verlieren. Es zählen die Tage, an denen du etwas eingetragen hast, nicht die Kalendertage.\n\nDer Rückblick beschreibt nur, was in deinen Einträgen sichtbar wird. Er bewertet nichts, und Pausen zwischen den Einträgen gehören einfach dazu.\n\nDie Fragen sind freiwillig. Deine Antworten bleiben bei dir und helfen der App, dir beim nächsten Mal passende Fragen zu stellen.",
       "quellen": []
     },
     "nachtlicht": {
       "titel": "Ein dunkles, warmes Display hilft dir am Abend.",
-      "pruefung": "zu prüfen",
+      "pruefung": "geprüft am 25.10.2026",
       "text": "Helles, bläuliches Licht am Abend kann die Ausschüttung des Schlafhormons Melatonin verzögern. Wärmeres und gedimmtes Licht empfinden viele vor dem Schlafen als angenehmer.\n\nWie stark die Night-Shift-Funktion allein wirkt, ist noch nicht abschließend geklärt. Wichtig scheint vor allem, das Display insgesamt dunkler zu stellen und das Handy rechtzeitig wegzulegen.",
       "quellen": [
         "Chang A.-M. u. a. (2015): Evening use of light-emitting eReaders negatively affects sleep, circadian timing, and next-morning alertness. PNAS 112(4), 1232–1237.",
@@ -676,7 +910,7 @@
     },
     "hoerbuch": {
       "titel": "Ein bekannter Krimi kann beim Einschlafen helfen.",
-      "pruefung": "zu prüfen",
+      "pruefung": "geprüft am 25.10.2026",
       "text": "Eine Geschichte, die du schon kennst, gibt dem Kopf etwas Ruhiges zu tun, ohne neue Spannung aufzubauen. Die Gedanken müssen nicht mehr kreisen, sie dürfen einfach mitgehen.\n\nEin Schlaf-Timer sorgt dafür, dass es von selbst leise wird. Gleichbleibende Abendrituale gelten als hilfreich, um dem Körper zu zeigen, dass jetzt Ruhe kommt.",
       "quellen": [
         "Irish L. A. u. a. (2015): The role of sleep hygiene in promoting public health: A review of empirical evidence. Sleep Medicine Reviews 22, 23–36."
@@ -684,8 +918,14 @@
     },
     "abendregal": {
       "titel": "Ruhige Spiele ohne Zeitdruck tun gut.",
-      "pruefung": "zu prüfen",
+      "pruefung": "geprüft am 25.10.2026",
       "text": "Einfache, sich wiederholende Tätigkeiten können den Kopf beschäftigen, ohne ihn aufzuregen. Wichtig ist, dass es keinen Zeitdruck und kein Verlieren gibt.\n\nLeg das Handy nach dem Spielen weg und stell das Display dunkel, damit der Abend leise ausklingen kann.",
+      "quellen": []
+    },
+    "kaffeeRuhig": {
+      "titel": "Kaffee kann manche Menschen eher beruhigen.",
+      "pruefung": "geprüft am 25.10.2026",
+      "text": "Viele Menschen mit ADHS erleben, dass Kaffee sie eher ruhiger macht. Eine mögliche Erklärung ist, dass Koffein ähnlich wie manche ADHS-Medikamente auf das Dopamin im Gehirn wirkt. Gut erforscht ist das bisher nicht.\n\nAuch wenn du nach einem Kaffee gut einschläfst, kann er den tiefen Schlaf beeinflussen, ohne dass du es merkst. Das Experiment hilft dir herauszufinden, wie es bei dir ist.",
       "quellen": []
     }
   },
@@ -752,13 +992,19 @@
   },
 
   "fragenRegeln": {
-    "_hinweis": "So wählt die App die Fragen aus. Bedingungen in einer Frage müssen alle zutreffen. Mögliche Bedingungen: nurErsterRueckblick, abRueckblick, experimentEnthaelt, anspannungAb, anspannungBis, einschlafenNach, schlafUnter, summenTageAb, freudeAb, freudeBis, signal, ohneSignal, nachAntwortAuf, koerperNotizen.",
+    "_hinweis": "So wählt die App die Fragen aus. Bedingungen in einer Frage müssen alle zutreffen. Mögliche Bedingungen: nurErsterRueckblick, abRueckblick, experimentEnthaelt, anspannungAb, anspannungBis, einschlafenNach, schlafUnter, summenTageAb, freudeAb, freudeBis, signal, ohneSignal, nachAntwortAuf, koerperNotizen, eingangOffen (Nummer der Eingangsfrage).",
     "anzahlErsterRueckblick": 2,
     "anzahlSpaeter": 3,
     "pauseNachFrage": 2,
     "stufeWahrnehmenAbRueckblick": 2,
     "stufeVertiefenAbRueckblick": 4,
-    "stufeVertiefenAbAntworten": 4
+    "stufeVertiefenAbAntworten": 4,
+    "nachfrageAbRueckblick": 4,
+    "nachfrageWiederNach": 3,
+    "nachfrageHoechstens": 2,
+    "nachfrageProRueckblick": 1,
+    "themaGewichtWunsch": 2,
+    "themaGewichtSchlaf": 2
   },
 
   "fragen": [
@@ -1085,6 +1331,385 @@
       "bedingungen": {
         "signal": "muede"
       }
+    },
+    {
+      "id": "e-alltag",
+      "stufe": "hineinfinden",
+      "thema": "eingang",
+      "typ": "eingang",
+      "text": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, wie dein Alltag meistens läuft?",
+      "bedingungen": {
+        "eingangOffen": 2
+      }
+    },
+    {
+      "id": "e-essen",
+      "stufe": "hineinfinden",
+      "thema": "eingang",
+      "typ": "eingang",
+      "text": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, wie du an einem normalen Tag isst?",
+      "bedingungen": {
+        "eingangOffen": 3
+      }
+    },
+    {
+      "id": "e-trinken",
+      "stufe": "hineinfinden",
+      "thema": "eingang",
+      "typ": "eingang",
+      "text": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, was du über den Tag trinkst?",
+      "bedingungen": {
+        "eingangOffen": 4
+      }
+    },
+    {
+      "id": "e-kaffeewirkung",
+      "stufe": "hineinfinden",
+      "thema": "eingang",
+      "typ": "eingang",
+      "text": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, wie Kaffee bei dir wirkt?",
+      "bedingungen": {
+        "eingangOffen": 5
+      }
+    },
+    {
+      "id": "e-schlaf",
+      "stufe": "hineinfinden",
+      "thema": "eingang",
+      "typ": "eingang",
+      "text": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, wie du meistens schläfst?",
+      "bedingungen": {
+        "eingangOffen": 6
+      }
     }
+  ],
+
+  "eingangsfragen": [
+    {
+      "id": "wunsch",
+      "nummer": 1,
+      "text": "Was wünschst du dir gerade am meisten?",
+      "mehrfach": true,
+      "optionen": [
+        {"id": "leichter", "text": "Leichter werden"},
+        {"id": "schlafen", "text": "Besser schlafen"},
+        {"id": "ruhiger", "text": "Ruhiger werden"},
+        {"id": "essen", "text": "Entspannter essen"},
+        {"id": "freude", "text": "Mehr Freude"},
+        {"id": "weissnicht", "text": "Das weiß ich noch nicht"}
+      ],
+      "exklusiv": ["weissnicht"],
+      "themen": {
+        "leichter": ["essen", "koerper"],
+        "schlafen": ["schlaf"],
+        "ruhiger": ["anspannung"],
+        "essen": ["essen"],
+        "freude": ["freude"]
+      }
+    },
+    {
+      "id": "alltag",
+      "nummer": 2,
+      "text": "Wie läuft dein Alltag meistens?",
+      "mehrfach": false,
+      "nochNicht": true,
+      "optionen": [
+        {"id": "fest", "text": "Mit festen Abläufen"},
+        {"id": "wechselnd", "text": "Mal so und mal so"},
+        {"id": "sprunghaft", "text": "Eher sprunghaft, mit vielen Baustellen"}
+      ],
+      "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, wie dein Alltag meistens läuft?",
+      "signale": ["wenigZeitFuerSich"]
+    },
+    {
+      "id": "essen",
+      "nummer": 3,
+      "text": "Wie isst du an einem normalen Tag?",
+      "mehrfach": true,
+      "nochNicht": true,
+      "optionen": [
+        {"id": "regelmaessig", "text": "Regelmäßig"},
+        {"id": "vergesse", "text": "Ich vergesse das Essen oft und habe dann großen Hunger"},
+        {"id": "nebenbei", "text": "Ich esse viel nebenbei"},
+        {"id": "abends", "text": "Abends wird es mehr"}
+      ],
+      "setztSignale": {
+        "nebenbei": "hastig",
+        "abends": "troestendEssen"
+      },
+      "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, wie du an einem normalen Tag isst?",
+      "signale": ["hastig", "troestendEssen", "geschmackFehlt"]
+    },
+    {
+      "id": "trinken",
+      "nummer": 4,
+      "text": "Was trinkst du über den Tag?",
+      "mehrfach": true,
+      "nochNicht": true,
+      "optionen": [
+        {"id": "kaffee", "text": "Kaffee"},
+        {"id": "tee", "text": "Schwarzen oder grünen Tee"},
+        {"id": "cola", "text": "Cola oder Energydrinks"},
+        {"id": "kaum", "text": "Kaum etwas mit Koffein"}
+      ],
+      "exklusiv": ["kaum"],
+      "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, was du über den Tag trinkst?",
+      "signale": ["kaffeeEnergie", "kaffeeGenuss"]
+    },
+    {
+      "id": "kaffeewirkung",
+      "nummer": 5,
+      "text": "Wie wirkt Kaffee bei dir?",
+      "mehrfach": false,
+      "nochNicht": true,
+      "optionen": [
+        {"id": "wach", "text": "Er macht mich wach"},
+        {"id": "ruhig", "text": "Er beruhigt mich eher"},
+        {"id": "kaum", "text": "Ich merke kaum etwas"},
+        {"id": "unruhig", "text": "Er macht mich unruhig"}
+      ],
+      "nurMitKaffee": true,
+      "setztSignale": {
+        "unruhig": "kaffeeUnruhe"
+      },
+      "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, wie Kaffee bei dir wirkt?",
+      "signale": ["kaffeeUnruhe", "kaffeeEnergie"]
+    },
+    {
+      "id": "schlaf",
+      "nummer": 6,
+      "text": "Wie schläfst du meistens?",
+      "mehrfach": true,
+      "nochNicht": true,
+      "optionen": [
+        {"id": "gut", "text": "Gut"},
+        {"id": "einschlafen", "text": "Ich schlafe schwer ein"},
+        {"id": "aufwachen", "text": "Ich wache nachts auf"},
+        {"id": "frueh", "text": "Ich bin zu früh wach"}
+      ],
+      "exklusiv": ["gut"],
+      "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, wie du meistens schläfst?",
+      "signale": ["gedankenKreisen", "muede"]
+    },
+    {
+      "id": "nichtGeholfen",
+      "nummer": 7,
+      "text": "Was hat dir bisher nicht geholfen?",
+      "mehrfach": true,
+      "freitext": true,
+      "optionen": [
+        {"id": "kalorien", "text": "Kalorien zählen"},
+        {"id": "verbote", "text": "Verbote"},
+        {"id": "plaene", "text": "Strenge Pläne"},
+        {"id": "meditation", "text": "Affirmationen und Meditation"},
+        {"id": "wiegen", "text": "Tägliches Wiegen"},
+        {"id": "gruppen", "text": "Druck in Gruppen"}
+      ]
+    },
+    {
+      "id": "gutTut",
+      "nummer": 8,
+      "text": "Was tut dir gut?",
+      "mehrfach": true,
+      "optionen": [
+        {"id": "bewegung", "text": "Bewegung"},
+        {"id": "draussen", "text": "Draußen sein"},
+        {"id": "tiere", "text": "Tiere"},
+        {"id": "musik", "text": "Musik"},
+        {"id": "haende", "text": "Etwas mit den Händen machen"},
+        {"id": "ordnung", "text": "Ordnung schaffen"},
+        {"id": "reden", "text": "Mit jemandem reden"}
+      ]
+    },
+    {
+      "id": "gewichtSehen",
+      "nummer": 9,
+      "text": "Wie möchtest du dein Gewicht sehen?",
+      "mehrfach": false,
+      "optionen": [
+        {"id": "woche", "text": "Als Wochendurchschnitt"},
+        {"id": "garnicht", "text": "Gar nicht, lieber über Taille und Körpergefühl"},
+        {"id": "spaeter", "text": "Das entscheide ich später"}
+      ]
+    },
+    {
+      "id": "gesundheit",
+      "nummer": 10,
+      "text": "Gibt es etwas, das wir berücksichtigen sollen?",
+      "mehrfach": true,
+      "gesundheit": true,
+      "optionen": [
+        {"id": "adhs", "text": "ADHS oder ein anderes neurodivergentes Gehirn"},
+        {"id": "wechseljahre", "text": "Wechseljahre"},
+        {"id": "schilddruese", "text": "Schilddrüse"},
+        {"id": "medikamente", "text": "Medikamente, die auf Gewicht oder Appetit wirken"},
+        {"id": "schicht", "text": "Schichtarbeit"}
+      ]
+    }
+  ],
+
+  "freudeVorschlaege": {
+    "bewegung": {
+      "titel": "Ein kleiner Spaziergang",
+      "symbol": "🚶‍♀️",
+      "pause": true,
+      "auch": ["Line Dance"]
+    },
+
+    "draussen": {
+      "titel": "Ein paar Minuten an der frischen Luft",
+      "symbol": "🌿",
+      "pause": true
+    },
+
+    "tiere": {
+      "titel": "Zeit mit den Tieren",
+      "symbol": "🐾",
+      "pause": true
+    },
+
+    "musik": {
+      "titel": "Musik hören",
+      "symbol": "🎶",
+      "pause": true
+    },
+
+    "haende": {
+      "titel": "Etwas mit den Händen machen",
+      "symbol": "🧶",
+      "pause": true,
+      "auch": ["Stricken"]
+    },
+
+    "ordnung": {
+      "titel": "Eine kleine Ecke ordnen",
+      "symbol": "🧺",
+      "pause": true
+    },
+
+    "reden": {
+      "titel": "Mit jemandem reden",
+      "symbol": "💬",
+      "pause": true
+    }
+  },
+
+  "experimente": {
+    "_hinweis": "Die App schlägt nach den Eingangsfragen genau ein Experiment vor. „passt“ nennt Antworten, die ein Experiment nach vorn bringen. „sanft“ reicht von 1 (sehr sanft) bis 3. Reserve-Experimente erscheinen erst bei „Zeig mir ein anderes“ oder in der ganzen Liste.",
+    "liste": [
+      {
+        "id": "kaffee",
+        "titel": "Kaffee nur bis mittags",
+        "beschreibung": "Ich schaue, ob ich abends leichter zur Ruhe komme, wenn der letzte Kaffee vor zwölf Uhr getrunken ist.",
+        "sanft": 3,
+        "info": "kaffee",
+        "passt": [
+          {"frage": "trinken", "wert": "kaffee", "punkte": 3},
+          {"frage": "schlaf", "wert": "einschlafen", "punkte": 2},
+          {"frage": "kaffeewirkung", "wert": "unruhig", "punkte": 2}
+        ],
+        "braucht": "kaffee",
+        "start": true
+      },
+      {
+        "id": "hinsetzen",
+        "titel": "Erst hinsetzen, dann essen",
+        "beschreibung": "Ich setze mich zum Essen hin und schaue, ob ich dann mehr schmecke und eher satt bin.",
+        "sanft": 2,
+        "passt": [{"frage": "essen", "wert": "nebenbei", "punkte": 3}, {"signal": "hastig", "punkte": 2}]
+      },
+      {
+        "id": "bildschirm",
+        "titel": "Eine Mahlzeit ohne Bildschirm",
+        "beschreibung": "Bei einer Mahlzeit am Tag bleiben Handy und Fernseher aus, und ich beobachte, was sich verändert.",
+        "sanft": 2,
+        "passt": [{"frage": "essen", "wert": "nebenbei", "punkte": 2}, {"signal": "geschmackFehlt", "punkte": 2}]
+      },
+      {
+        "id": "mittag",
+        "titel": "Eine sanfte Ess-Erinnerung am Mittag",
+        "beschreibung": "Die App erinnert mich mittags ans Essen, und ich schaue, ob der große Hunger am Nachmittag kleiner wird.",
+        "sanft": 2,
+        "passt": [{"frage": "essen", "wert": "vergesse", "punkte": 3}, {"gesundheit": "adhs", "punkte": 2}],
+        "erinnerung": "mittag"
+      },
+      {
+        "id": "freude-zuerst",
+        "titel": "Erst Freude, dann Süßes",
+        "beschreibung": "Bevor ich zu etwas Süßem greife, gönne ich mir fünf Minuten auf einem Freude-Platz und schaue, ob ich es danach noch möchte.",
+        "sanft": 2,
+        "passt": [{"frage": "essen", "wert": "abends", "punkte": 3}, {"signal": "troestendEssen", "punkte": 2}]
+      },
+      {
+        "id": "draussen",
+        "titel": "Zehn Minuten draußen",
+        "beschreibung": "Ich bin jeden Tag zehn Minuten draußen und beobachte, wie es meiner Anspannung damit geht.",
+        "sanft": 1,
+        "passt": [
+          {"frage": "gutTut", "wert": "draussen", "punkte": 2},
+          {"frage": "gutTut", "wert": "bewegung", "punkte": 2},
+          {"gesundheit": "adhs", "punkte": 2}
+        ]
+      },
+      {
+        "id": "landen",
+        "titel": "Um 21 Uhr landen",
+        "beschreibung": "Um 21 Uhr geht mein Handy schlafen, und ich schaue, ob ich leichter zur Ruhe komme.",
+        "sanft": 2,
+        "passt": [{"frage": "schlaf", "wert": "einschlafen", "punkte": 3}, {"signal": "gedankenKreisen", "punkte": 1}]
+      },
+      {
+        "id": "teller",
+        "titel": "Vom Teller statt aus der Packung",
+        "beschreibung": "Ich nehme mir Knabbereien auf einen Teller und beobachte, wie viel ich dann wirklich möchte.",
+        "sanft": 2,
+        "reserve": true
+      },
+      {
+        "id": "nachnehmen",
+        "titel": "Kurze Pause vor dem Nachnehmen",
+        "beschreibung": "Bevor ich mir nachnehme, atme ich einmal durch und spüre nach, ob ich noch Hunger habe.",
+        "sanft": 2,
+        "reserve": true,
+        "nichtBei": ["meditation"]
+      },
+      {
+        "id": "wasser",
+        "titel": "Wasser griffbereit",
+        "beschreibung": "Eine Flasche Wasser steht immer in meiner Nähe, und ich schaue, ob ich seltener zum Snack greife.",
+        "sanft": 1,
+        "reserve": true
+      },
+      {
+        "id": "fuer-mich",
+        "titel": "Etwas nur für mich",
+        "beschreibung": "Ich tue jeden Tag eine kleine Sache, die nur für mich ist, und beobachte, wie es mir damit geht.",
+        "sanft": 1,
+        "reserve": true,
+        "passt": [{"signal": "wenigZeitFuerSich", "punkte": 3}]
+      },
+      {
+        "id": "lieblingsessen",
+        "titel": "Ein Lieblingsessen genießen",
+        "beschreibung": "Einmal in der Woche esse ich mein Lieblingsessen ganz bewusst und ohne schlechtes Gewissen.",
+        "sanft": 1,
+        "reserve": true
+      }
+    ]
+  },
+
+  "verbotsWoerter": [
+    "nie",
+    "niemals",
+    "kein",
+    "keine",
+    "keinen",
+    "keinem",
+    "keiner",
+    "keines",
+    "nicht mehr",
+    "verboten",
+    "verbiete",
+    "verbot"
   ]
 }

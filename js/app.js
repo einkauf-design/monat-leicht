@@ -1,9 +1,13 @@
 // EMONA leicht – Start der App: Navigation, Abendmodus, Sammlung im Kopf, Service Worker.
 
 import { ladeInhalte, inhalt, t } from './inhalte.js';
+import { ablageLesen, ablageSchreiben } from './ablage.js';
 import { $, esc, ganz, rattern, toast, sternchen, zeitZuMinuten } from './util.js';
 import { beiAenderung, sync, syncZustand } from './speicher.js';
-import { einstellungen, uebernimmAlteNotizen } from './daten.js';
+import { einstellungen, uebernimmAlteNotizen, uebernimmAltesExperiment, eintragsTage, experimentJetzt, heuteKey } from './daten.js';
+import { profil, markiereProfil, kennenlernenBegonnen } from './profil.js';
+import { seitenBeimOeffnen } from './seiten.js';
+import { merkeErinnerungszeiten } from './erinnerung.js';
 import { gesamt, pruefeErfolge } from './belohnung.js';
 import { pruefeRueckblicke } from './rueckblick.js';
 import { infoAktivieren } from './info.js';
@@ -14,11 +18,20 @@ import * as abend from './ansichten/abend.js';
 import * as mehr from './ansichten/mehr.js';
 import * as start from './ansichten/start.js';
 import * as rueckblickAnsicht from './ansichten/rueckblick.js';
+import * as kennenlernen from './ansichten/kennenlernen.js';
+import * as experimentAnsicht from './ansichten/experiment.js';
+import * as angaben from './ansichten/angaben.js';
+import * as angebot from './ansichten/angebot.js';
 
-const ANSICHTEN = { heute, verlauf, freude, abend, mehr, rueckblick: rueckblickAnsicht };
+const ANSICHTEN = {
+  heute, verlauf, freude, abend, mehr,
+  rueckblick: rueckblickAnsicht, kennenlernen, experiment: experimentAnsicht, angaben, angebot,
+};
 const NAVIGATION = ['heute', 'verlauf', 'freude', 'abend', 'mehr'];
 // Unterseiten zeigen in der Navigation auf ihren Bereich.
-const BEREICH = { rueckblick: 'verlauf' };
+const BEREICH = { rueckblick: 'verlauf', kennenlernen: 'mehr', angaben: 'mehr', experiment: 'heute', angebot: 'heute' };
+// Kurzadressen für eine bestimmte Seite in einer Ansicht.
+const ABKUERZUNGEN = { notizen: ['verlauf', 'notizen'] };
 const SYMBOLE = {
   heute: '<path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/><circle cx="12" cy="12" r="4"/>',
   verlauf: '<path d="M4 19h16"/><path d="M5 15l4-4 4 3 6-7"/>',
@@ -29,6 +42,7 @@ const SYMBOLE = {
 
 let aktuell = 'heute';
 let parameter = '';
+let startGruppe;
 // Rückblicke und Übernahmen erst, nachdem einmal mit dem Server abgeglichen wurde.
 let bereit = false;
 let abendmodusAn = false;
@@ -95,6 +109,7 @@ function ctx() {
     zeichne,
     abendmodus: () => abendmodusAn,
     param: parameter,
+    start: startGruppe,
     modusPruefen,
   };
 }
@@ -104,10 +119,13 @@ export function zeichne() {
 }
 
 function route() {
-  const [name, param = ''] = location.hash.slice(1).split('/');
+  let [name, param = ''] = location.hash.slice(1).split('/');
+  startGruppe = undefined;
+  if (ABKUERZUNGEN[name]) [name, startGruppe] = ABKUERZUNGEN[name];
   const neu = ANSICHTEN[name] ? name : 'heute';
-  parameter = param;
+  parameter = decodeURIComponent(param);
   if (neu !== aktuell && ANSICHTEN[aktuell].verlassen) ANSICHTEN[aktuell].verlassen();
+  if (neu !== aktuell || startGruppe) seitenBeimOeffnen(neu);
   aktuell = neu;
   // Eine frische Fläche, damit keine Ereignisse der vorherigen Ansicht hängen bleiben.
   const frisch = wurzel.cloneNode(false);
@@ -120,7 +138,7 @@ function route() {
   wurzel.classList.add('neu-geoeffnet');
   setTimeout(() => frisch.classList.remove('neu-geoeffnet'), 700);
   zeichne();
-  window.scrollTo({ top: 0 });
+  startGruppe = undefined;
 }
 
 /* ---------- Änderungen und Erfolge ---------- */
@@ -157,8 +175,19 @@ function nachAenderung(herkunft) {
 async function vorbereiten() {
   try { await sync(); } catch { /* ohne Netz geht es lokal weiter */ }
   bereit = true;
+  const nutzteAppSchon = eintragsTage().length > 0;
   uebernimmAlteNotizen();
+  uebernimmAltesExperiment();
+  // Erfolge aus früheren Einträgen werden still nachgetragen, ohne eine Flut von Meldungen.
+  pruefeErfolge();
+  kopfAktualisieren();
+  merkeErinnerungszeiten();
   if (pruefeRueckblicke().length && aktuell === 'heute') zeichne();
+  // Die Eingangsfragen: neu dabei direkt, wer die App schon nutzt einmal als Angebot.
+  if (!profil().angeboten && !kennenlernenBegonnen()) {
+    markiereProfil({ angeboten: heuteKey() });
+    location.hash = nutzteAppSchon || experimentJetzt()?.uebernommen ? '#angebot' : '#kennenlernen';
+  }
 }
 
 /* ---------- Service Worker und Updates ---------- */
@@ -198,8 +227,34 @@ async function los() {
   $('#kopf-sterne').parentElement.setAttribute('aria-label', t('belohnung.sterne'));
   $('#kopf-punkte').parentElement.setAttribute('aria-label', t('belohnung.punkte'));
   $('#sync-punkt').setAttribute('aria-label', t('status.sync_punkt'));
+  // Geöffnet über eine Erinnerung? Dann kann „Heute“ ein „Später erinnern“ anbieten.
+  const adresse = new URL(location.href);
+  const erinnerung = adresse.searchParams.get('erinnerung');
+  if (erinnerung) {
+    sessionStorage.setItem('emona-erinnerung', erinnerung);
+    adresse.searchParams.delete('erinnerung');
+    history.replaceState(null, '', adresse.pathname + adresse.search + adresse.hash);
+  }
+  navigator.serviceWorker?.addEventListener('message', (e) => {
+    if (!e.data?.erinnerung) return;
+    sessionStorage.setItem('emona-erinnerung', e.data.erinnerung);
+    if (aktuell === 'heute') zeichne();
+  });
   baueNavigation();
   infoAktivieren();
+  // Dreht sich das Handy oder ändert sich die Größe, werden die Seiten neu aufgeteilt.
+  let groesse = `${innerWidth}x${innerHeight}`;
+  let groesseTimer = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(groesseTimer);
+    groesseTimer = setTimeout(() => {
+      const neu = `${innerWidth}x${innerHeight}`;
+      const tippt = document.activeElement?.matches('input, textarea, select');
+      if (neu === groesse || tippt || ANSICHTEN[aktuell].beschaeftigt?.() || !wurzel) return;
+      groesse = neu;
+      zeichne();
+    }, 300);
+  });
   modusPruefen();
   setInterval(modusPruefen, 30 * 1000);
   kopfAktualisieren();
@@ -220,7 +275,7 @@ async function los() {
   });
 
   const starten = () => {
-    try { localStorage.setItem('emona.gestartet', '1'); } catch { /* ohne Speicher geht es trotzdem */ }
+    ablageSchreiben('gestartet', '1');
     document.body.classList.remove('erststart');
     window.addEventListener('hashchange', route);
     route();
@@ -228,7 +283,7 @@ async function los() {
   };
 
   let gestartet = false;
-  try { gestartet = localStorage.getItem('emona.gestartet') === '1'; } catch { /* egal */ }
+  gestartet = ablageLesen('gestartet') === '1';
   if (!gestartet) {
     document.body.classList.add('erststart');
     start.zeige(wurzel, { fertig: starten });

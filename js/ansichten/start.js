@@ -1,17 +1,26 @@
 // Begrüßung beim allerersten Öffnen: Name und Zugangscode, beides freiwillig.
 
 import { t } from '../inhalte.js';
-import { esc, absaetze } from '../util.js';
+import { esc } from '../util.js';
+import { zeigeSeiten, textBloecke } from '../seiten.js';
 import { api, setzeGeraet, sync, vonVorneSynchronisieren } from '../speicher.js';
 import { einstellungen, setzeEinstellungen } from '../daten.js';
 
 export function zeige(wurzel, { fertig }) {
-  wurzel.innerHTML = `
-    <section class="start">
-      <div class="start-zeichen" aria-hidden="true">✦</div>
-      <h1>${esc(t('start.titel'))}</h1>
-      ${absaetze(t('start.text'))}
-      <form class="formular karte" data-form="start">
+  zeigeSeiten(wurzel, [
+    {
+      id: 'willkommen',
+      mitte: true,
+      bloecke: [
+        '<div class="start-zeichen" aria-hidden="true">✦</div>',
+        `<h1>${esc(t('start.titel'))}</h1>`,
+        ...textBloecke(t('start.text')),
+      ],
+    },
+    {
+      id: 'anmelden',
+      bloecke: [`
+      <form class="formular" data-form="start">
         <label class="feld">
           <span class="feld-name">${esc(t('start.name_label'))}</span>
           <input type="text" name="vorname" maxlength="40" autocomplete="given-name" placeholder="${esc(t('start.name_platzhalter'))}">
@@ -23,8 +32,9 @@ export function zeige(wurzel, { fertig }) {
         </label>
         <p class="hinweis" data-meldung hidden></p>
         <button class="knopf knopf-haupt" type="submit">${esc(t('start.los'))}</button>
-      </form>
-    </section>`;
+      </form>`],
+    },
+  ], { schluessel: 'start' });
 
   wurzel.onsubmit = async (e) => {
     e.preventDefault();

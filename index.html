@@ -20,7 +20,9 @@
     // Schon vor dem ersten Zeichnen den Abendmodus setzen, damit abends nichts hell aufblitzt.
     (function () {
       try {
-        var e = JSON.parse(localStorage.getItem('emona.docs') || '{}').einstellungen;
+        var bereich = location.pathname.replace(/[^/]*$/, '');
+        var roh = localStorage.getItem('emona' + bereich + ':docs') || (localStorage.getItem('emona.uebernommen-von') ? null : localStorage.getItem('emona.docs'));
+        var e = JSON.parse(roh || '{}').einstellungen;
         var ab = (e && e.wert && e.wert.abendmodusAb) || '21:00';
         var t = ab.split(':'), d = new Date(), m = d.getHours() * 60 + d.getMinutes();
         if (m >= (+t[0]) * 60 + (+t[1]) || m < 300) document.documentElement.dataset.modus = 'abend';

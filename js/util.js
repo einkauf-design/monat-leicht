@@ -146,7 +146,8 @@ export function rattern(element, von, bis, dauer = 900) {
 }
 
 let toastTimer = null;
-export function toast(text, symbol = '') {
+// Kurze Meldung oben. Mit „aktion“ ({ text, fn, dauer }) erscheint daneben ein Knopf, zum Beispiel „Rückgängig“.
+export function toast(text, symbol = '', aktion = null, dauer = 3800) {
   let box = $('#toast');
   if (!box) {
     box = document.createElement('div');
@@ -155,10 +156,18 @@ export function toast(text, symbol = '') {
     box.setAttribute('aria-live', 'polite');
     document.body.appendChild(box);
   }
-  box.innerHTML = `${symbol ? `<span class="toast-symbol" aria-hidden="true">${esc(symbol)}</span>` : ''}<span>${esc(text)}</span>`;
+  box.innerHTML = `${symbol ? `<span class="toast-symbol" aria-hidden="true">${esc(symbol)}</span>` : ''}<span>${esc(text)}</span>${aktion ? `<button type="button" class="toast-knopf">${esc(aktion.text)}</button>` : ''}`;
+  box.classList.toggle('mit-knopf', Boolean(aktion));
   box.classList.add('sichtbar');
+  if (aktion) {
+    box.querySelector('.toast-knopf').onclick = () => {
+      box.classList.remove('sichtbar');
+      clearTimeout(toastTimer);
+      aktion.fn();
+    };
+  }
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => box.classList.remove('sichtbar'), 3800);
+  toastTimer = setTimeout(() => box.classList.remove('sichtbar'), aktion?.dauer ?? dauer);
 }
 
 // Kleine Sterne, die an einer Stelle aufsteigen und verblassen.

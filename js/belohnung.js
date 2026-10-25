@@ -20,16 +20,20 @@ export function statistik() {
   // Beobachtungen aus dem Tagebuch; alte Monatsnotizen zählen mit, bis sie übernommen sind.
   const alteNotizen = schluesselMit('experiment:').filter((k) => (lies(k, {}).notiz || '').trim()).length;
   const notizen = Math.max(beobachtungen().length, alteNotizen);
-  return { tage, freudeGenutzt, pausen, abende, notizen, antworten: antwortenGesamt(), regal: regalStand() };
+  const spiele = lies('spiele', {});
+  const eigene = [lies('versuch', null), ...lies('versuche', [])].filter((v) => v && v.id === 'eigen').length;
+  return { tage, freudeGenutzt, pausen, abende, notizen, antworten: antwortenGesamt(), regal: regalStand(), spiele, eigene };
 }
 
 export function gesamt(s = statistik()) {
   const b = inhalt('belohnungen', {});
   const erfolge = Object.keys(lies('erfolge', {})).length;
   return {
-    sterne: s.regal.sterne + s.freudeGenutzt + erfolge,
+    sterne: s.regal.sterne + s.freudeGenutzt + erfolge + (s.spiele.wollfaeden?.sterne || 0) + (s.spiele.bildpaare?.sterne || 0),
     punkte:
       s.regal.punkte +
+      (s.spiele.wollfaeden?.punkte || 0) +
+      (s.spiele.bildpaare?.punkte || 0) +
       s.freudeGenutzt * (b.punkteFreudePlatz ?? 10) +
       s.pausen * (b.punktePause ?? 5) +
       s.abende * (b.punkteAbend ?? 5),
@@ -46,6 +50,12 @@ function fortschritt(erfolg, s) {
       return s.tage.filter((tag) => (tag.schlafdauer || 0) >= erfolg.stunden).length;
     case 'freudeGenutzt':
       return s.freudeGenutzt;
+    case 'wollfaeden':
+      return s.spiele.wollfaeden?.geloest || 0;
+    case 'bildpaare':
+      return s.spiele.bildpaare?.geloest || 0;
+    case 'eigenesExperiment':
+      return s.eigene;
     case 'pausen':
       return s.pausen;
     case 'abende':

@@ -3,15 +3,19 @@
 
 import { t, inhalt } from '../inhalte.js';
 import {
-  esc, absaetze, zahl, mittelwert, isoWoche, wochenMontag, plusTage, logischerTag, ausKey,
+  esc, toast, zahl, mittelwert, isoWoche, wochenMontag, plusTage, logischerTag, ausKey,
   einschlafMinuten, minutenZuZeit, $,
 } from '../util.js';
 import { alleTage } from '../daten.js';
 import { infoKnopf } from '../info.js';
 import { rueckblicke, ordnung, datumKurz } from '../rueckblick.js';
+import { gewichtSichtbar, gesundheitHat } from '../profil.js';
+import { zeigeSeiten, textBloecke, merkeSeite } from '../seiten.js';
+import { alleNotizen, notiz, setzeNotiz } from '../notizen.js';
 
 const WOCHEN = 8;
-let tabelleOffen = false;
+let bearbeite = null;
+let loeschfrage = false;
 
 function wochenDaten(tage) {
   const nachDatum = Object.fromEntries(tage.map((tg) => [tg.datum, tg]));
@@ -207,59 +211,112 @@ function letzteTage(tage) {
   return `<ol class="tage-streifen">${zellen.join('')}</ol>`;
 }
 
-function tabelle(wochen) {
+function tabelle(wochen, mitGewicht) {
+  const zelle = (wert) => `<td>${wert}</td>`;
   const zeilen = [...wochen]
     .reverse()
-    .map(
-      (w) => `<tr>
-        <th scope="row">${esc(t('verlauf.woche', { kw: w.kw }))}</th>
-        <td>${w.gewicht !== null ? `${zahl(w.gewicht, 1)} kg` : '–'}</td>
-        <td>${w.anspannung !== null ? zahl(w.anspannung, 1) : '–'}</td>
-        <td>${w.einschlaf !== null ? minutenZuZeit(w.einschlaf) : '–'}</td>
-        <td>${w.schlaf !== null ? `${zahl(w.schlaf, 1)} h` : '–'}</td>
-        <td>${w.taille !== null ? `${zahl(w.taille, 1)} cm` : '–'}</td>
-      </tr>`,
-    )
+    .map((w) => `<tr>
+        <th scope="row">${esc(String(w.kw))}</th>
+        ${mitGewicht ? zelle(w.gewicht !== null ? zahl(w.gewicht, 1) : '–') : ''}
+        ${zelle(w.taille !== null ? zahl(w.taille, 1) : '–')}
+        ${zelle(w.anspannung !== null ? zahl(w.anspannung, 1) : '–')}
+        ${zelle(w.einschlaf !== null ? minutenZuZeit(w.einschlaf) : '–')}
+        ${zelle(w.schlaf !== null ? zahl(w.schlaf, 1) : '–')}
+      </tr>`)
     .join('');
+  const kopf = (text, einheit = '') => `<th scope="col">${esc(text)}${einheit ? `<br><small>${einheit}</small>` : ''}</th>`;
   return `
-    <div class="tabelle-rahmen">
-      <table class="tabelle">
-        <thead><tr>
-          <th scope="col">${esc(t('verlauf.spalte_woche'))}</th>
-          <th scope="col">${esc(t('verlauf.spalte_gewicht'))}</th>
-          <th scope="col">${esc(t('verlauf.spalte_anspannung'))}</th>
-          <th scope="col">${esc(t('verlauf.spalte_einschlafen'))}</th>
-          <th scope="col">${esc(t('verlauf.spalte_schlaf'))}</th>
-          <th scope="col">${esc(t('verlauf.spalte_taille'))}</th>
-        </tr></thead>
-        <tbody>${zeilen}</tbody>
-      </table>
-    </div>`;
+    <table class="tabelle">
+      <thead><tr>
+        ${kopf(t('verlauf.spalte_woche'), 'KW')}
+        ${mitGewicht ? kopf(t('verlauf.spalte_gewicht'), 'kg') : ''}
+        ${kopf(t('verlauf.spalte_taille'), 'cm')}
+        ${kopf(t('verlauf.spalte_anspannung'), '1 bis 5')}
+        ${kopf(t('verlauf.spalte_einschlafen'), 'Uhr')}
+        ${kopf(t('verlauf.spalte_schlaf'), 'h')}
+      </tr></thead>
+      <tbody>${zeilen}</tbody>
+    </table>`;
 }
 
-function rueckblickListe() {
+function rueckblickSeite() {
   const alle = rueckblicke().reverse();
-  const liste = alle.length
-    ? `<ul class="rueckblick-liste">${alle
-        .map((rb) => {
-          const tage = [...(rb.tage || [])].sort();
-          const von = datumKurz(tage[0]);
-          const bis = datumKurz(tage[tage.length - 1]);
-          const text = t('rueckblick.liste_eintrag', { ordnung: ordnung(rb.nummer), von, bis });
-          const neu = rb.gelesen ? '' : '<span class="symbol" aria-hidden="true">✨</span> ';
-          return `<li><a class="rueckblick-link" href="#rueckblick/${rb.nummer}">${neu}${esc(text.charAt(0).toUpperCase() + text.slice(1))}</a></li>`;
-        })
-        .join('')}</ul>`
-    : `<p>${esc(t('rueckblick.liste_leer'))}</p>`;
-  return `
-    <section class="karte" aria-labelledby="v-rueckblicke">
-      <h2 id="v-rueckblicke">${esc(t('rueckblick.liste_titel'))} ${infoKnopf('rueckblick')}</h2>
-      <p class="leise">${esc(t('rueckblick.hinweis_sieben'))}</p>
-      ${liste}
-    </section>`;
+  return {
+    id: 'rueckblicke',
+    bloecke: [
+      `<h2>${esc(t('rueckblick.liste_titel'))} ${infoKnopf('rueckblick')}</h2>`,
+      `<p class="leise">${esc(t('rueckblick.hinweis_sieben'))}</p>`,
+      ...(alle.length
+        ? alle.map((rb) => {
+            const tage = [...(rb.tage || [])].sort();
+            const text = t('rueckblick.liste_eintrag', { ordnung: ordnung(rb.nummer), von: datumKurz(tage[0]), bis: datumKurz(tage[tage.length - 1]) });
+            const neu = rb.gelesen ? '' : '<span class="symbol" aria-hidden="true">✨</span> ';
+            return `<a class="rueckblick-link" href="#rueckblick/${rb.nummer}">${neu}${esc(text)}</a>`;
+          })
+        : [`<p>${esc(t('rueckblick.liste_leer'))}</p>`]),
+    ],
+  };
 }
 
-export function zeige(wurzel) {
+const STIFT = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M14 6l4 4"/></svg>';
+
+function notizenSeiten() {
+  if (bearbeite) {
+    const n = notiz(bearbeite);
+    if (!n) {
+      bearbeite = null;
+    } else if (loeschfrage) {
+      return [{
+        id: 'notiz-loeschen',
+        mitte: true,
+        bloecke: [
+          `<p>${esc(t(`notizen.frage_${n.art}`))}</p>`,
+          `<div class="knopf-spalte">
+            <button type="button" class="knopf knopf-haupt" data-aktion="notiz-weg">${esc(t('notizen.ja_loeschen'))}</button>
+            <button type="button" class="knopf knopf-zweit" data-aktion="notiz-nein">${esc(t('notizen.nein'))}</button>
+          </div>`,
+        ],
+      }];
+    } else {
+      return [{
+        id: 'notiz-bearbeiten',
+        bloecke: [
+          `<h2>${esc(t('notizen.bearbeiten_titel'))}</h2>`,
+          `<p class="beobachtung-datum">${esc(n.kopf)}</p>`,
+          `<textarea name="notiz" rows="6" maxlength="2000" aria-label="${esc(n.kopf)}">${esc(n.text)}</textarea>`,
+          `<div class="knopf-reihe">
+            <button type="button" class="knopf knopf-haupt" data-aktion="notiz-speichern">${esc(t('notizen.speichern'))}</button>
+            <button type="button" class="knopf knopf-zweit" data-aktion="notiz-abbrechen">${esc(t('notizen.abbrechen'))}</button>
+          </div>`,
+          `<button type="button" class="knopf-text leise-knopf" data-aktion="notiz-loeschen">${esc(t('notizen.loeschen'))}</button>`,
+        ],
+      }];
+    }
+  }
+  const liste = alleNotizen();
+  return [{
+    id: 'notizen',
+    bloecke: [
+      `<h2>${esc(t('notizen.titel'))}</h2>`,
+      `<p class="leise klein">${esc(liste.length ? t('notizen.text') : t('notizen.leer'))}</p>`,
+      ...liste.map((n) => `
+        <div class="notiz">
+          <div class="notiz-kopf">
+            <p class="beobachtung-datum">${esc(n.kopf)}</p>
+            <button type="button" class="stift-knopf" data-aktion="notiz-bearbeiten" data-id="${esc(n.id)}" aria-label="${esc(t('notizen.stift'))}">${STIFT}</button>
+          </div>
+          <p class="beobachtung-text">${esc(n.text.length > 280 ? `${n.text.slice(0, 277).trim()} …` : n.text)}</p>
+        </div>`),
+    ],
+  }];
+}
+
+export function verlassen() {
+  bearbeite = null;
+  loeschfrage = false;
+}
+
+export function zeige(wurzel, ctx) {
   const tage = alleTage();
   const wochen = wochenDaten(tage);
   const gruppen = zusammenhang(tage);
@@ -269,67 +326,78 @@ export function zeige(wurzel) {
     leicht.mittel !== null && angespannt.mittel !== null && leicht.anzahl >= 2 && angespannt.anzahl >= 2
       ? `<p>${esc(t('verlauf.zusammenhang_satz', { leicht: minutenZuZeit(leicht.mittel), angespannt: minutenZuZeit(angespannt.mittel) }))}</p>`
       : '';
+  const mitGewicht = gewichtSichtbar();
 
-  wurzel.innerHTML = `
-    <header class="seiten-kopf">
-      <h1>${esc(t('verlauf.titel'))}</h1>
-      ${absaetze(t('verlauf.einleitung'), 'leise')}
-    </header>
+  const seiten = bearbeite ? notizenSeiten() : [
+    { id: 'intro', mitte: true, bloecke: [`<h1>${esc(t('verlauf.titel'))}</h1>`, ...textBloecke(t('verlauf.einleitung'), 'leise')] },
+    rueckblickSeite(),
+    mitGewicht ? {
+      id: 'gewicht',
+      bloecke: [
+        `<h2 class="diagramm-titel"><span class="farbmarke farbe-petrol" aria-hidden="true"></span><span>${esc(t('verlauf.gewicht_titel'))} ${infoKnopf('gewicht')}</span></h2>`,
+        linienDiagramm(wochen, {
+          feld: 'gewicht',
+          spielraum: 2,
+          titel: t('verlauf.gewicht_titel'),
+          leer: t('verlauf.keine_daten'),
+          tipp: (w) => t('verlauf.tipp_gewicht', { kw: w.kw, wert: zahl(w.gewicht, 1), anzahl: w.gewichtTage }),
+        }),
+        gesundheitHat('schilddruese') || gesundheitHat('medikamente') ? `<p class="hinweis klein">${esc(t('gesundheit.gewicht_hinweis'))}</p>` : '',
+      ],
+    } : null,
+    {
+      id: 'taille',
+      bloecke: [
+        `<h2 class="diagramm-titel"><span class="farbmarke farbe-petrol" aria-hidden="true"></span><span>${esc(t('verlauf.taille_titel'))} ${infoKnopf('taille')}</span></h2>`,
+        `<p class="leise klein">${esc(t('verlauf.taille_text'))}</p>`,
+        linienDiagramm(wochen, {
+          feld: 'taille',
+          spielraum: 3,
+          hoehe: 150,
+          titel: t('verlauf.taille_titel'),
+          leer: t('verlauf.taille_leer'),
+          tipp: (w) => t('verlauf.tipp_taille', { kw: w.kw, wert: zahl(w.taille, 1) }),
+        }),
+      ],
+    },
+    {
+      id: 'anspannung',
+      bloecke: [
+        `<h2 class="diagramm-titel"><span class="farbmarke farbe-pflaume" aria-hidden="true"></span><span>${esc(t('verlauf.anspannung_titel'))} ${infoKnopf('anspannung')}</span></h2>`,
+        `<p class="leise klein">${esc(t('verlauf.anspannung_skala'))}</p>`,
+        anspannungDiagramm(wochen),
+      ],
+    },
+    {
+      id: 'zusammenhang',
+      bloecke: [
+        `<h2>${esc(t('verlauf.zusammenhang_titel'))} ${infoKnopf('einschlafzeit')}</h2>`,
+        `<p class="leise klein">${esc(t('verlauf.zusammenhang_text'))}</p>`,
+        zusammenhangDiagramm(gruppen),
+        satz,
+      ],
+    },
+    {
+      id: 'tage',
+      bloecke: [`<h2>${esc(t('verlauf.letzte_tage_titel'))}</h2>`, ...textBloecke(t('verlauf.letzte_tage_text'), 'leise klein'), letzteTage(tage)],
+    },
+    {
+      id: 'tabelle',
+      bloecke: [`<h2>${esc(t('verlauf.tabelle_text'))}</h2>`, tabelle(wochen, mitGewicht)],
+    },
+    ...notizenSeiten(),
+  ];
 
-    ${rueckblickListe()}
-
-    <section class="karte" aria-labelledby="v-gewicht">
-      <h2 id="v-gewicht" class="diagramm-titel"><span class="farbmarke farbe-petrol" aria-hidden="true"></span><span>${esc(t('verlauf.gewicht_titel'))} ${infoKnopf('gewicht')}</span></h2>
-      ${linienDiagramm(wochen, {
-        feld: 'gewicht',
-        spielraum: 2,
-        titel: t('verlauf.gewicht_titel'),
-        leer: t('verlauf.keine_daten'),
-        tipp: (w) => t('verlauf.tipp_gewicht', { kw: w.kw, wert: zahl(w.gewicht, 1), anzahl: w.gewichtTage }),
-      })}
-      <h3 id="v-taille" class="diagramm-titel"><span class="farbmarke farbe-petrol" aria-hidden="true"></span><span>${esc(t('verlauf.taille_titel'))} ${infoKnopf('taille')}</span></h3>
-      <p class="leise klein">${esc(t('verlauf.taille_text'))}</p>
-      ${linienDiagramm(wochen, {
-        feld: 'taille',
-        spielraum: 3,
-        hoehe: 140,
-        titel: t('verlauf.taille_titel'),
-        leer: t('verlauf.taille_leer'),
-        tipp: (w) => t('verlauf.tipp_taille', { kw: w.kw, wert: zahl(w.taille, 1) }),
-      })}
-    </section>
-
-    <section class="karte" aria-labelledby="v-anspannung">
-      <h2 id="v-anspannung" class="diagramm-titel"><span class="farbmarke farbe-pflaume" aria-hidden="true"></span><span>${esc(t('verlauf.anspannung_titel'))} ${infoKnopf('anspannung')}</span></h2>
-      <p class="leise klein">${esc(t('verlauf.anspannung_skala'))}</p>
-      ${anspannungDiagramm(wochen)}
-    </section>
-
-    <section class="karte" aria-labelledby="v-zusammenhang">
-      <h2 id="v-zusammenhang">${esc(t('verlauf.zusammenhang_titel'))} ${infoKnopf('einschlafzeit')}</h2>
-      <p class="leise klein">${esc(t('verlauf.zusammenhang_text'))}</p>
-      ${zusammenhangDiagramm(gruppen)}
-      ${satz}
-    </section>
-
-    <section class="karte" aria-labelledby="v-tage">
-      <h2 id="v-tage">${esc(t('verlauf.letzte_tage_titel'))}</h2>
-      ${absaetze(t('verlauf.letzte_tage_text'), 'leise klein')}
-      ${letzteTage(tage)}
-    </section>
-
-    <section class="karte">
-      <button class="knopf knopf-zweit" data-aktion="tabelle" aria-expanded="${tabelleOffen}">
-        ${esc(tabelleOffen ? t('verlauf.tabelle_verbergen') : t('verlauf.tabelle_zeigen'))}
-      </button>
-      ${tabelleOffen ? `<p class="leise klein tabelle-text">${esc(t('verlauf.tabelle_text'))}</p>${tabelle(wochen)}` : ''}
-    </section>
-    <div class="tipp" role="tooltip" hidden></div>`;
-
-  binde(wurzel);
+  zeigeSeiten(wurzel, seiten, {
+    schluessel: bearbeite ? 'verlauf-notiz' : 'verlauf',
+    start: ctx.start,
+    zurueck: bearbeite ? { text: t('notizen.abbrechen'), aktion: () => { verlassen(); ctx.zeichne(); } } : undefined,
+  });
+  wurzel.insertAdjacentHTML('beforeend', '<div class="tipp" role="tooltip" hidden></div>');
+  binde(wurzel, ctx);
 }
 
-function binde(wurzel) {
+function binde(wurzel, ctx) {
   const tipp = $('.tipp', wurzel);
   const zeigeTipp = (ziel) => {
     const r = ziel.getBoundingClientRect();
@@ -339,7 +407,7 @@ function binde(wurzel) {
     const breite = tipp.offsetWidth;
     const links = Math.max(8, Math.min(basis.width - breite - 8, r.left - basis.left + r.width / 2 - breite / 2));
     tipp.style.left = `${links}px`;
-    tipp.style.top = `${r.top - basis.top - tipp.offsetHeight - 8}px`;
+    tipp.style.top = `${Math.max(4, r.top - basis.top - tipp.offsetHeight - 8)}px`;
   };
   wurzel.onpointerover = (e) => {
     const ziel = e.target.closest('[data-tipp]');
@@ -356,11 +424,57 @@ function binde(wurzel) {
   wurzel.onclick = (e) => {
     const ziel = e.target.closest('[data-tipp]');
     if (ziel) { zeigeTipp(ziel); return; }
-    if (e.target.closest('[data-aktion="tabelle"]')) {
-      tabelleOffen = !tabelleOffen;
-      zeige(wurzel);
-      return;
-    }
     tipp.hidden = true;
+    const knopf = e.target.closest('[data-aktion]');
+    if (!knopf) return;
+    switch (knopf.dataset.aktion) {
+      case 'notiz-bearbeiten':
+        bearbeite = knopf.dataset.id;
+        loeschfrage = false;
+        ctx.zeichne();
+        break;
+      case 'notiz-abbrechen':
+        verlassen();
+        ctx.zeichne();
+        break;
+      case 'notiz-speichern': {
+        const text = wurzel.querySelector('[name="notiz"]').value.trim();
+        if (!text) {
+          loeschfrage = true;
+          ctx.zeichne();
+          return;
+        }
+        setzeNotiz(bearbeite, text);
+        verlassen();
+        merkeSeite('verlauf', 'notizen');
+        ctx.zeichne();
+        toast(t('notizen.gespeichert'));
+        break;
+      }
+      case 'notiz-loeschen':
+        loeschfrage = true;
+        ctx.zeichne();
+        break;
+      case 'notiz-nein':
+        loeschfrage = false;
+        ctx.zeichne();
+        break;
+      case 'notiz-weg': {
+        const rueckgaengig = setzeNotiz(bearbeite, '');
+        verlassen();
+        merkeSeite('verlauf', 'notizen');
+        ctx.zeichne();
+        toast(t('notizen.geloescht'), '', {
+          text: t('notizen.rueckgaengig'),
+          dauer: 5000,
+          fn: () => {
+            rueckgaengig();
+            ctx.zeichne();
+            toast(t('notizen.wieder_da'));
+          },
+        });
+        break;
+      }
+    }
   };
 }

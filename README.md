@@ -69,7 +69,9 @@ Wenn dein Anbieter keine Cronjobs hat, geht das kostenlos über einen Dienst wie
 
 So verhalten sich die Erinnerungen:
 
-- Es kommen höchstens zwei am Tag, eine morgens und eine abends.
+- Es kommt eine Erinnerung morgens und eine abends (Grundeinstellung 08:00 und 20:30 Uhr, in der App unter „Mehr“ änderbar).
+- Während des Experiments „Mittags kurz innehalten“ kommt zusätzlich eine Erinnerung am Mittag, sonst nie.
+- Wer in der App auf „Später erinnern“ tippt, bekommt eine Stunde später genau eine weitere Erinnerung.
 - Ist der Eintrag schon gemacht, kommt keine Erinnerung.
 - Ist die eingestellte Uhrzeit länger als 90 Minuten vorbei, wird nichts nachgeschickt. Es gibt also nie eine Nachfrage.
 
@@ -84,7 +86,9 @@ Die Seite muss über `https://` erreichbar sein, sonst lässt sie sich nicht ins
 
 ## Updates
 
-Die App holt sich neue Fassungen von selbst. Lade geänderte Dateien einfach hoch. Wenn du an `sw.js` oder an der Liste der Dateien etwas änderst, erhöhe die Nummer in `CACHE_NAME` in `sw.js` und `VERSION` in `js/version.js`. Die neue Fassung wird dann still geladen, sobald die App das nächste Mal im Hintergrund war.
+Jedes Update geht in beide Ordner auf dem Server: `/emona-leicht/` und `/emona-leicht-anemone/`. Die `config.php` bleibt dabei in jedem Ordner unberührt. Jede Fassung hat ihren eigenen Zugangscode, ihre eigenen Daten und einen eigenen Cronjob. Auch auf dem Handy liegen die Daten der beiden Fassungen getrennt.
+
+Die App holt sich neue Fassungen von selbst. Lade geänderte Dateien einfach hoch. Wenn du an `sw.js` oder an der Liste der Dateien etwas änderst, erhöhe `VERSION` in `sw.js` und `VERSION` in `js/version.js`. Die neue Fassung wird dann still geladen, sobald die App das nächste Mal im Hintergrund war.
 
 ## Texte und Inhalte ändern
 
@@ -102,7 +106,7 @@ Die wichtigsten Bereiche der Inhaltsdatei:
 | `regal` | Fächer und Waren des Abendregals |
 | `belohnungen` | Punkte für Freude-Plätze, Pausen und gelandete Abende |
 | `erfolge` | kleine Erfolge mit Art, Anzahl und Text |
-| `erinnerungen` | Titel und Text der beiden Erinnerungen |
+| `erinnerungen` | Titel und Text der Erinnerungen (morgens, mittags, abends, später) |
 
 ## Rückblicke, Fragen und Info-Texte
 
@@ -112,9 +116,23 @@ Die wichtigsten Bereiche der Inhaltsdatei:
 
 So wählt die App aus: Der erste Rückblick ist zum Hineinfinden und fragt nach dem Kaffee-Experiment. Ab dem zweiten Rückblick kommen Fragen zum Wahrnehmen. Vertiefende Fragen erscheinen erst, wenn schon mindestens vier Fragen beantwortet wurden. Eine Frage kommt frühestens nach zwei weiteren Rückblicken wieder.
 
-**Info-Texte:** Unter `infos` stehen die Hintergrundtexte zu den kleinen „i“-Zeichen. Alle sind mit `"pruefung": "zu prüfen"` markiert und haben Quellen zum Nachlesen. Bitte vor dem Einsatz im Kurs durchsehen. Ist ein Text geprüft, kann der Eintrag zum Beispiel auf `"geprüft am 1. November 2026"` geändert werden.
+**Info-Texte:** Unter `infos` stehen die Hintergrundtexte zu den kleinen „i“-Zeichen. Alle haben Quellen zum Nachlesen und sind mit `"pruefung": "geprüft am 25.10.2026"` markiert. Wird ein Text geändert, sollte auch dieses Datum angepasst werden.
 
 **Beobachtungen zum Experiment:** Jede Beobachtung ist ein eigenes Dokument (`beobachtung:2026-10-23-…`) mit Datum. Frühere Monatsnotizen aus Version 1.1 werden beim ersten Start einmalig als Beobachtung mit dem Datum dieses Tages übernommen (`beobachtung:uebernommen-2026-10`). Die alte Notiz bleibt zusätzlich im Experiment gespeichert.
+
+## Neu in Version 1.3.0
+
+**Kennenlernen:** Zehn Eingangsfragen, eine pro Seite (`eingangsfragen` in der Inhaltsdatei). Die Antworten liegen im Dokument `profil`. Wer „noch nicht darüber nachgedacht“ wählt, wird nach dem dritten Rückblick noch einmal behutsam gefragt, höchstens eine Frage pro Rückblick und danach nur noch ein weiteres Mal. „Möchte ich nicht sagen“ wird nie wieder gefragt. Wer die App schon nutzt, bekommt die Fragen einmal mit „Jetzt“ und „Später“ angeboten.
+
+**Gesundheitsangaben:** Die zehnte Frage betrifft Gesundheitsdaten (Art. 9 DSGVO). Vorher erscheint eine Einwilligung mit „Ich stimme zu“ und „Frage überspringen“. Die Antworten liegen getrennt im Dokument `gesundheit`, nur auf dem Handy und auf dem Server der jeweiligen Fassung. Unter „Mehr“ → „Meine Angaben ansehen und löschen“ lässt sich alles ansehen, ändern, die Einwilligung zurücknehmen oder alles löschen.
+
+**Experimente:** Zwölf Experimente stehen unter `experimente.liste`. Die App schlägt genau eines vor, passend zu den Antworten. Ein eigenes Experiment ist ebenso möglich (Wörter für den sanften Hinweis stehen unter `verbotsWoerter`). Ein Experiment läuft einen Monat ab dem Tag, an dem es angenommen wurde (Dokument `versuch`, frühere in `versuche`).
+
+**Spiele:** Der Abend hat zwei Bereiche: „Zum Runterkommen“ (Abendregal) und „Zum Knobeln“ (Wollfäden und Bildpaare). Punkte liegen im Dokument `spiele`.
+
+**Notizen:** Beobachtungen, Körper-Notizen und Antworten lassen sich im Verlauf auf der Seite „Notizen“ bearbeiten und löschen, mit Rückfrage und fünf Sekunden „Rückgängig“.
+
+**Seiten statt Scrollen:** Jede Ansicht zeigt immer eine Bildschirmseite. Weiter geht es mit „Weiter“, mit Wischen oder über die Punkte.
 
 ## Export für die Monatsauswertung
 
@@ -153,7 +171,14 @@ Der Aufbau ist offen für Erweiterungen:
 | `js/info.js` | Info-Zeichen und Info-Fenster |
 | `js/erinnerung.js` | Anmeldung für Erinnerungen |
 | `js/export.js` | Export als CSV und JSON |
-| `js/ansichten/*.js` | die Ansichten Heute, Verlauf, Freude, Abend, Mehr, Rückblick und die Begrüßung |
+| `js/ablage.js` | getrennter Speicher pro Fassung auf dem Handy |
+| `js/seiten.js` | Aufteilung in Bildschirmseiten mit Weiter, Zurück, Wischen und Punkten |
+| `js/profil.js` | Eingangsfragen, Gesundheitsangaben, Einwilligung |
+| `js/experimente.js` | Auswahl und Start der Experimente |
+| `js/notizen.js` | Notizen bearbeiten und löschen |
+| `js/wollfaeden.js` | das Spiel Wollfäden |
+| `js/bildpaare.js` | das Spiel Bildpaare |
+| `js/ansichten/*.js` | die Ansichten Heute, Verlauf, Freude, Abend, Mehr, Rückblick, Kennenlernen, Experiment, Meine Angaben und die Begrüßung |
 | `sw.js` | Offline-Betrieb, Updates und Anzeige der Erinnerungen |
 | `api/index.php` | Schnittstelle: Code prüfen, Abgleich, Export, Erinnerungs-Anmeldung |
 | `api/erinnerung.php` | verschickt die Erinnerungen (Cronjob) |

@@ -1,7 +1,8 @@
 // Sanfte Erinnerungen über Web-Push. Der Server (api/erinnerung.php) verschickt höchstens zwei am Tag.
 
 import { api, geraetDaten } from './speicher.js';
-import { setzeEinstellungen } from './daten.js';
+import { setzeEinstellungen, einstellungen } from './daten.js';
+import { mittagsErinnerungAktiv } from './experimente.js';
 
 export function unterstuetzt() {
   return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
@@ -51,5 +52,22 @@ export async function ausschalten() {
     }
   } catch {
     /* Ohne Abo ist nichts zu tun. */
+  }
+}
+
+// Legt die Erinnerungszeiten für den Service Worker ab. Er erkennt daran, welche Erinnerung gerade kommt.
+export async function merkeErinnerungszeiten() {
+  if (!('caches' in window)) return;
+  const e = einstellungen();
+  const zeiten = {
+    morgen: e.erinnerungMorgen,
+    abend: e.erinnerungAbend,
+    mittag: mittagsErinnerungAktiv() ? e.erinnerungMittag : null,
+  };
+  try {
+    const ablage = await caches.open('emona-zeiten');
+    await ablage.put(new URL('erinnerungszeiten.json', location.href).href, new Response(JSON.stringify(zeiten), { headers: { 'Content-Type': 'application/json' } }));
+  } catch {
+    /* Ohne Zwischenspeicher wählt der Service Worker nach der Uhrzeit. */
   }
 }

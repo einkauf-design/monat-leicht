@@ -1,7 +1,8 @@
 // Ansicht „Freude“: die eigene Freude-Liste bearbeiten und Freude-Plätze für heute wählen.
 
 import { t, inhalt } from '../inhalte.js';
-import { esc, absaetze, $ } from '../util.js';
+import { esc, $ } from '../util.js';
+import { zeigeSeiten, textBloecke, merkeSeite } from '../seiten.js';
 import { infoKnopf } from '../info.js';
 import {
   freudeListe, speichereFreude, neueFreude, wechsleFreudePlatz, tag, heuteKey, freudeZaehler,
@@ -21,7 +22,7 @@ export function zeige(wurzel, ctx) {
     .map((f) => {
       if (bearbeiten) {
         return `
-          <li class="freude-zeile bearbeiten" data-id="${esc(f.id)}">
+          <div class="freude-zeile bearbeiten" data-id="${esc(f.id)}">
             <button class="symbol-wahl" data-aktion="symbol" aria-label="${esc(t('freude.symbol_wechseln'))}">${esc(f.symbol || '💛')}</button>
             <input class="freude-eingabe" data-feld="titel" type="text" value="${esc(f.titel)}" maxlength="80" aria-label="${esc(t('freude.titel_aendern'))}">
             <label class="schalter-klein">
@@ -29,12 +30,12 @@ export function zeige(wurzel, ctx) {
               <span>${esc(t('freude.pause'))}</span>
             </label>
             <button class="knopf-text leise-knopf" data-aktion="loeschen">${esc(t('freude.loeschen'))}</button>
-          </li>`;
+          </div>`;
       }
       const istPlatz = plaetze.has(f.id);
       const anzahl = zaehler[f.id] || 0;
       return `
-        <li class="freude-zeile ${istPlatz ? 'ist-platz' : ''}">
+        <div class="freude-zeile ${istPlatz ? 'ist-platz' : ''}">
           <button class="platz-wahl" data-aktion="platz" data-id="${esc(f.id)}" role="switch" aria-checked="${istPlatz}" aria-label="${esc(f.titel)}. ${esc(t('freude.heute_kurz'))}.">
             <span class="platz-kreis" aria-hidden="true">${genutzt.has(f.id) ? '★' : istPlatz ? '✓' : ''}</span>
           </button>
@@ -44,34 +45,35 @@ export function zeige(wurzel, ctx) {
             <span class="freude-info">
               ${f.pause ? `<span class="marke">🍃 ${esc(t('freude.pause'))}</span>` : ''}
               ${anzahl ? `<span class="marke">${esc(t(anzahl === 1 ? 'freude.zaehler_eins' : 'freude.zaehler', { anzahl }))}</span>` : ''}
+              ${istPlatz ? `<span class="heute-marke">${esc(t('freude.heute'))}</span>` : ''}
             </span>
           </span>
-          ${istPlatz ? `<span class="heute-marke">${esc(t('freude.heute'))}</span>` : ''}
-        </li>`;
+        </div>`;
     })
-    .join('');
+    ;
 
-  wurzel.innerHTML = `
-    <header class="seiten-kopf">
-      <h1>${esc(t('freude.titel'))} ${infoKnopf('freude')}</h1>
-      ${absaetze(t('freude.einleitung'), 'leise')}
-    </header>
-    <section class="karte">
-      <div class="karte-kopf">
-        <p class="leise klein">${esc(t('freude.pause_hilfe'))}</p>
-        <button class="knopf-text" data-aktion="bearbeiten">${esc(bearbeiten ? t('freude.fertig') : t('freude.bearbeiten'))}</button>
-      </div>
-      <ul class="freude-liste">${eintraege}</ul>
-    </section>
-    <section class="karte">
-      <form class="formular neu-freude" data-form="neu">
-        <label class="feld">
+  zeigeSeiten(wurzel, [
+    {
+      id: 'liste',
+      bloecke: [
+        `<h1>${esc(t('freude.titel'))} ${infoKnopf('freude')}</h1>`,
+        ...textBloecke(t('freude.einleitung'), 'leise klein'),
+        ...eintraege,
+        `<button class="knopf-text" data-aktion="bearbeiten">${esc(bearbeiten ? t('freude.fertig') : t('freude.bearbeiten'))}</button>`,
+      ],
+    },
+    {
+      id: 'neu',
+      bloecke: [
+        `<p class="leise klein">${esc(t('freude.pause_hilfe'))}</p>`,
+        `<label class="feld">
           <span class="feld-name">${esc(t('freude.neu_label'))}</span>
           <input name="titel" type="text" maxlength="80" placeholder="${esc(t('freude.neu_platzhalter'))}">
-        </label>
-        <button class="knopf knopf-haupt" type="submit">${esc(t('freude.hinzufuegen'))}</button>
-      </form>
-    </section>`;
+        </label>`,
+        `<button class="knopf knopf-haupt" data-aktion="hinzufuegen">${esc(t('freude.hinzufuegen'))}</button>`,
+      ],
+    },
+  ], { schluessel: 'freude' });
 
   wurzel.onclick = (e) => {
     const ziel = e.target.closest('[data-aktion]');
@@ -80,6 +82,16 @@ export function zeige(wurzel, ctx) {
     if (aktion === 'bearbeiten') {
       if (bearbeiten) speichereBearbeitung(wurzel);
       bearbeiten = !bearbeiten;
+      ctx.zeichne();
+      return;
+    }
+    if (aktion === 'hinzufuegen') {
+      const feld = wurzel.querySelector('[name="titel"]');
+      const titel = feld.value.trim();
+      if (!titel) return;
+      if (bearbeiten) speichereBearbeitung(wurzel);
+      neueFreude(titel, symbole[0] || '💛', true);
+      merkeSeite('freude', 'liste');
       ctx.zeichne();
       return;
     }
@@ -110,15 +122,6 @@ export function zeige(wurzel, ctx) {
     if (bearbeiten && e.target.closest('.freude-zeile')) speichereBearbeitung(wurzel);
   };
 
-  wurzel.onsubmit = (e) => {
-    e.preventDefault();
-    const titel = e.target.titel.value.trim();
-    if (!titel) return;
-    if (bearbeiten) speichereBearbeitung(wurzel);
-    neueFreude(titel, symbole[0] || '💛', true);
-    ctx.zeichne();
-    $('input[name="titel"]', wurzel)?.focus();
-  };
 }
 
 function speichereBearbeitung(wurzel) {

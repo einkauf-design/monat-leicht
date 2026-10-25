@@ -5,7 +5,7 @@ import { t, inhalt } from './inhalte.js';
 import { esc, mischen, rattern, sternchen, $, $$, wenigBewegung } from './util.js';
 import { regalStand, aendereRegal } from './daten.js';
 
-export function starteRegal(wurzel, { beenden }) {
+export function starteRegal(wurzel, { beenden, nachSpiel, ohneAtem }) {
   const regeln = inhalt('regal', {});
   let runde = null;
   let anzeige = { sterne: regalStand().sterne, punkte: regalStand().punkte };
@@ -79,8 +79,9 @@ export function starteRegal(wurzel, { beenden }) {
           <div class="grosser-stern" aria-hidden="true">★</div>
           <h2>${esc(t('regal.fertig_titel', { nummer: runde.nummer }))}</h2>
           ${ruhigeHand ? `<p class="leise">${esc(t('regal.ruhige_hand'))}</p>` : ''}
-          <div class="atem-kreis" aria-hidden="true"><span>${esc(t('regal.atem'))}</span></div>
-          <p>${esc(t('regal.fertig_text'))}</p>
+          ${ohneAtem
+            ? `<p>${esc(t('regal.pause_ohne_atem'))}</p>`
+            : `<div class="atem-kreis" aria-hidden="true"><span>${esc(t('regal.atem'))}</span></div><p>${esc(t('regal.fertig_text'))}</p>`}
           <div class="knopf-reihe zentriert">
             <button class="knopf knopf-haupt" data-aktion="naechstes">${esc(t('regal.naechstes'))}</button>
             <button class="knopf knopf-zweit" data-aktion="genug">${esc(t('regal.genug'))}</button>
@@ -159,6 +160,7 @@ export function starteRegal(wurzel, { beenden }) {
             <div class="regal-pause">
               <div class="grosser-stern mond" aria-hidden="true">🌙</div>
               <p>${esc(t('regal.gute_nacht'))}</p>
+              <p class="leise">${esc(nachSpiel)}</p>
               <button class="knopf knopf-zweit" data-aktion="zurueck">${esc(t('regal.zurueck'))}</button>
             </div>
           </div>`;

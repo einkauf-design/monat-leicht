@@ -7,7 +7,9 @@
  * oder auf der Kommandozeile:
  *   php erinnerung.php
  *
- * Sie verschickt höchstens eine Morgen- und eine Abenderinnerung pro Tag.
+ * Sie verschickt höchstens eine Morgen- und eine Abenderinnerung pro Tag. Während des Experiments
+ * „Eine sanfte Ess-Erinnerung am Mittag“ kommt eine Mittagserinnerung dazu. Wer in der App
+ * ausdrücklich „Erinnere mich in einer Stunde noch einmal“ wählt, bekommt genau eine weitere.
  * Ist die Uhrzeit schon länger als 90 Minuten vorbei, wird nichts nachgeschickt.
  * Ist der Eintrag schon gemacht, wird gar nicht erst erinnert.
  */
@@ -32,22 +34,40 @@ $ergebnis = emona_mit_daten(function (array &$daten) {
     if (empty($einstellungen['erinnerungenAn']) || empty($daten['system']['abos'])) {
         return ['gesendet' => [], 'hinweis' => 'Die Erinnerungen sind ausgeschaltet, oder es ist noch kein Gerät angemeldet.'];
     }
+    $gesendet = [];
+
+    // „Später erinnern“: genau eine weitere Erinnerung, um die ausdrücklich gebeten wurde.
+    $spaeter = $daten['system']['spaeter'] ?? null;
+    if ($spaeter && time() >= (int) $spaeter['um']) {
+        unset($daten['system']['spaeter']);
+        if (time() < (int) $spaeter['um'] + EMONA_FENSTER_MINUTEN * 60) {
+            foreach ($daten['system']['abos'] as $abo) {
+                $gesendet[] = ['art' => 'spaeter', 'status' => emona_push_senden($abo['endpoint'], 'spaeter')];
+            }
+        }
+    }
 
     $heute = date('Y-m-d');
     $jetztMinuten = (int) date('G') * 60 + (int) date('i');
     $tag = $daten['docs']['tag:' . $heute]['wert'] ?? [];
-    $gesendet = [];
+    $versuch = $daten['docs']['versuch']['wert'] ?? [];
+    $mittagAktiv = ($versuch['erinnerung'] ?? '') === 'mittag'
+        && ($versuch['start'] ?? '9999') <= $heute && $heute < ($versuch['ende'] ?? '0000');
 
     $arten = [
         'morgen' => [
-            'uhrzeit' => $einstellungen['erinnerungMorgen'] ?? '07:30',
+            'uhrzeit' => $einstellungen['erinnerungMorgen'] ?? '08:00',
             'schon_erledigt' => isset($tag['gewicht']) || isset($tag['einschlafzeit']) || isset($tag['schlafdauer']),
         ],
         'abend' => [
-            'uhrzeit' => $einstellungen['erinnerungAbend'] ?? '21:00',
+            'uhrzeit' => $einstellungen['erinnerungAbend'] ?? '20:30',
             'schon_erledigt' => isset($tag['anspannung']),
         ],
     ];
+    // Die dritte Erinnerung gibt es nur, solange das Experiment mit der Ess-Erinnerung am Mittag läuft.
+    if ($mittagAktiv) {
+        $arten['mittag'] = ['uhrzeit' => $einstellungen['erinnerungMittag'] ?? '12:30', 'schon_erledigt' => false];
+    }
 
     foreach ($arten as $art => $info) {
         if (!preg_match('/^(\d{1,2}):(\d{2})$/', (string) $info['uhrzeit'], $teile)) {

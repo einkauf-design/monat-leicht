@@ -5,12 +5,15 @@
 // Änderungen werden sofort lokal gespeichert und später an den Server geschickt.
 
 import { t } from './inhalte.js';
+import { ablageName, uebernimmAlteAblage } from './ablage.js';
 
-const LS_DOCS = 'emona.docs';
-const LS_AUSSTEHEND = 'emona.ausstehend';
-const LS_SEIT = 'emona.seit';
-const LS_GERAET = 'emona.geraet';
-const LS_ZULETZT = 'emona.zuletzt';
+uebernimmAlteAblage();
+
+const LS_DOCS = ablageName('docs');
+const LS_AUSSTEHEND = ablageName('ausstehend');
+const LS_SEIT = ablageName('seit');
+const LS_GERAET = ablageName('geraet');
+const LS_ZULETZT = ablageName('zuletzt');
 
 function laden(schluessel, ersatz) {
   try {

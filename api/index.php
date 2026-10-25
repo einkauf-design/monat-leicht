@@ -10,6 +10,7 @@
  *   vapid          – liefert den öffentlichen Schlüssel für Erinnerungen
  *   abo            – { abo: PushSubscription } speichert ein Gerät für Erinnerungen
  *   abo_loeschen   – { endpunkt } entfernt ein Gerät
+ *   spaeter        – { art } bittet um genau eine weitere Erinnerung in einer Stunde
  *   export         – { format: "json"|"csv", monat?: "2026-10" } liefert die Einträge als Datei
  */
 
@@ -50,6 +51,14 @@ switch ($anfrage['aktion'] ?? '') {
                 $daten['system']['abos'],
                 fn ($abo) => ($abo['endpoint'] ?? '') !== $endpunkt
             ));
+        });
+        emona_antwort(['ok' => true]);
+
+    case 'spaeter':
+        // Nur auf ausdrücklichen Wunsch: genau eine weitere Erinnerung in einer Stunde.
+        $art = preg_match('/^[a-z]{3,12}$/', (string) ($anfrage['art'] ?? '')) ? $anfrage['art'] : 'spaeter';
+        emona_mit_daten(function (array &$daten) use ($art) {
+            $daten['system']['spaeter'] = ['um' => time() + 3600, 'art' => $art];
         });
         emona_antwort(['ok' => true]);
 

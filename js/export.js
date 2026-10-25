@@ -75,7 +75,11 @@ export function exportiereJson(monat = '') {
       })),
     experimente,
     freudeListe: freudeListe(),
-    sammlung: { ...gesamt(), regal: regalStand(), erfolge: lies('erfolge', {}) },
+    experimentAktuell: lies('versuch', null),
+    fruehereExperimente: lies('versuche', []),
+    angaben: lies('profil', null),
+    gesundheit: lies('gesundheit', null),
+    sammlung: { ...gesamt(), regal: regalStand(), spiele: lies('spiele', {}), erfolge: lies('erfolge', {}) },
     einstellungen: einstellungen(),
   };
   herunterladen(`emona-${monat || 'alle'}-${datumKey()}.json`, JSON.stringify(daten, null, 2), 'application/json');

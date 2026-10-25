@@ -9,9 +9,11 @@ import { logischerTag, monatKey, neueId, jetztZeit } from './util.js';
 const STANDARD_EINSTELLUNGEN = {
   name: '',
   abendmodusAb: '21:00',
-  erinnerungMorgen: '07:30',
-  erinnerungAbend: '21:00',
+  erinnerungMorgen: '08:00',
+  erinnerungAbend: '20:30',
+  erinnerungMittag: '12:30',
   erinnerungenAn: false,
+  wiegetag: 1,
 };
 
 export function einstellungen() {
@@ -156,13 +158,71 @@ export function beobachtungen() {
 
 export function speichereBeobachtung(text) {
   const datum = heuteKey();
-  const ex = experiment(datum.slice(0, 7));
+  const ex = experimentJetzt() || experiment(datum.slice(0, 7));
   schreibe(`beobachtung:${datum}-${neueId()}`, {
     datum,
     zeit: jetztZeit(),
     text,
-    monat: ex.monat,
+    monat: datum.slice(0, 7),
     experiment: ex.titel,
+  });
+}
+
+/* ---------- Laufendes Experiment (ab Version 1.3 einen Monat ab Zustimmung) ---------- */
+
+export function plusMonat(datum) {
+  const [j, m, t] = datum.split('-').map(Number);
+  const d = new Date(j, m, Math.min(t, new Date(j, m + 1, 0).getDate()), 12);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+export function experimentJetzt() {
+  return lies('versuch', null);
+}
+
+export function fruehereExperimente() {
+  return lies('versuche', []);
+}
+
+export function experimentVorbei(v = experimentJetzt()) {
+  return Boolean(v && v.ende && v.ende <= heuteKey());
+}
+
+export function starteExperiment(daten) {
+  const alt = experimentJetzt();
+  if (alt) schreibe('versuche', [...fruehereExperimente(), { id: alt.id, titel: alt.titel, start: alt.start, ende: heuteKey() }]);
+  const start = heuteKey();
+  schreibe('versuch', { ...daten, start, ende: plusMonat(start) });
+}
+
+export function verlaengereExperiment() {
+  aendere('versuch', (v) => {
+    v.ende = plusMonat(heuteKey());
+    delete v.rueckblickNummer;
+  });
+}
+
+export function aendereExperiment(fn) {
+  aendere('versuch', fn, {});
+}
+
+// Wer schon vor Version 1.3 ein Experiment hatte, behält es: Es läuft ab dem Monatsersten weiter.
+export function uebernimmAltesExperiment() {
+  if (lies('versuch')) return;
+  const monate = schluesselMit('experiment:').map((k) => k.slice(11)).sort();
+  const nutztApp = schluesselMit('tag:').length > 0 || monate.length > 0;
+  if (!nutztApp) return;
+  const monat = monate.length ? monate[monate.length - 1] : monatKey();
+  const alt = experiment(monat);
+  const katalog = inhalt('experimente.liste', []).find((e) => e.titel === alt.titel);
+  const start = `${monat}-01`;
+  schreibe('versuch', {
+    id: katalog ? katalog.id : 'eigen',
+    titel: alt.titel,
+    beschreibung: alt.beschreibung || '',
+    start,
+    ende: plusMonat(start) > heuteKey() ? plusMonat(start) : plusMonat(heuteKey().slice(0, 7) + '-01'),
+    uebernommen: true,
   });
 }
 
@@ -202,4 +262,8 @@ export function eintragsTage() {
   const tage = new Set(alleTage().filter(hatEintrag).map((t) => t.datum));
   for (const b of beobachtungen()) tage.add(b.datum);
   return [...tage].sort();
+}
+
+export function schluesselTage() {
+  return schluesselMit('tag:').map((k) => k.slice(4)).sort();
 }

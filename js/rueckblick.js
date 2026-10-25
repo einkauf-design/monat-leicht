@@ -5,7 +5,8 @@
 
 import { lies, schreibe, aendere, schluesselMit } from './speicher.js';
 import { inhalt, t } from './inhalte.js';
-import { tag, eintragsTage, beobachtungen, experiment, heuteKey } from './daten.js';
+import { tag, eintragsTage, beobachtungen, experiment, heuteKey, experimentJetzt, fruehereExperimente, experimentVorbei, aendereExperiment } from './daten.js';
+import { profilSignale, ohneKaffee, themenGewichte, gewichtSichtbar, eingangsfragen, nachfrageMoeglich, merkeNachfrage } from './profil.js';
 import { mittelwert, einschlafMinuten, minutenZuZeit, zahl, plusTage, ausKey } from './util.js';
 
 const PRO_RUECKBLICK = 7;
@@ -72,8 +73,19 @@ export function pruefeRueckblicke() {
     };
     neu.push(doc);
   }
+  // Ist das Experiment einen Monat gelaufen, fragt der neueste Rückblick, was sie behalten möchte.
+  const letzter = neu[neu.length - 1];
+  const versuch = experimentJetzt();
+  if (letzter && versuch && experimentVorbei(versuch) && !versuch.rueckblickNummer) {
+    const frage = { id: 'experiment-behalten', typ: 'experiment', text: t('experimentwahl.behalten_frage', { titel: versuch.titel }) };
+    if (letzter.fragen.length >= 3) letzter.fragen[letzter.fragen.length - 1] = frage;
+    else letzter.fragen.push(frage);
+    letzter.experimentEnde = { id: versuch.id, titel: versuch.titel };
+    aendereExperiment((v) => { v.rueckblickNummer = letzter.nummer; });
+  }
   neu.forEach((doc, i) => {
     if (i < neu.length - 1) doc.gelesen = true;
+    for (const f of doc.fragen) if (f.typ === 'eingang') merkeNachfrage(f.eingangsfrage, doc.nummer);
     schreibe(`rueckblick:${doc.nummer}`, doc);
   });
   return neu;
@@ -165,7 +177,7 @@ export function auswertung(rb) {
     saetze.push(satz);
   }
   if (k.freude) saetze.push(k.freude === 1 ? t('rueckblick.freude_eins') : t('rueckblick.freude', { anzahl: k.freude }));
-  if (k.gewicht !== null) saetze.push(`${t('rueckblick.gewicht', { wert: zahl(k.gewicht, 1) })} ${t('rueckblick.gewicht_hinweis')}`);
+  if (k.gewicht !== null && gewichtSichtbar()) saetze.push(`${t('rueckblick.gewicht', { wert: zahl(k.gewicht, 1) })} ${t('rueckblick.gewicht_hinweis')}`);
   if (k.taille !== null) saetze.push(t('rueckblick.taille', { wert: zahl(k.taille, 1).replace(/,0$/, '') }));
   if (k.beobachtungen.length) {
     let satz = k.beobachtungen.length === 1
@@ -192,7 +204,7 @@ export function signale(bisNummer = Infinity) {
     if (notiz) texte.push(notiz);
   }
   const alles = texte.join(' \n ').toLowerCase();
-  const gefunden = new Set();
+  const gefunden = profilSignale();
   for (const [name, woerter] of Object.entries(inhalt('signale', {}))) {
     if (name.startsWith('_') || !Array.isArray(woerter)) continue;
     if (woerter.some((w) => alles.includes(w.toLowerCase()))) gefunden.add(name);
@@ -260,6 +272,9 @@ function passt(bed, kontext) {
       case 'koerperNotizen':
         if (!kontext.koerperNotizen) return null;
         break;
+      case 'eingangOffen':
+        // Nachfragen zu offenen Eingangsfragen wählt die App gesondert aus.
+        return null;
       default:
         return null; // Unbekannte Bedingungen lieber auslassen.
     }
@@ -298,16 +313,19 @@ export function waehleFragen(nummer, tage, frueher = rueckblicke()) {
     k,
     signale: signale(nummer),
     beantwortet,
-    experimente: [...monate].map((m) => (experiment(m).titel || '').toLowerCase()),
+    experimente: experimentTitel(tage),
     koerperNotizen: schluesselMit('tag:').some((key) => (lies(key, {}).koerper || '').trim()),
   };
   const stufe = stufeFuer(nummer, antwortenBisher);
   const pause = regeln.pauseNachFrage ?? 2;
+  const gewichte = themenGewichte();
+  const keinKaffee = ohneKaffee();
 
   const kandidaten = [];
   for (const frage of inhalt('fragen', [])) {
     const s = STUFEN.indexOf(frage.stufe) + 1;
-    if (!s || s > stufe) continue;
+    if (!s || s > stufe || frage.typ === 'eingang') continue;
+    if (keinKaffee && frage.thema === 'kaffee') continue;
     if ((gestellt[frage.id] || []).some((n) => nummer - n <= pause)) continue;
     const p = passt(frage.bedingungen, kontext);
     if (!p) continue;
@@ -318,6 +336,7 @@ export function waehleFragen(nummer, tage, frueher = rueckblicke()) {
     wert += p.treffer * 1.5;
     if (p.signal) wert += 4;
     if (nummer === 1 && frage.thema === 'kaffee' && frage.bedingungen?.experimentEnthaelt) wert += 4;
+    wert += gewichte[frage.thema] || 0;
     // Schon gestellte Fragen treten zurück, dürfen nach einer Weile aber wiederkommen.
     wert -= (gestellt[frage.id] || []).length * 2;
     if (beantwortet.has(frage.id)) wert -= 2;
@@ -338,7 +357,31 @@ export function waehleFragen(nummer, tage, frueher = rueckblicke()) {
     if (gewaehlt.length >= anzahl) break;
     if (!gewaehlt.includes(frage)) gewaehlt.push(frage);
   }
-  return gewaehlt.map((f) => ({ id: f.id, text: f.text, stufe: f.stufe, thema: f.thema }));
+  const ergebnis = gewaehlt.map((f) => ({ id: f.id, text: f.text, stufe: f.stufe, thema: f.thema }));
+
+  // Höchstens eine offene Eingangsfrage pro Rückblick, sie nimmt den letzten Platz ein.
+  const offen = eingangsfragen().find((f) => nachfrageMoeglich(f.nummer, nummer, kontext.signale));
+  if (offen && (regeln.nachfrageProRueckblick ?? 1) > 0) {
+    const frage = { id: `e-${offen.id}`, text: offen.nachfrage, typ: 'eingang', eingangsfrage: offen.id, thema: 'eingang' };
+    if (ergebnis.length >= anzahl) ergebnis[ergebnis.length - 1] = frage;
+    else ergebnis.push(frage);
+  }
+  return ergebnis;
+}
+
+// Titel aller Experimente, die im Zeitraum eines Rückblicks liefen, klein geschrieben.
+function experimentTitel(tage) {
+  const titel = new Set();
+  const jetzt = experimentJetzt();
+  if (jetzt) titel.add(jetzt.titel);
+  const von = [...tage].sort()[0];
+  for (const v of fruehereExperimente()) if (!von || v.ende >= von) titel.add(v.titel);
+  if (!jetzt) {
+    const monate = new Set(tage.map((d) => d.slice(0, 7)));
+    monate.add(heuteKey().slice(0, 7));
+    for (const m of monate) titel.add(experiment(m).titel);
+  }
+  return [...titel].filter(Boolean).map((x) => x.toLowerCase());
 }
 
 export function frageText(frage) {
