@@ -72,7 +72,8 @@ self.addEventListener('activate', (event) => {
 // Erst das Netz fragen (dann sind Änderungen sofort da), bei langsamer oder fehlender Verbindung den Zwischenspeicher nehmen.
 async function netzZuerst(request) {
   const cache = await caches.open(CACHE_NAME);
-  const ausDemNetz = fetch(request).then((antwort) => {
+  // cache: 'no-cache' umgeht veraltete Dateien im Browser-Zwischenspeicher (Fix 25.10.2026).
+  const ausDemNetz = fetch(request, { cache: 'no-cache' }).then((antwort) => {
     if (antwort.ok) cache.put(request, antwort.clone());
     return antwort;
   });
