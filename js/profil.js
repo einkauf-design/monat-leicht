@@ -1,7 +1,9 @@
 // Profil: Antworten auf die Eingangsfragen und was die App daraus ableitet.
 //
-// Die Antworten auf die Fragen 1 bis 9 liegen im Dokument „profil“.
+// Die Antworten liegen im Dokument „profil“.
 // Die Gesundheitsangaben (Frage 10) liegen getrennt im Dokument „gesundheit“ und nur mit Einwilligung.
+// Dort liegen auch einzelne Antworten anderer Fragen, die etwas über die Gesundheit sagen (Optionen mit „gesundheit“):
+// „Wechseljahre“ zählt als Antwort auf Frage 10, „Fachleute wie Therapie“ liegt unter „extra“.
 // Zurücknehmen der Einwilligung löscht dieses Dokument sofort.
 
 import { lies, schreibe, aendere } from './speicher.js';
@@ -36,7 +38,25 @@ export function hatEinwilligung() {
 
 export function antwort(frageId) {
   if (frageId === 'gesundheit') return gesundheit()?.antworten || [];
-  return profil().antworten[frageId];
+  const wert = profil().antworten[frageId];
+  const frage = eingangsfrage(frageId);
+  const heikel = (frage?.optionen || []).filter((o) => o.gesundheit && gesundheitsWahl(frageId, o));
+  if (!heikel.length) return wert;
+  const liste = Array.isArray(wert) ? wert : wert ? [wert] : [];
+  return [...liste, ...heikel.map((o) => o.id)];
+}
+
+// Ist eine Option, die etwas über die Gesundheit sagt, gewählt? Nur mit Einwilligung gespeichert.
+function gesundheitsWahl(frageId, option) {
+  const g = gesundheit();
+  if (!g?.einwilligung) return false;
+  if (typeof option.gesundheit === 'string') return (g.antworten || []).includes(option.gesundheit);
+  return (g.extra?.[frageId] || []).includes(option.id);
+}
+
+// Optionen, die etwas über die Gesundheit sagen, erscheinen nur mit Einwilligung.
+export function sichtbareOptionen(frage) {
+  return (frage.optionen || []).filter((o) => !o.gesundheit || hatEinwilligung());
 }
 
 export function status(frageId) {
@@ -58,6 +78,33 @@ export function speichereAntwort(frageId, wert, zustand = STATUS.BEANTWORTET, fr
       g.status = zustand;
     }, {});
     return;
+  }
+  // Antworten, die etwas über die Gesundheit sagen, wandern in das Dokument „gesundheit“.
+  const frage = eingangsfrage(frageId);
+  const heikel = (frage?.optionen || []).filter((o) => o.gesundheit);
+  if (heikel.length && (Array.isArray(wert) || zustand !== STATUS.BEANTWORTET)) {
+    const gewaehlt = zustand === STATUS.BEANTWORTET ? wert : [];
+    if (hatEinwilligung()) {
+      aendere('gesundheit', (g) => {
+        for (const o of heikel) {
+          const an = gewaehlt.includes(o.id);
+          if (typeof o.gesundheit === 'string') {
+            const liste = new Set(g.antworten || []);
+            if (an) liste.add(o.gesundheit);
+            else liste.delete(o.gesundheit);
+            g.antworten = [...liste];
+            if (an) g.status = STATUS.BEANTWORTET;
+          } else {
+            g.extra ||= {};
+            const liste = new Set(g.extra[frageId] || []);
+            if (an) liste.add(o.id);
+            else liste.delete(o.id);
+            g.extra[frageId] = [...liste];
+          }
+        }
+      }, {});
+    }
+    if (Array.isArray(wert)) wert = wert.filter((id) => !heikel.some((o) => o.id === id));
   }
   aendere('profil', (p) => {
     p.antworten ||= {};
@@ -95,8 +142,26 @@ export function loescheAlleAngaben() {
 /* ---------- Ablauf ---------- */
 
 // Fragen, die gerade gestellt werden. Frage 5 entfällt ohne Kaffee.
-export function aktiveEingangsfragen() {
-  return eingangsfragen().filter((f) => !(f.nurMitKaffee && ohneKaffee()));
+// Ohne Vertiefung: die Fragen des ersten Kennenlernens. Mit Vertiefung: alle, zum Ansehen und Ändern.
+export function aktiveEingangsfragen({ vertiefung = false } = {}) {
+  return eingangsfragen().filter((f) => !(f.nurMitKaffee && ohneKaffee()) && (vertiefung || !f.vertiefung));
+}
+
+// Die Fragen, die seit Version 1.4 dazugekommen sind („Magst du mir noch etwas mehr erzählen?“).
+export function mehrFragen() {
+  return eingangsfragen().filter((f) => f.mehr);
+}
+
+export function offeneMehrFragen() {
+  const p = profil();
+  return mehrFragen().filter((f) => !p.status[f.id]);
+}
+
+// Einmal sanft anbieten, wer das Kennenlernen schon vor den neuen Fragen gemacht hat.
+export function mehrAnbieten() {
+  const p = profil();
+  if (p.mehrAngeboten && p.mehrAngeboten !== heuteKey()) return false;
+  return kennenlernenBegonnen() && offeneMehrFragen().length > 0;
 }
 
 export function kennenlernenBegonnen() {
@@ -167,13 +232,15 @@ export function profilSignale() {
   return signale;
 }
 
-// Gewichte für Themen in den Rückblicken, abgeleitet aus Frage 1 und Frage 6.
+// Gewichte für Themen in den Rückblicken, abgeleitet aus dem Wunsch, dem Schlaf und den vertiefenden Fragen.
 export function themenGewichte() {
   const regeln = inhalt('fragenRegeln', {});
   const gewichte = {};
-  const wunsch = eingangsfrage('wunsch');
-  for (const [option, themen] of Object.entries(wunsch?.themen || {})) {
-    if (hat('wunsch', option)) for (const thema of themen) gewichte[thema] = (gewichte[thema] || 0) + (regeln.themaGewichtWunsch ?? 2);
+  for (const frage of eingangsfragen()) {
+    const punkte = frage.id === 'wunsch' ? regeln.themaGewichtWunsch ?? 2 : regeln.themaGewichtVertiefung ?? 1;
+    for (const [option, themen] of Object.entries(frage.themen || {})) {
+      if (hat(frage.id, option)) for (const thema of themen) gewichte[thema] = (gewichte[thema] || 0) + punkte;
+    }
   }
   if (['einschlafen', 'aufwachen', 'frueh'].some((o) => hat('schlaf', o))) gewichte.schlaf = (gewichte.schlaf || 0) + (regeln.themaGewichtSchlaf ?? 2);
   return gewichte;
@@ -235,6 +302,16 @@ export function nachfrageMoeglich(nummer, rueckblickNummer, signale) {
   if (rueckblickNummer >= (regeln.nachfrageAbRueckblick ?? 4)) return true;
   // Früher, wenn ein passendes Signal aufgetaucht ist.
   return (frage.signale || []).some((s) => signale.has(s));
+}
+
+// Die nächste Frage zum Vertiefen, die noch nie gestellt wurde. Höchstens eine pro Rückblick, mit Abstand.
+export function naechsteVertiefung(rueckblickNummer) {
+  const regeln = inhalt('fragenRegeln', {});
+  if (rueckblickNummer < (regeln.vertiefungAbRueckblick ?? 2)) return null;
+  const p = profil();
+  const gestellt = mehrFragen().flatMap((f) => p.nachgefragt?.[f.id] || []);
+  if (gestellt.length && rueckblickNummer - Math.max(...gestellt) <= (regeln.vertiefungAbstand ?? 1)) return null;
+  return mehrFragen().find((f) => !p.status[f.id] && !(p.nachgefragt?.[f.id] || []).length && !(f.nurMitKaffee && ohneKaffee())) || null;
 }
 
 export function merkeNachfrage(frageId, rueckblickNummer) {

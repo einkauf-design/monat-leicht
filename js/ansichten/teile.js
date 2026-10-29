@@ -3,7 +3,7 @@
 import { t, inhalt } from '../inhalte.js';
 import { esc, ausKey, zahl, toast, zufall } from '../util.js';
 import { infoKnopf } from '../info.js';
-import { sprunghaft } from '../profil.js';
+import { sprunghaft, sichtbareOptionen } from '../profil.js';
 
 export function datumLang(key) {
   const d = ausKey(key);
@@ -27,7 +27,7 @@ export function bestaetige(text, symbol) {
 // Wählt Zeilen aus einer Liste, die als Knöpfe dargestellt werden (Eingangsfragen, Nachfragen).
 export function auswahlKnoepfe(frage, gewaehlt, aktion = 'option') {
   const liste = Array.isArray(gewaehlt) ? gewaehlt : gewaehlt ? [gewaehlt] : [];
-  return frage.optionen
+  return sichtbareOptionen(frage)
     .map((o) => `<button type="button" class="auswahl" data-aktion="${aktion}" data-frage="${esc(frage.id)}" data-option="${esc(o.id)}" aria-pressed="${liste.includes(o.id)}">${esc(o.text)}</button>`)
     .join('');
 }

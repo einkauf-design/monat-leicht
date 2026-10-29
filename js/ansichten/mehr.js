@@ -125,6 +125,7 @@ export function zeige(wurzel, ctx) {
         `<h2>${esc(t('mehr.kennenlernen_titel'))}</h2>`,
         `<p>${esc(t('mehr.kennenlernen_text'))}</p>`,
         `<a class="knopf knopf-zweit" href="#angaben">${esc(t('angaben.knopf'))}</a>`,
+        `<a class="knopf-text" href="#kennenlernen/mehr">${esc(t('mehr.mehr_erzaehlen'))}</a>`,
         kennenlernenFertig() ? '' : `<a class="knopf-text" href="#kennenlernen">${esc(t('angaben.weitermachen'))}</a>`,
       ],
     },

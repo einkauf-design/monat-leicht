@@ -2,7 +2,8 @@
 
 import { t } from '../inhalte.js';
 import { esc, toast } from '../util.js';
-import { experimentJetzt, verlaengereExperiment, experimentVorbei } from '../daten.js';
+import { experimentJetzt, verlaengereExperiment, experimentVorbei, speichereErkenntnis } from '../daten.js';
+import { erkenntnisSeite } from './rueckblick.js';
 import { infoKnopf } from '../info.js';
 import { rangfolge, katalog, katalogEintrag, starteAusKatalog, starteEigenes, klingtNachVerbot } from '../experimente.js';
 import { zeigeSeiten, merkeSeite, seitenZuruecksetzen, textBloecke } from '../seiten.js';
@@ -13,11 +14,14 @@ let modus = 'vorschlag';
 let wieOft = 0;
 let gewaehlt = null;
 let entwurf = { was: '', wann: '', woran: '' };
+// Wer ein neues Experiment startet, wird vorher einmal gefragt, was sie beim jetzigen herausgefunden hat.
+let wartetAufStart = null;
 
 export function verlassen() {
   modus = 'vorschlag';
   wieOft = 0;
   gewaehlt = null;
+  wartetAufStart = null;
 }
 
 function infoFuer(e) {
@@ -91,11 +95,26 @@ function eigeneSeiten() {
 }
 
 export function zeige(wurzel, ctx) {
-  const gruppen = modus === 'liste' ? [listenSeite()] : modus === 'eigen' ? eigeneSeiten() : [vorschlagSeite()];
+  const gruppen = wartetAufStart
+    ? [erkenntnisSeite(experimentJetzt())]
+    : modus === 'liste' ? [listenSeite()] : modus === 'eigen' ? eigeneSeiten() : [vorschlagSeite()];
   zeigeSeiten(wurzel, gruppen, {
-    schluessel: 'experiment',
-    zurueck: modus === 'vorschlag' ? { text: t('seiten.zurueck'), href: '#heute' } : { text: t('seiten.zurueck'), aktion: () => { modus = 'vorschlag'; ctx.zeichne(); } },
+    schluessel: wartetAufStart ? 'experiment-erkenntnis' : 'experiment',
+    zurueck: modus === 'vorschlag' && !wartetAufStart
+      ? { text: t('seiten.zurueck'), href: '#heute' }
+      : { text: t('seiten.zurueck'), aktion: () => { wartetAufStart = null; modus = 'vorschlag'; ctx.zeichne(); } },
   });
+
+  // Startet sofort, oder fragt zuerst nach der Erkenntnis, wenn ein anderes Experiment läuft und noch keine notiert ist.
+  const starte = (fn) => {
+    const jetzt = experimentJetzt();
+    if (jetzt && !jetzt.erkenntnis?.text && !wartetAufStart) {
+      wartetAufStart = fn;
+      ctx.zeichne();
+      return;
+    }
+    fn();
+  };
 
   const fertig = (text) => {
     verlassen();
@@ -109,10 +128,25 @@ export function zeige(wurzel, ctx) {
     const ziel = e.target.closest('[data-aktion]');
     if (!ziel) return;
     switch (ziel.dataset.aktion) {
-      case 'ja':
-        starteAusKatalog(ziel.dataset.id);
-        fertig(t('experimentwahl.gestartet'));
+      case 'ja': {
+        const id = ziel.dataset.id;
+        starte(() => { starteAusKatalog(id); fertig(t('experimentwahl.gestartet')); });
         break;
+      }
+      case 'erkenntnis-speichern': {
+        const text = wurzel.querySelector('[data-erkenntnis]')?.value.trim();
+        if (text) speichereErkenntnis(text);
+        const weiter = wartetAufStart;
+        wartetAufStart = null;
+        weiter?.();
+        break;
+      }
+      case 'erkenntnis-ohne': {
+        const weiter = wartetAufStart;
+        wartetAufStart = null;
+        weiter?.();
+        break;
+      }
       case 'anderes':
         gewaehlt = null;
         wieOft += 1;
@@ -139,9 +173,12 @@ export function zeige(wurzel, ctx) {
           wurzel.querySelector('[name="was"]')?.focus();
           return;
         }
-        starteEigenes({ was: entwurf.was.trim(), wann: entwurf.wann.trim(), woran: entwurf.woran.trim() });
-        entwurf = { was: '', wann: '', woran: '' };
-        fertig(t('experimentwahl.gestartet'));
+        const daten = { was: entwurf.was.trim(), wann: entwurf.wann.trim(), woran: entwurf.woran.trim() };
+        starte(() => {
+          starteEigenes(daten);
+          entwurf = { was: '', wann: '', woran: '' };
+          fertig(t('experimentwahl.gestartet'));
+        });
         break;
       }
     }

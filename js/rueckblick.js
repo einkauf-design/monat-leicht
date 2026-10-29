@@ -6,7 +6,7 @@
 import { lies, schreibe, aendere, schluesselMit } from './speicher.js';
 import { inhalt, t } from './inhalte.js';
 import { tag, eintragsTage, beobachtungen, experiment, heuteKey, experimentJetzt, fruehereExperimente, experimentVorbei, aendereExperiment } from './daten.js';
-import { profilSignale, ohneKaffee, themenGewichte, gewichtSichtbar, eingangsfragen, nachfrageMoeglich, merkeNachfrage } from './profil.js';
+import { profilSignale, ohneKaffee, themenGewichte, gewichtSichtbar, eingangsfragen, nachfrageMoeglich, merkeNachfrage, naechsteVertiefung, profil } from './profil.js';
 import { mittelwert, einschlafMinuten, minutenZuZeit, zahl, plusTage, ausKey } from './util.js';
 
 const PRO_RUECKBLICK = 7;
@@ -51,6 +51,13 @@ export function datumKurz(key) {
 
 /* ---------- Entstehen ---------- */
 
+// Wie viele Tage mit Eintrag noch fehlen, bis der nächste Rückblick entsteht.
+export function eintraegeBisRueckblick() {
+  const vergeben = new Set(rueckblicke().flatMap((r) => r.tage || []));
+  const offen = eintragsTage().filter((d) => !vergeben.has(d)).length;
+  return PRO_RUECKBLICK - (offen % PRO_RUECKBLICK);
+}
+
 // Prüft, ob genug neue Tage mit Eintrag da sind, und legt dann einen oder mehrere Rückblicke an.
 // Liegen schon viele Einträge vor, werden alle bis auf den neuesten als gelesen markiert.
 export function pruefeRueckblicke() {
@@ -71,6 +78,9 @@ export function pruefeRueckblicke() {
       antworten: {},
       gelesen: false,
     };
+    // Sofort merken, damit mehrere neue Rückblicke nicht dieselbe Kennenlern-Frage stellen.
+    for (const f of doc.fragen) if (f.typ === 'eingang') merkeNachfrage(f.eingangsfrage, doc.nummer);
+    setzeZitat(doc);
     neu.push(doc);
   }
   // Ist das Experiment einen Monat gelaufen, fragt der neueste Rückblick, was sie behalten möchte.
@@ -89,6 +99,21 @@ export function pruefeRueckblicke() {
     schreibe(`rueckblick:${doc.nummer}`, doc);
   });
   return neu;
+}
+
+// Was eine Frau im Kennenlernen frei geschrieben hat, taucht einmal vor einer passenden Frage wieder auf.
+function setzeZitat(doc) {
+  const p = profil();
+  const zitiert = p.zitiert || {};
+  const hier = new Set(doc.fragen.filter((f) => f.typ === 'eingang').map((f) => f.eingangsfrage));
+  for (const frage of doc.fragen) {
+    if (frage.typ) continue;
+    const quelle = eingangsfragen().find((q) => q.thema === frage.thema && (p.freitext?.[q.id] || '').trim() && !zitiert[q.id] && !hier.has(q.id));
+    if (!quelle) continue;
+    frage.zitat = quelle.id;
+    aendere('profil', (x) => { x.zitiert = { ...(x.zitiert || {}), [quelle.id]: doc.nummer }; }, {});
+    return;
+  }
 }
 
 /* ---------- Kennzahlen eines Zeitraums ---------- */
@@ -359,10 +384,14 @@ export function waehleFragen(nummer, tage, frueher = rueckblicke()) {
   }
   const ergebnis = gewaehlt.map((f) => ({ id: f.id, text: f.text, stufe: f.stufe, thema: f.thema }));
 
-  // Höchstens eine offene Eingangsfrage pro Rückblick, sie nimmt den letzten Platz ein.
+  // Höchstens eine Kennenlern-Frage pro Rückblick, sie nimmt den letzten Platz ein.
+  // Eine offene Nachfrage hat Vorrang, sonst kommt behutsam die nächste vertiefende Frage.
   const offen = eingangsfragen().find((f) => nachfrageMoeglich(f.nummer, nummer, kontext.signale));
-  if (offen && (regeln.nachfrageProRueckblick ?? 1) > 0) {
-    const frage = { id: `e-${offen.id}`, text: offen.nachfrage, typ: 'eingang', eingangsfrage: offen.id, thema: 'eingang' };
+  const vertiefung = offen ? null : naechsteVertiefung(nummer);
+  if ((offen || vertiefung) && (regeln.nachfrageProRueckblick ?? 1) > 0) {
+    const frage = offen
+      ? { id: `e-${offen.id}`, text: offen.nachfrage, typ: 'eingang', eingangsfrage: offen.id, thema: 'eingang' }
+      : { id: `e-${vertiefung.id}`, text: vertiefung.text, typ: 'eingang', eingangsfrage: vertiefung.id, thema: 'eingang', vertiefung: true };
     if (ergebnis.length >= anzahl) ergebnis[ergebnis.length - 1] = frage;
     else ergebnis.push(frage);
   }

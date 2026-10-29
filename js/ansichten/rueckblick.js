@@ -5,8 +5,8 @@ import { t } from '../inhalte.js';
 import { esc, toast } from '../util.js';
 import { infoKnopf } from '../info.js';
 import { rueckblick, auswertung, markiereGelesen, speichereAntworten, ordnung, frageText } from '../rueckblick.js';
-import { verlaengereExperiment, experimentJetzt } from '../daten.js';
-import { eingangsfrage, antwort, status, speichereAntwort, STATUS } from '../profil.js';
+import { verlaengereExperiment, experimentJetzt, speichereErkenntnis } from '../daten.js';
+import { eingangsfrage, antwort, status, speichereAntwort, STATUS, profil } from '../profil.js';
 import { zeigeSeiten, textBloecke, merkeSeite } from '../seiten.js';
 import { datumLang, auswahlKnoepfe } from './teile.js';
 
@@ -16,6 +16,23 @@ function paare(liste) {
   const ergebnis = [];
   for (let i = 0; i < liste.length; i += 2) ergebnis.push(liste.slice(i, i + 2));
   return ergebnis;
+}
+
+// Am Ende eines Experiments: was sie selbst herausgefunden hat. Das Feld hat bewusst keinen Namen,
+// damit es nicht zu den Antworten des Rückblicks zählt.
+export function erkenntnisSeite(v) {
+  return {
+    id: 'erkenntnis',
+    bloecke: [
+      `<h2 class="frage">${esc(t('experimentwahl.erkenntnis_titel', { titel: v.titel }))}</h2>`,
+      `<p class="leise klein">${esc(t('experimentwahl.erkenntnis_text'))}</p>`,
+      `<textarea data-erkenntnis rows="3" maxlength="600" aria-label="${esc(t('experimentwahl.erkenntnis_titel', { titel: v.titel }))}" placeholder="${esc(t('experimentwahl.erkenntnis_platzhalter'))}">${esc(v.erkenntnis?.text || '')}</textarea>`,
+      `<div class="knopf-spalte eng">
+        <button type="button" class="knopf knopf-haupt" data-aktion="erkenntnis-speichern">${esc(t('experimentwahl.erkenntnis_speichern'))}</button>
+        <button type="button" class="knopf-text" data-aktion="erkenntnis-ohne">${esc(t('experimentwahl.erkenntnis_ohne'))}</button>
+      </div>`,
+    ],
+  };
 }
 
 function eingangsAntwortText(frage) {
@@ -35,19 +52,26 @@ function frageSeite(rb, f, i) {
     return {
       id: `frage-${i}`,
       bloecke: [
-        `<h2 class="frage">${esc(frageText(f))}</h2>`,
+        f.vertiefung && frage.warum ? `<p class="warum">${esc(frage.warum)}</p>` : '',
+        `<h2 class="frage">${esc(frageText(f))}${frage.info ? ` ${infoKnopf(frage.info)}` : ''}</h2>`,
         `<p class="leise klein">${esc(frage.mehrfach ? t('kennenlernen.mehrfach') : t('kennenlernen.einfach'))}</p>`,
-        `<div class="auswahl-liste">${auswahlKnoepfe(frage, offen ? null : antwort(frage.id), 'eingang-option')}</div>`,
+        `<div class="auswahl-liste ${frage.optionen.length > 4 ? 'zweispaltig' : ''}">${auswahlKnoepfe(frage, offen ? null : antwort(frage.id), 'eingang-option')}</div>`,
         `<div class="auswahl-extra">
           <button type="button" class="auswahl auswahl-leise" data-aktion="eingang-noch-nicht" data-frage="${esc(frage.id)}">${esc(t('kennenlernen.noch_nicht'))}</button>
           <button type="button" class="auswahl auswahl-leise" data-aktion="eingang-nicht-sagen" data-frage="${esc(frage.id)}">${esc(t('kennenlernen.nicht_sagen'))}</button>
         </div>`,
+        frage.freitext ? `<label class="feld">
+          <span class="feld-name">${esc(t('kennenlernen.freitext_label'))}</span>
+          <textarea data-freitext="${esc(frage.id)}" rows="2" maxlength="400" placeholder="${esc(t('kennenlernen.freitext_platzhalter'))}">${esc(profil().freitext?.[frage.id] || '')}</textarea>
+        </label>` : '',
       ],
     };
   }
+  const zitat = f.zitat ? (profil().freitext?.[f.zitat] || '').trim() : '';
   return {
     id: `frage-${i}`,
     bloecke: [
+      zitat ? `<p class="zitat">${esc(t('rueckblick.zitat', { text: zitat }))}</p>` : '',
       `<label class="feld">
         <span class="feld-name frage">${esc(frageText(f))}</span>
         <textarea name="${esc(f.id)}" rows="4" maxlength="2000" placeholder="${esc(t('rueckblick.antwort_platzhalter'))}">${esc(antworten[f.id] || '')}</textarea>
@@ -107,6 +131,7 @@ export function zeige(wurzel, ctx) {
     rb.fragen.forEach((f, i) => gruppen.push(frageSeite(rb, f, i)));
   }
   if (rb.experimentEnde && experimentJetzt()?.rueckblickNummer === nummer) {
+    gruppen.push(erkenntnisSeite(experimentJetzt()));
     gruppen.push({
       id: 'naechstes',
       mitte: true,
@@ -147,6 +172,19 @@ export function zeige(wurzel, ctx) {
       steuerung.weiter();
       return;
     }
+    if (aktion === 'erkenntnis-speichern') {
+      const text = wurzel.querySelector('[data-erkenntnis]')?.value.trim();
+      if (text) {
+        speichereErkenntnis(text);
+        toast(t('experimentwahl.erkenntnis_gespeichert'), '💡');
+      }
+      steuerung.weiter();
+      return;
+    }
+    if (aktion === 'erkenntnis-ohne') {
+      steuerung.weiter();
+      return;
+    }
     if (aktion === 'bleiben') {
       verlaengereExperiment();
       toast(t('experimentwahl.geblieben'), '🌱');
@@ -179,5 +217,14 @@ export function zeige(wurzel, ctx) {
   // Antworten speichern sich auch beim Verlassen eines Feldes.
   wurzel.onchange = (e) => {
     if (e.target.matches('textarea[name]')) sichern(false);
+    // Freier Text zu einer Kennenlern-Frage gehört ins Profil, nicht zu den Antworten des Rückblicks.
+    const frei = e.target.closest('[data-freitext]');
+    if (frei) {
+      const id = frei.dataset.freitext;
+      const wert = antwort(id);
+      const text = frei.value.trim();
+      const zustand = status(id) === STATUS.BEANTWORTET || text ? STATUS.BEANTWORTET : status(id) || STATUS.OHNE;
+      speichereAntwort(id, wert ?? [], zustand, text);
+    }
   };
 }

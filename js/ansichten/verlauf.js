@@ -1,5 +1,5 @@
-// Ansicht „Verlauf“: Wochendurchschnitt Gewicht, Anspannung und der Zusammenhang mit dem Einschlafen.
-// Neutrale Farben, keine Pfeile, keine Bewertung. Gewicht erscheint nur als Wochendurchschnitt.
+// Ansicht „Mein Weg“ (Adresse #verlauf): zuerst, wo du gerade stehst, dann was bisher passiert ist,
+// danach die Diagramme. Neutrale Farben, keine Pfeile, keine Bewertung. Gewicht erscheint nur als Durchschnitt.
 
 import { t, inhalt } from '../inhalte.js';
 import {
@@ -8,7 +8,8 @@ import {
 } from '../util.js';
 import { alleTage } from '../daten.js';
 import { infoKnopf } from '../info.js';
-import { rueckblicke, ordnung, datumKurz } from '../rueckblick.js';
+import { stand, ereignisse } from '../weg.js';
+import { datumLang, stundenText } from './teile.js';
 import { gewichtSichtbar, gesundheitHat } from '../profil.js';
 import { zeigeSeiten, textBloecke, merkeSeite } from '../seiten.js';
 import { alleNotizen, notiz, setzeNotiz } from '../notizen.js';
@@ -46,23 +47,37 @@ function wochenDaten(tage) {
   return wochen;
 }
 
-// Anspannung eines Tages und die Einschlafzeit der folgenden Nacht (eingetragen am nächsten Morgen).
-function zusammenhang(tage) {
+// Ein Abendwert (1 bis 5) und die folgende Nacht (eingetragen am nächsten Morgen): Einschlafzeit und Schlafdauer.
+// Für die Anspannung heißen die Gruppen leicht, mittel, angespannt, für Offenes im Kopf wenig, einiges, viel.
+function zusammenhang(tage, feld = 'anspannung', ids = ['leicht', 'mittel', 'angespannt']) {
   const nachDatum = Object.fromEntries(tage.map((tg) => [tg.datum, tg]));
-  const gruppen = {
-    leicht: { werte: [], name: t('verlauf.gruppe_leicht') },
-    mittel: { werte: [], name: t('verlauf.gruppe_mittel') },
-    angespannt: { werte: [], name: t('verlauf.gruppe_angespannt') },
-  };
+  const gruppen = Object.fromEntries(ids.map((id) => [id, { werte: [], schlaf: [], name: t(`verlauf.gruppe_${id}`) }]));
   for (const tg of tage) {
-    if (!tg.anspannung) continue;
+    if (!tg[feld]) continue;
     const naechster = nachDatum[plusTage(tg.datum, 1)];
     const minuten = einschlafMinuten(naechster?.einschlafzeit);
-    if (minuten === null) continue;
-    const gruppe = tg.anspannung <= 2 ? 'leicht' : tg.anspannung === 3 ? 'mittel' : 'angespannt';
-    gruppen[gruppe].werte.push(minuten);
+    const gruppe = gruppen[ids[tg[feld] <= 2 ? 0 : tg[feld] === 3 ? 1 : 2]];
+    if (minuten !== null) gruppe.werte.push(minuten);
+    if (typeof naechster?.schlafdauer === 'number') gruppe.schlaf.push(naechster.schlafdauer);
   }
-  return Object.entries(gruppen).map(([id, g]) => ({ id, name: g.name, anzahl: g.werte.length, mittel: mittelwert(g.werte) }));
+  return Object.entries(gruppen).map(([id, g]) => ({
+    id, name: g.name, anzahl: g.werte.length, mittel: mittelwert(g.werte), schlaf: mittelwert(g.schlaf), schlafAnzahl: g.schlaf.length,
+  }));
+}
+
+// Durchschnitt der letzten sieben Tage, nur wo Werte da sind.
+function letzteSiebenTage(tage) {
+  const ab = plusTage(logischerTag(), -6);
+  const woche = tage.filter((tg) => tg.datum >= ab);
+  const wert = (feld) => mittelwert(woche.map((tg) => tg[feld]));
+  return {
+    gewicht: wert('gewicht'),
+    taille: wert('taille'),
+    schlaf: wert('schlafdauer'),
+    einschlaf: mittelwert(woche.map((tg) => einschlafMinuten(tg.einschlafzeit))),
+    anspannung: wert('anspannung'),
+    offen: wert('offen'),
+  };
 }
 
 /* ---------- Diagramme als SVG ---------- */
@@ -144,7 +159,7 @@ function anspannungDiagramm(wochen) {
     </svg>`;
 }
 
-function zusammenhangDiagramm(gruppen) {
+function zusammenhangDiagramm(gruppen, titel = t('verlauf.zusammenhang_titel')) {
   const mit = gruppen.filter((g) => g.mittel !== null);
   const genug = mit.length >= 2 && mit.reduce((s, g) => s + g.anzahl, 0) >= 4;
   if (!genug) return `<p class="leise">${esc(t('verlauf.zu_wenig'))}</p>`;
@@ -176,7 +191,7 @@ function zusammenhangDiagramm(gruppen) {
     })
     .join('');
   return `
-    <svg class="diagramm" viewBox="0 0 ${B} ${H}" role="img" aria-label="${esc(t('verlauf.zusammenhang_titel'))}">
+    <svg class="diagramm" viewBox="0 0 ${B} ${H}" role="img" aria-label="${esc(titel)}">
       ${gitter}${zeilen}
     </svg>`;
 }
@@ -239,21 +254,51 @@ function tabelle(wochen, mitGewicht) {
     </table>`;
 }
 
-function rueckblickSeite() {
-  const alle = rueckblicke().reverse();
+function statusSeite(tage) {
+  const st = stand();
+  const w = letzteSiebenTage(tage);
+  const zeile = (name, wert) => (wert ? `<div class="weg-wert"><dt>${esc(name)}</dt><dd>${esc(wert)}</dd></div>` : '');
+  const wort = (liste, x) => (x === null ? '' : inhalt(liste, [])[Math.round(x) - 1] || '');
+  const werte = [
+    gewichtSichtbar() && w.gewicht !== null ? zeile(t('weg.wert_gewicht'), `${zahl(w.gewicht, 1)} kg`) : '',
+    w.taille !== null ? zeile(t('weg.wert_taille'), `${zahl(w.taille, 1).replace(/,0$/, '')} cm`) : '',
+    w.schlaf !== null ? zeile(t('weg.wert_schlaf'), stundenText(Math.round(w.schlaf * 4) / 4)) : '',
+    w.einschlaf !== null ? zeile(t('weg.wert_einschlaf'), t('weg.uhr', { zeit: minutenZuZeit(w.einschlaf) })) : '',
+    zeile(t('weg.wert_anspannung'), wort('texte.abendeintrag.stufen', w.anspannung)),
+    zeile(t('weg.wert_offen'), wort('texte.abendeintrag.offen_stufen', w.offen)),
+  ].join('');
+  const experimentText = st.experiment
+    ? `<p class="weg-experiment"><span class="symbol" aria-hidden="true">🧪</span> ${esc(t('weg.experiment', { titel: st.experiment.titel }))}${st.tag ? ` ${esc(t('weg.experiment_tag', st.tag))}` : ''}</p>`
+    : `<p class="weg-experiment">${esc(t('weg.kein_experiment'))} <a href="#experiment">${esc(t('weg.experiment_waehlen'))}</a></p>`;
   return {
-    id: 'rueckblicke',
+    id: 'status',
     bloecke: [
-      `<h2>${esc(t('rueckblick.liste_titel'))} ${infoKnopf('rueckblick')}</h2>`,
-      `<p class="leise">${esc(t('rueckblick.hinweis_sieben'))}</p>`,
-      ...(alle.length
-        ? alle.map((rb) => {
-            const tage = [...(rb.tage || [])].sort();
-            const text = t('rueckblick.liste_eintrag', { ordnung: ordnung(rb.nummer), von: datumKurz(tage[0]), bis: datumKurz(tage[tage.length - 1]) });
-            const neu = rb.gelesen ? '' : '<span class="symbol" aria-hidden="true">✨</span> ';
-            return `<a class="rueckblick-link" href="#rueckblick/${rb.nummer}">${neu}${esc(text)}</a>`;
-          })
-        : [`<p>${esc(t('rueckblick.liste_leer'))}</p>`]),
+      `<h1>${esc(t('weg.titel'))}</h1>`,
+      experimentText,
+      `<p class="leise klein">${esc(st.eintraege === 1 ? t('weg.eintraege_eins') : t('weg.eintraege', { anzahl: st.eintraege }))} ${esc(st.bisRueckblick === 1 ? t('weg.bis_rueckblick_eins') : t('weg.bis_rueckblick', { anzahl: st.bisRueckblick }))}</p>`,
+      werte ? `<p class="feld-name weg-unterzeile">${esc(t('weg.sieben_tage'))}</p><dl class="weg-werte">${werte}</dl>` : `<p class="leise">${esc(t('weg.sieben_tage_leer'))}</p>`,
+    ],
+  };
+}
+
+function zeitleisteSeite() {
+  const liste = ereignisse();
+  return {
+    id: 'zeitleiste',
+    bloecke: [
+      `<h2>${esc(t('weg.zeitleiste_titel'))} ${infoKnopf('rueckblick')}</h2>`,
+      ...(liste.length
+        ? liste.map((e) => `
+          <div class="weg-ereignis weg-${e.art}">
+            <span class="weg-symbol" aria-hidden="true">${esc(e.symbol)}</span>
+            <div class="weg-inhalt">
+              <p class="weg-datum">${esc(datumLang(e.datum))}</p>
+              <p class="weg-titel">${esc(e.titel)}</p>
+              ${e.text ? `<p class="weg-text${e.kurz ? ' weg-kurz' : ''}">${esc(e.text)}</p>` : ''}
+              ${e.link ? `<a class="weg-link" href="${esc(e.link)}">${esc(t('weg.ansehen'))}</a>` : ''}
+            </div>
+          </div>`)
+        : [`<p class="leise">${esc(t('weg.zeitleiste_leer'))}</p>`]),
     ],
   };
 }
@@ -320,6 +365,15 @@ export function zeige(wurzel, ctx) {
   const tage = alleTage();
   const wochen = wochenDaten(tage);
   const gruppen = zusammenhang(tage);
+  const offenGruppen = zusammenhang(tage, 'offen', ['wenig', 'einiges', 'viel']);
+  const offenWenig = offenGruppen[0];
+  const offenViel = offenGruppen[2];
+  const offenSatz = [
+    offenWenig.anzahl >= 2 && offenViel.anzahl >= 2
+      ? `<p>${esc(t('verlauf.offen_satz', { wenig: minutenZuZeit(offenWenig.mittel), viel: minutenZuZeit(offenViel.mittel) }))}</p>` : '',
+    offenWenig.schlafAnzahl >= 2 && offenViel.schlafAnzahl >= 2
+      ? `<p>${esc(t('verlauf.offen_schlaf_satz', { wenig: stundenText(Math.round(offenWenig.schlaf * 4) / 4), viel: stundenText(Math.round(offenViel.schlaf * 4) / 4) }))}</p>` : '',
+  ];
   const leicht = gruppen.find((g) => g.id === 'leicht');
   const angespannt = gruppen.find((g) => g.id === 'angespannt');
   const satz =
@@ -329,8 +383,9 @@ export function zeige(wurzel, ctx) {
   const mitGewicht = gewichtSichtbar();
 
   const seiten = bearbeite ? notizenSeiten() : [
-    { id: 'intro', mitte: true, bloecke: [`<h1>${esc(t('verlauf.titel'))}</h1>`, ...textBloecke(t('verlauf.einleitung'), 'leise')] },
-    rueckblickSeite(),
+    statusSeite(tage),
+    zeitleisteSeite(),
+    { id: 'diagramme', mitte: true, bloecke: [`<h2>${esc(t('verlauf.titel'))}</h2>`, ...textBloecke(t('verlauf.einleitung'), 'leise')] },
     mitGewicht ? {
       id: 'gewicht',
       bloecke: [
@@ -375,6 +430,15 @@ export function zeige(wurzel, ctx) {
         `<p class="leise klein">${esc(t('verlauf.zusammenhang_text'))}</p>`,
         zusammenhangDiagramm(gruppen),
         satz,
+      ],
+    },
+    {
+      id: 'offen',
+      bloecke: [
+        `<h2>${esc(t('verlauf.offen_titel'))} ${infoKnopf('erledigt')}</h2>`,
+        `<p class="leise klein">${esc(t('verlauf.offen_text'))}</p>`,
+        zusammenhangDiagramm(offenGruppen, t('verlauf.offen_titel')),
+        ...offenSatz,
       ],
     },
     {

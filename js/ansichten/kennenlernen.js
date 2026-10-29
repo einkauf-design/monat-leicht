@@ -1,28 +1,43 @@
-// Ansicht „Kennenlernen“: die zehn Eingangsfragen, eine pro Seite.
+// Ansicht „Kennenlernen“: die Eingangsfragen, eine pro Seite.
+// Mit #kennenlernen/mehr kommen nur die neuen, vertiefenden Fragen („Magst du mir noch etwas mehr erzählen?“).
 // Jede Frage lässt sich überspringen, „Möchte ich nicht sagen“ ist immer möglich.
 // Vor Frage 10 steht eine eigene Seite mit der Einwilligung für Gesundheitsangaben.
 
 import { t } from '../inhalte.js';
+import { infoKnopf } from '../info.js';
 import { esc, toast } from '../util.js';
 import { einstellungen, setzeEinstellungen, heuteKey } from '../daten.js';
 import {
   aktiveEingangsfragen, antwort, status, speichereAntwort, STATUS, profil, markiereProfil,
   hatEinwilligung, stimmeZu, gesundheitHat, freudeVorschlaege, uebernimmFreudeVorschlaege,
+  mehrFragen, offeneMehrFragen, sichtbareOptionen,
 } from '../profil.js';
 import { zeigeSeiten, merkeSeite } from '../seiten.js';
 import { auswahlKnoepfe } from './teile.js';
 
 let steuerung = null;
+// Die Liste der neuen Fragen bleibt fest, solange die Ansicht offen ist, damit beim Antworten keine Seite verrutscht.
+let mehrListe = null;
 
-function frageSeite(frage, gesamt) {
+export function verlassen() {
+  mehrListe = null;
+}
+
+function frageSeite(frage, nummer, gesamt, mitSpaeter = true) {
   const gewaehlt = antwort(frage.id);
   const zustand = status(frage.id);
   const bloecke = [
-    `<p class="ueberzeile">${esc(t('kennenlernen.frage_von', { nummer: frage.nummer, gesamt }))}</p>`,
-    `<h2>${esc(frage.text)}</h2>`,
+    `<p class="ueberzeile">${esc(t('kennenlernen.frage_von', { nummer, gesamt }))}</p>`,
+    frage.warum ? `<p class="warum">${esc(frage.warum)}</p>` : '',
+    `<h2>${esc(frage.text)}${frage.info ? ` ${infoKnopf(frage.info)}` : ''}</h2>`,
     `<p class="leise klein">${esc(frage.mehrfach ? t('kennenlernen.mehrfach') : t('kennenlernen.einfach'))}</p>`,
-    `<div class="auswahl-liste ${frage.optionen.length > 4 ? 'zweispaltig' : ''}">${auswahlKnoepfe(frage, gewaehlt)}</div>`,
+    `<div class="auswahl-liste ${sichtbareOptionen(frage).length > 4 ? 'zweispaltig' : ''}">${auswahlKnoepfe(frage, gewaehlt)}</div>`,
   ];
+  bloecke.push(`
+    <div class="auswahl-extra">
+      ${frage.nochNicht ? `<button type="button" class="auswahl auswahl-leise" data-aktion="noch-nicht" data-frage="${esc(frage.id)}" aria-pressed="${zustand === STATUS.NOCH_NICHT}">${esc(t('kennenlernen.noch_nicht'))}</button>` : ''}
+      <button type="button" class="auswahl auswahl-leise" data-aktion="nicht-sagen" data-frage="${esc(frage.id)}" aria-pressed="${zustand === STATUS.NICHT_SAGEN}">${esc(t('kennenlernen.nicht_sagen'))}</button>
+    </div>`);
   if (frage.freitext) {
     bloecke.push(`
       <label class="feld block-abstand">
@@ -30,18 +45,48 @@ function frageSeite(frage, gesamt) {
         <textarea name="freitext" data-frage="${esc(frage.id)}" rows="2" maxlength="400" placeholder="${esc(t('kennenlernen.freitext_platzhalter'))}">${esc(profil().freitext?.[frage.id] || '')}</textarea>
       </label>`);
   }
-  bloecke.push(`
-    <div class="auswahl-extra">
-      ${frage.nochNicht ? `<button type="button" class="auswahl auswahl-leise" data-aktion="noch-nicht" data-frage="${esc(frage.id)}" aria-pressed="${zustand === STATUS.NOCH_NICHT}">${esc(t('kennenlernen.noch_nicht'))}</button>` : ''}
-      <button type="button" class="auswahl auswahl-leise" data-aktion="nicht-sagen" data-frage="${esc(frage.id)}" aria-pressed="${zustand === STATUS.NICHT_SAGEN}">${esc(t('kennenlernen.nicht_sagen'))}</button>
-    </div>`);
+  if (!mitSpaeter) return { id: `f-${frage.id}`, bloecke };
   bloecke.push(`<button type="button" class="knopf-text leise-knopf" data-aktion="spaeter">${esc(t('kennenlernen.spaeter'))}</button>`);
   return { id: `f-${frage.id}`, bloecke };
 }
 
+function mehrZeigen(wurzel, ctx) {
+  // Unbeantwortete zuerst. Ist alles beantwortet, erscheinen alle neuen Fragen zum Ansehen und Ändern.
+  mehrListe ||= offeneMehrFragen().length ? offeneMehrFragen() : mehrFragen();
+  const fragen = mehrListe;
+  const gruppen = [
+    {
+      id: 'mehr-start',
+      mitte: true,
+      bloecke: [
+        '<div class="start-zeichen" aria-hidden="true">✦</div>',
+        `<h1>${esc(t('kennenlernen.mehr_titel'))}</h1>`,
+        `<p>${esc(t('kennenlernen.mehr_text'))}</p>`,
+        `<button type="button" class="knopf knopf-haupt" data-aktion="los">${esc(t('kennenlernen.mehr_los'))}</button>`,
+        `<button type="button" class="knopf-text leise-knopf" data-aktion="spaeter">${esc(t('kennenlernen.mehr_spaeter'))}</button>`,
+      ],
+    },
+    ...fragen.map((f, i) => frageSeite(f, i + 1, fragen.length, false)),
+    {
+      id: 'mehr-fertig',
+      mitte: true,
+      bloecke: [
+        `<h2>${esc(t('kennenlernen.mehr_danke'))}</h2>`,
+        `<p>${esc(t('kennenlernen.mehr_danke_text'))}</p>`,
+        `<a class="knopf knopf-haupt" href="#heute">${esc(t('kennenlernen.mehr_fertig'))}</a>`,
+      ],
+    },
+  ];
+  return zeigeSeiten(wurzel, gruppen, { schluessel: 'kennenlernen-mehr', zurueck: { text: t('seiten.zurueck'), href: '#mehr' } });
+}
+
 export function zeige(wurzel, ctx) {
+  const mehrModus = ctx.param === 'mehr';
+  if (!mehrModus) mehrListe = null;
+  const alle = aktiveEingangsfragen({ vertiefung: true });
   const fragen = aktiveEingangsfragen();
-  const gesamt = fragen.length;
+  const gesamt = aktiveEingangsfragen().length;
+  let nummer = 0;
   const gruppen = [{
     id: 'willkommen',
     mitte: true,
@@ -70,11 +115,11 @@ export function zeige(wurzel, ctx) {
           ],
         });
       } else {
-        gruppen.push(frageSeite(frage, gesamt));
+        gruppen.push(frageSeite(frage, ++nummer, gesamt));
       }
       continue;
     }
-    gruppen.push(frageSeite(frage, gesamt));
+    gruppen.push(frageSeite(frage, ++nummer, gesamt));
   }
 
   if (gesundheitHat('schicht')) {
@@ -114,14 +159,17 @@ export function zeige(wurzel, ctx) {
     ],
   });
 
-  const bearbeiten = ctx.param ? fragen.find((f) => f.id === ctx.param) : null;
+  const bearbeiten = ctx.param && !mehrModus ? alle.find((f) => f.id === ctx.param) : null;
   let start;
   if (bearbeiten) start = bearbeiten.gesundheit && !hatEinwilligung() ? 'einwilligung' : `f-${bearbeiten.id}`;
-  steuerung = zeigeSeiten(wurzel, gruppen, {
-    schluessel: 'kennenlernen',
-    start,
-    zurueck: bearbeiten ? { text: t('kennenlernen.zurueck_angaben'), href: '#angaben' } : undefined,
-  });
+  steuerung = mehrModus
+    ? mehrZeigen(wurzel, ctx)
+    : zeigeSeiten(wurzel, bearbeiten?.vertiefung ? gruppen.concat(frageSeite(bearbeiten, 1, 1)) : gruppen, {
+        schluessel: 'kennenlernen',
+        start,
+        zurueck: bearbeiten ? { text: t('kennenlernen.zurueck_angaben'), href: '#angaben' } : undefined,
+      });
+  const merkeHier = (id) => merkeSeite(mehrModus ? 'kennenlernen-mehr' : 'kennenlernen', id);
 
   const weiterOderZurueck = () => {
     if (bearbeiten) location.hash = '#angaben';
@@ -132,9 +180,20 @@ export function zeige(wurzel, ctx) {
     const ziel = e.target.closest('[data-aktion]');
     if (!ziel) return;
     const aktion = ziel.dataset.aktion;
-    const frage = fragen.find((f) => f.id === ziel.dataset.frage);
+    const frage = alle.find((f) => f.id === ziel.dataset.frage);
 
-    if (aktion === 'los') { steuerung.weiter(); return; }
+    if (aktion === 'los') {
+      // Wer das Kennenlernen jetzt beginnt, bekommt die neuen Fragen nicht noch einmal extra angeboten.
+      if (!profil().mehrAngeboten) markiereProfil({ mehrAngeboten: heuteKey() });
+      steuerung.weiter();
+      return;
+    }
+    if (aktion === 'spaeter' && mehrModus) {
+      markiereProfil({ mehrAngeboten: profil().mehrAngeboten || heuteKey() });
+      toast(t('kennenlernen.mehr_spaeter_hinweis'));
+      location.hash = '#heute';
+      return;
+    }
     if (aktion === 'spaeter') {
       markiereProfil({ angeboten: profil().angeboten || heuteKey() });
       toast(t('kennenlernen.abgebrochen'));
@@ -150,11 +209,11 @@ export function zeige(wurzel, ctx) {
         else neu = [...alt.filter((o) => !(frage.exklusiv || []).includes(o)), ziel.dataset.option];
         const freitext = wurzel.querySelector('[name="freitext"]')?.value.trim();
         speichereAntwort(frage.id, neu, neu.length ? STATUS.BEANTWORTET : STATUS.OHNE, frage.freitext ? freitext : undefined);
-        merkeSeite('kennenlernen', `f-${frage.id}`);
+        merkeHier(`f-${frage.id}`);
         ctx.zeichne();
       } else {
         speichereAntwort(frage.id, ziel.dataset.option);
-        merkeSeite('kennenlernen', `f-${frage.id}`);
+        merkeHier(`f-${frage.id}`);
         ctx.zeichne();
         weiterOderZurueck();
       }
@@ -162,7 +221,7 @@ export function zeige(wurzel, ctx) {
     }
     if ((aktion === 'noch-nicht' || aktion === 'nicht-sagen') && frage) {
       speichereAntwort(frage.id, null, aktion === 'noch-nicht' ? STATUS.NOCH_NICHT : STATUS.NICHT_SAGEN);
-      merkeSeite('kennenlernen', `f-${frage.id}`);
+      merkeHier(`f-${frage.id}`);
       ctx.zeichne();
       weiterOderZurueck();
       return;

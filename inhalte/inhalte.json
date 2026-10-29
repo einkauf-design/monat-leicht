@@ -10,7 +10,7 @@
   "texte": {
     "nav": {
       "heute": "Heute",
-      "verlauf": "Verlauf",
+      "verlauf": "Mein Weg",
       "freude": "Freude",
       "abend": "Abend",
       "mehr": "Mehr"
@@ -88,7 +88,13 @@
       "fertig_titel": "Dein Tag ist abgelegt.",
       "fertig_text": "Du darfst jetzt landen. Alles Weitere hat Zeit bis morgen.",
       "zum_abend": "Geh zum Abendregal",
-      "aendern": "Ändere deinen Eintrag"
+      "aendern": "Ändere deinen Eintrag",
+      "offen_frage": "Wie viel liegt heute Abend noch offen in deinem Kopf?",
+      "offen_hilfe": "Das ist freiwillig. Tipp einfach an, was gerade passt.",
+      "offen_stufen": ["fast nichts", "wenig", "einiges", "ziemlich viel", "sehr viel"],
+      "ablage_label": "Liegt noch etwas herum?",
+      "ablage_platzhalter": "Schreib auf, was noch offen ist. Für heute darfst du es hier abgeben.",
+      "ablage_hilfe": "Es ist hier gut aufgehoben, bis morgen."
     },
 
     "experiment": {
@@ -108,7 +114,9 @@
       "fruehere_zeigen": "Zeig mir deine früheren Beobachtungen",
       "fruehere_titel": "Hier findest du deine früheren Beobachtungen.",
       "eintrag_datum": "Am {datum}, hast du notiert:",
-      "eintrag_experiment": "Das gehörte zu „{titel}“."
+      "eintrag_experiment": "Das gehörte zu „{titel}“.",
+      "abgelegt_titel": "Gestern Abend hast du das hier abgelegt.",
+      "abgelegt_text": "Es ist gut aufgehoben. Du entscheidest heute in Ruhe, was du davon anpackst."
     },
 
     "freudeplaetze": {
@@ -177,7 +185,7 @@
     },
 
     "verlauf": {
-      "titel": "Hier siehst du deinen Verlauf.",
+      "titel": "Hier siehst du deine Wochen in Bildern.",
       "einleitung": "So fühlen sich deine Wochen an.\n\nEs gibt hier nichts zu bewerten, nur etwas zu entdecken.",
       "gewicht_titel": "So sieht dein Gewicht im Wochendurchschnitt aus.",
       "anspannung_titel": "So angespannt waren deine Wochen im Durchschnitt.",
@@ -223,7 +231,17 @@
       "taille_text": "Hier steht für jede Woche der Durchschnitt aus den Tagen, an denen du gemessen hast.",
       "taille_leer": "Sobald du deinen Taillenumfang einträgst, erscheint er hier neben dem Gewicht.",
       "tipp_taille": "In KW {kw} lag dein Taillenumfang bei {wert} cm.",
-      "spalte_taille": "Taille"
+      "spalte_taille": "Taille",
+      "offen_titel": "So hängen offene Dinge und dein Schlaf zusammen.",
+      "offen_text": "Hier siehst du, wann du eingeschlafen bist, je nachdem, wie viel abends noch offen in deinem Kopf lag.",
+      "offen_satz": "An Abenden mit wenig Offenem bist du im Schnitt um {wenig} Uhr eingeschlafen, an Abenden mit viel Offenem um {viel} Uhr.",
+      "offen_schlaf_satz": "Nach Abenden mit wenig Offenem hast du im Schnitt {wenig} geschlafen, nach Abenden mit viel Offenem {viel}.",
+      "gruppe_wenig": "Wenig offen",
+      "gruppe_einiges": "Einiges offen",
+      "gruppe_viel": "Viel offen",
+      "tipp_gruppe_wenig": "Abenden mit wenig Offenem",
+      "tipp_gruppe_einiges": "Abenden, an denen einiges offen war",
+      "tipp_gruppe_viel": "Abenden mit viel Offenem"
     },
 
     "erfolge": {
@@ -244,7 +262,7 @@
       "abendmodus_ab": "Ab wann soll der Abendmodus beginnen?",
       "abendmodus_hilfe": "Ab dieser Uhrzeit wird die App dunkel und warm. Morgens um fünf wird sie wieder hell.",
       "erinnerungen_titel": "Sanfte Erinnerungen begleiten dich, wenn du magst.",
-      "erinnerungen_text": "Du bekommst höchstens zwei Erinnerungen am Tag, eine am Morgen für deinen Eintrag und eine am Abend zum Landen.\n\nWenn du etwas verpasst, frage ich nicht nach.",
+      "erinnerungen_text": "Du bekommst eine Erinnerung am Morgen für deinen Eintrag und eine am Abend zum Landen. Während des Mittags-Experiments kommt eine kleine Erinnerung am Mittag dazu.\n\nWenn du etwas verpasst, frage ich nicht nach.",
       "erinnerung_morgen": "Wann möchtest du morgens erinnert werden?",
       "erinnerung_abend": "Wann möchtest du abends erinnert werden?",
       "erinnerungen_an": "Schalte die Erinnerungen ein",
@@ -285,7 +303,8 @@
       "wiegetag": "An welchem Tag in der Woche möchtest du dich wiegen?",
       "wiegetag_hilfe": "An diesem Tag fragt dich die App nach deinem Gewicht. An den anderen Tagen nicht.",
       "kennenlernen_titel": "Ich lerne dich gern besser kennen.",
-      "kennenlernen_text": "Mit deinen Angaben passe ich Experimente, Fragen und Hinweise an dich an."
+      "kennenlernen_text": "Mit deinen Angaben passe ich Experimente, Fragen und Hinweise an dich an.",
+      "mehr_erzaehlen": "Erzähl mir noch etwas mehr"
     },
 
     "belohnung": {
@@ -393,7 +412,8 @@
         "neunzehnter",
         "zwanzigster"
       ],
-      "ordnung_ersatz": "{nummer}."
+      "ordnung_ersatz": "{nummer}.",
+      "zitat": "Du hattest geschrieben: „{text}“"
     },
 
     "info": {
@@ -451,7 +471,17 @@
       "frage_von": "Das ist Frage {nummer} von {gesamt}.",
       "zeiten_speichern": "Übernimm die Zeiten",
       "zeiten_gespeichert": "Deine Erinnerungszeiten sind gespeichert.",
-      "zurueck_angaben": "Zurück zu deinen Angaben"
+      "zurueck_angaben": "Zurück zu deinen Angaben",
+      "mehr_titel": "Magst du mir noch etwas mehr erzählen?",
+      "mehr_text": "Ich habe ein paar neue Fragen, die mir helfen, dich noch besser zu verstehen. Du kannst jede überspringen, und nichts davon ist Pflicht.",
+      "mehr_los": "Gern, zeig mir die Fragen",
+      "mehr_spaeter": "Lieber ein anderes Mal",
+      "mehr_spaeter_hinweis": "Du findest die Fragen jederzeit unter „Mehr“.",
+      "mehr_danke": "Danke, dass du mir noch mehr von dir erzählt hast.",
+      "mehr_danke_text": "Ich nehme das behutsam mit in deine Rückblicke und in die Vorschläge für deine Experimente.",
+      "mehr_fertig": "Geh zurück zu Heute",
+      "mehr_frage_von": "Das ist Frage {nummer} von {gesamt}.",
+      "mehr_kachel": "Ich habe ein paar neue Fragen an dich. Sie sind ganz freiwillig."
     },
 
     "experimentwahl": {
@@ -487,7 +517,13 @@
       "behalten_frage": "Dein Experiment „{titel}“ ist einen Monat gelaufen. Was möchtest du davon behalten?",
       "naechstes_titel": "Magst du als Nächstes etwas Neues ausprobieren?",
       "naechstes_text": "Du kannst ein neues Experiment wählen oder bei deinem jetzigen bleiben. Beides ist gut.",
-      "naechstes_knopf": "Zeig mir ein neues Experiment"
+      "naechstes_knopf": "Zeig mir ein neues Experiment",
+      "erkenntnis_titel": "Was hast du bei „{titel}“ herausgefunden?",
+      "erkenntnis_text": "Schreib es in deinen eigenen Worten auf. Ein Satz reicht völlig, zum Beispiel: „Kaffee am Nachmittag stört meinen Schlaf nicht.“",
+      "erkenntnis_platzhalter": "Ich habe gemerkt, dass …",
+      "erkenntnis_speichern": "Halte deine Erkenntnis fest",
+      "erkenntnis_ohne": "Mach ohne Notiz weiter",
+      "erkenntnis_gespeichert": "Deine Erkenntnis ist gespeichert. Du findest sie auf deinem Weg."
     },
 
     "notizen": {
@@ -594,6 +630,40 @@
         "vogel": "Vogel",
         "pilz": "Pilz"
       }
+    },
+
+    "weg": {
+      "titel": "Hier siehst du, wo du gerade stehst.",
+      "experiment": "Dein Experiment ist „{titel}“.",
+      "experiment_tag": "Heute ist Tag {tag} von {von}.",
+      "kein_experiment": "Gerade läuft kein Experiment.",
+      "experiment_waehlen": "Such dir eins aus",
+      "eintraege": "Seit dem Start hast du an {anzahl} Tagen etwas eingetragen.",
+      "eintraege_eins": "Seit dem Start hast du an einem Tag etwas eingetragen.",
+      "bis_rueckblick": "Noch {anzahl:wort} Einträge, dann wartet dein nächster Rückblick.",
+      "bis_rueckblick_eins": "Noch ein Eintrag, dann wartet dein nächster Rückblick.",
+      "sieben_tage": "So waren deine letzten sieben Tage.",
+      "sieben_tage_leer": "Sobald du ein paar Tage eingetragen hast, siehst du hier deine Durchschnittswerte.",
+      "wert_gewicht": "Gewicht",
+      "wert_taille": "Taille",
+      "wert_schlaf": "Schlaf",
+      "wert_einschlaf": "Eingeschlafen",
+      "wert_anspannung": "Deine Tage",
+      "wert_offen": "Offen im Kopf",
+      "uhr": "um {zeit} Uhr",
+      "zeitleiste_titel": "Das ist bisher auf deinem Weg passiert.",
+      "zeitleiste_leer": "Hier sammelt sich nach und nach, was auf deinem Weg passiert.",
+      "ereignis_start": "Du hast mit EMONA leicht begonnen.",
+      "ereignis_beginn": "Du hast das Experiment „{titel}“ begonnen.",
+      "ereignis_ende": "Du hast das Experiment „{titel}“ abgeschlossen.",
+      "ereignis_erkenntnis": "Das hast du bei „{titel}“ herausgefunden:",
+      "ereignis_beobachtung": "Du hast eine Beobachtung notiert.",
+      "ereignis_rueckblick": "Dein {ordnung} Rückblick ist entstanden.",
+      "ansehen": "Schau ihn dir an",
+      "kachel_titel": "So läuft es gerade",
+      "kachel_experiment": "Dein Experiment „{titel}“ ist bei Tag {tag} von {von}.",
+      "kachel_kein_experiment": "Gerade läuft kein Experiment.",
+      "kachel_link": "Schau dir deinen Weg an"
     }
   },
 
@@ -928,6 +998,35 @@
       "pruefung": "geprüft am 25.10.2026",
       "text": "Viele Menschen mit ADHS erleben, dass Kaffee sie eher ruhiger macht. Eine mögliche Erklärung ist, dass Koffein ähnlich wie manche ADHS-Medikamente auf das Dopamin im Gehirn wirkt. Gut erforscht ist das bisher nicht.\n\nAuch wenn du nach einem Kaffee gut einschläfst, kann er den tiefen Schlaf beeinflussen, ohne dass du es merkst. Das Experiment hilft dir herauszufinden, wie es bei dir ist.",
       "quellen": []
+    },
+    "erledigt": {
+      "titel": "Darum hilft es, abends alles abzulegen.",
+      "pruefung": "zu prüfen",
+      "text": "Unser Gehirn behält Unerledigtes besonders gut im Blick. Die Psychologin Bljuma Zeigarnik hat schon 1927 beschrieben, dass wir uns an unterbrochene Aufgaben besser erinnern als an abgeschlossene. Man spricht deshalb vom Zeigarnik-Effekt.\n\nIm Alltag heißt das: Was offen ist, meldet sich immer wieder, gerade dann, wenn es still wird. Abends im Bett ist der Kopf oft noch bei den Mails, beim Einkauf oder bei dem Gespräch, das noch ansteht.\n\nEs hilft schon, das Offene aufzuschreiben und einen nächsten Schritt festzuhalten. Dann darf das Gehirn loslassen, weil es weiß, dass nichts verloren geht. In einer Schlafstudie sind Menschen, die vor dem Schlafen ihre Aufgaben für die nächsten Tage notiert haben, schneller eingeschlafen.\n\nViele Menschen mit ADHS erleben offene Schleifen besonders stark. Der Kopf springt zwischen vielen Baustellen hin und her, und abends wird es kaum leiser. Ein fester Ort, an dem alles liegen darf, kann dann besonders entlasten.\n\nEine Frau hat beim Kaffee-Experiment gemerkt, dass sie schon vorher besser schlief, seit abends nichts mehr herumlag. Vielleicht entdeckst du etwas Ähnliches. Probier’ es einfach aus.",
+      "quellen": [
+        "Zeigarnik B. (1927): Das Behalten erledigter und unerledigter Handlungen. Psychologische Forschung 9, 1–85.",
+        "Masicampo E. J. & Baumeister R. F. (2011): Consider it done! Plan making can eliminate the cognitive effects of unfulfilled goals. Journal of Personality and Social Psychology 101(4), 667–683.",
+        "Scullin M. K. u. a. (2018): The effects of bedtime writing on difficulty falling asleep: A polysomnographic study comparing to-do lists and completed activity lists. Journal of Experimental Psychology: General 147(1), 139–146."
+      ]
+    },
+    "last": {
+      "titel": "Darum fragen wir nach dem, was auf dir lastet.",
+      "pruefung": "zu prüfen",
+      "text": "Gewicht, Schlaf und Essen hängen eng mit dem zusammen, was uns den ganzen Tag beschäftigt. Wer lange unter Druck steht, schläft oft schlechter, und schlechter Schlaf macht es dem Körper schwerer, zur Ruhe zu kommen.\n\nViele Frauen tragen eine unsichtbare Last: Sie denken an Termine, an andere Menschen, an Tiere und an alles, was noch erledigt werden muss. Diese Denkarbeit ist anstrengend, auch wenn sie von außen kaum zu sehen ist.\n\nAuch große Veränderungen wie ein neuer Job, eine Trennung oder ein Verlust wirken oft noch lange nach. Der Körper reagiert darauf, manchmal erst Monate später.\n\nDeine Antworten helfen der App, dir passende Fragen und Experimente vorzuschlagen. Du entscheidest, was du erzählen möchtest.",
+      "quellen": [
+        "Åkerstedt T. (2006): Psychosocial stress and impaired sleep. Scandinavian Journal of Work, Environment & Health 32(6), 493–501.",
+        "Daminger A. (2019): The cognitive dimension of household labor. American Sociological Review 84(4), 609–633.",
+        "Adam T. C. & Epel E. S. (2007): Stress, eating and the reward system. Physiology & Behavior 91(4), 449–458."
+      ]
+    },
+    "ohneHunger": {
+      "titel": "Darum essen wir manchmal ohne Hunger.",
+      "pruefung": "zu prüfen",
+      "text": "Essen ist mehr als Nahrung. Es tröstet, beruhigt und belohnt. Das ist ganz menschlich und kein Zeichen von Schwäche.\n\nBei Stress schüttet der Körper Hormone aus, die den Appetit auf Süßes und Fettiges steigern können. Abends, wenn der Tag nachklingt, ist dieser Wunsch oft besonders groß.\n\nWenn du weißt, wann du ohne Hunger isst, weißt du auch, was dir in diesem Moment vielleicht fehlt: Ruhe, Trost, eine Pause oder etwas Schönes. Genau darum geht es in deinen Experimenten.",
+      "quellen": [
+        "Adam T. C. & Epel E. S. (2007): Stress, eating and the reward system. Physiology & Behavior 91(4), 449–458.",
+        "Macht M. (2008): How emotions affect eating: A five-way model. Appetite 50(1), 1–11."
+      ]
     }
   },
 
@@ -972,7 +1071,9 @@
     "muede": ["müde", "erschöpft", "kaputt", "ausgelaugt", "schlapp", "k.o."],
     "wenigZeitFuerSich": ["keine zeit für mich", "für alle anderen", "für andere da", "funktionieren", "nie dran", "zu kurz"],
     "freudeGut": ["gut getan", "gutgetan", "genossen", "entspannt", "leicht gefühlt", "gefreut"],
-    "gedankenKreisen": ["grübel", "gedanken kreisen", "nicht abschalten", "wach liegen", "wach gelegen", "liege wach"]
+    "gedankenKreisen": ["grübel", "gedanken kreisen", "nicht abschalten", "wach liegen", "wach gelegen", "liege wach"],
+    "kopfVoll": ["to-do", "erledigen", "unerledigt", "liegt noch", "posteingang", "mails", "nicht fertig", "noch so viel", "aufgabenbox", "abarbeiten"],
+    "ansprueche": ["perfekt", "nicht gut genug", "muss noch", "zu wenig geschafft", "schlechtes gewissen", "faul"]
   },
 
   "fragenStufen": {
@@ -993,7 +1094,7 @@
   },
 
   "fragenRegeln": {
-    "_hinweis": "So wählt die App die Fragen aus. Bedingungen in einer Frage müssen alle zutreffen. Mögliche Bedingungen: nurErsterRueckblick, abRueckblick, experimentEnthaelt, anspannungAb, anspannungBis, einschlafenNach, schlafUnter, summenTageAb, freudeAb, freudeBis, signal, ohneSignal, nachAntwortAuf, koerperNotizen, eingangOffen (Nummer der Eingangsfrage).",
+    "_hinweis": "So wählt die App die Fragen aus. Bedingungen in einer Frage müssen alle zutreffen. Mögliche Bedingungen: nurErsterRueckblick, abRueckblick, experimentEnthaelt, anspannungAb, anspannungBis, einschlafenNach, schlafUnter, summenTageAb, freudeAb, freudeBis, signal, ohneSignal, nachAntwortAuf, koerperNotizen, eingangOffen (Nummer der Eingangsfrage). Vertiefungsfragen aus dem Kennenlernen kommen ab dem Rückblick „vertiefungAbRueckblick“, mit „vertiefungAbstand“ Rückblicken dazwischen, und teilen sich den Platz der Nachfrage.",
     "anzahlErsterRueckblick": 2,
     "anzahlSpaeter": 3,
     "pauseNachFrage": 2,
@@ -1005,7 +1106,10 @@
     "nachfrageHoechstens": 2,
     "nachfrageProRueckblick": 1,
     "themaGewichtWunsch": 2,
-    "themaGewichtSchlaf": 2
+    "themaGewichtSchlaf": 2,
+    "vertiefungAbRueckblick": 2,
+    "vertiefungAbstand": 1,
+    "themaGewichtVertiefung": 1
   },
 
   "fragen": [
@@ -1382,6 +1486,32 @@
       "bedingungen": {
         "eingangOffen": 6
       }
+    },
+    {
+      "id": "h-kopf-1",
+      "stufe": "hineinfinden",
+      "thema": "kopf",
+      "bedingungen": {
+        "signal": "kopfVoll"
+      },
+      "text": "Was hilft dir, abends einen Haken an deinen Tag zu machen?"
+    },
+    {
+      "id": "w-kopf-1",
+      "stufe": "wahrnehmen",
+      "thema": "kopf",
+      "text": "Was lag in dieser Woche abends noch in deinem Kopf, als du schlafen gehen wolltest?"
+    },
+    {"id": "w-kopf-2", "stufe": "wahrnehmen", "thema": "kopf", "text": "Gab es einen Abend, an dem alles erledigt war? Wie hat sich das angefühlt?"},
+    {"id": "v-kopf-1", "stufe": "vertiefen", "thema": "kopf", "text": "Was von dem, was auf dir lastet, müsste eigentlich gar nicht bei dir liegen?"},
+    {
+      "id": "v-kopf-2",
+      "stufe": "vertiefen",
+      "thema": "kopf",
+      "bedingungen": {
+        "signal": "ansprueche"
+      },
+      "text": "Woran merkst du, dass etwas für heute gut genug ist?"
     }
   ],
 
@@ -1493,6 +1623,40 @@
       "signale": ["gedankenKreisen", "muede"]
     },
     {
+      "id": "kopf",
+      "nummer": 11,
+      "mehr": true,
+      "thema": "kopf",
+      "info": "erledigt",
+      "warum": "Oft liegt der Schlüssel nicht im Essen, sondern in dem, was den ganzen Tag auf uns lastet.",
+      "text": "Was liegt abends noch in deinem Kopf?",
+      "mehrfach": true,
+      "nochNicht": true,
+      "freitext": true,
+      "optionen": [
+        {"id": "aufgaben", "text": "Unerledigte Aufgaben"},
+        {"id": "morgen", "text": "Gedanken an morgen"},
+        {"id": "sorgen", "text": "Sorgen um andere"},
+        {"id": "mails", "text": "Mails und Nachrichten"},
+        {"id": "abschalten", "text": "Ich kann gut abschalten"}
+      ],
+      "exklusiv": ["abschalten"],
+      "setztSignale": {
+        "aufgaben": "kopfVoll",
+        "morgen": "kopfVoll",
+        "mails": "kopfVoll",
+        "sorgen": "gedankenKreisen"
+      },
+      "themen": {
+        "aufgaben": ["kopf"],
+        "morgen": ["kopf"],
+        "mails": ["kopf"],
+        "sorgen": ["kopf", "anspannung"]
+      },
+      "nachfrage": "Du hast inzwischen einige Abende beobachtet. Magst du noch einmal schauen, was abends noch in deinem Kopf liegt?",
+      "signale": ["kopfVoll", "gedankenKreisen"]
+    },
+    {
       "id": "nichtGeholfen",
       "nummer": 7,
       "text": "Was hat dir bisher nicht geholfen?",
@@ -1505,7 +1669,8 @@
         {"id": "meditation", "text": "Affirmationen und Meditation"},
         {"id": "wiegen", "text": "Tägliches Wiegen"},
         {"id": "gruppen", "text": "Druck in Gruppen"}
-      ]
+      ],
+      "thema": "essen"
     },
     {
       "id": "gutTut",
@@ -1546,6 +1711,168 @@
         {"id": "medikamente", "text": "Medikamente, die auf Gewicht oder Appetit wirken"},
         {"id": "schicht", "text": "Schichtarbeit"}
       ]
+    },
+    {
+      "id": "druck",
+      "nummer": 12,
+      "mehr": true,
+      "vertiefung": true,
+      "thema": "anspannung",
+      "info": "last",
+      "warum": "Druck kommt selten nur von einer Seite. Wenn wir wissen, woher er kommt, können wir besser für dich sorgen.",
+      "text": "Woher kommt dein Druck gerade am meisten?",
+      "mehrfach": true,
+      "nochNicht": true,
+      "freitext": true,
+      "optionen": [
+        {"id": "arbeit", "text": "Arbeit"},
+        {"id": "familie", "text": "Familie"},
+        {"id": "pflege", "text": "Pflege von Angehörigen"},
+        {"id": "hof", "text": "Tiere und Hof"},
+        {"id": "geld", "text": "Geld"},
+        {"id": "ichselbst", "text": "Ich selbst und meine Ansprüche"},
+        {"id": "gesundheit", "text": "Gesundheit"}
+      ],
+      "setztSignale": {
+        "ichselbst": "ansprueche",
+        "pflege": "wenigZeitFuerSich"
+      },
+      "themen": {
+        "arbeit": ["anspannung"],
+        "familie": ["anspannung"],
+        "pflege": ["beduerfnisse"],
+        "hof": ["anspannung"],
+        "geld": ["anspannung"],
+        "ichselbst": ["beduerfnisse", "kopf"],
+        "gesundheit": ["koerper"]
+      },
+      "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, woher dein Druck gerade kommt?",
+      "signale": ["ansprueche", "koerperAngespannt"]
+    },
+    {
+      "id": "kuemmern",
+      "nummer": 13,
+      "mehr": true,
+      "vertiefung": true,
+      "thema": "beduerfnisse",
+      "info": "last",
+      "warum": "Wer viel für andere trägt, kommt selbst oft zu kurz. Darum möchte ich wissen, wer für dich da ist.",
+      "text": "Wer kümmert sich um dich?",
+      "mehrfach": true,
+      "nochNicht": true,
+      "freitext": true,
+      "optionen": [
+        {"id": "partner", "text": "Partner"},
+        {"id": "freundinnen", "text": "Freundinnen"},
+        {"id": "familie", "text": "Familie"},
+        {"id": "ichkuemmere", "text": "Ich bin meistens die, die sich kümmert"},
+        {"id": "fachleute", "text": "Fachleute wie Therapie oder Ärztin", "gesundheit": true}
+      ],
+      "setztSignale": {
+        "ichkuemmere": "wenigZeitFuerSich"
+      },
+      "themen": {
+        "ichkuemmere": ["beduerfnisse"]
+      },
+      "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, wer sich um dich kümmert?",
+      "signale": ["wenigZeitFuerSich"]
+    },
+    {
+      "id": "ausruhen",
+      "nummer": 14,
+      "mehr": true,
+      "vertiefung": true,
+      "thema": "beduerfnisse",
+      "info": "last",
+      "warum": "Ausruhen klingt einfach. Für viele Frauen ist es das aber gar nicht, und das hat oft einen guten Grund.",
+      "text": "Was passiert, wenn du dich ausruhst?",
+      "mehrfach": true,
+      "nochNicht": true,
+      "freitext": true,
+      "optionen": [
+        {"id": "geniessen", "text": "Ich genieße es"},
+        {"id": "gewissen", "text": "Ich habe ein schlechtes Gewissen"},
+        {"id": "sofort", "text": "Mir fällt sofort etwas ein, das noch zu tun ist"},
+        {"id": "nichtdazu", "text": "Ich komme gar nicht dazu"}
+      ],
+      "setztSignale": {
+        "gewissen": "wenigZeitFuerSich",
+        "sofort": "kopfVoll",
+        "nichtdazu": "wenigZeitFuerSich"
+      },
+      "themen": {
+        "gewissen": ["beduerfnisse"],
+        "sofort": ["kopf"],
+        "nichtdazu": ["beduerfnisse"]
+      },
+      "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, was passiert, wenn du dich ausruhst?",
+      "signale": ["wenigZeitFuerSich", "kopfVoll"]
+    },
+    {
+      "id": "ohneHunger",
+      "nummer": 15,
+      "mehr": true,
+      "vertiefung": true,
+      "thema": "essen",
+      "info": "ohneHunger",
+      "warum": "Essen ohne Hunger ist kein Fehler. Es zeigt oft, was gerade fehlt, und genau das möchten wir gemeinsam herausfinden.",
+      "text": "Wann isst du, ohne Hunger zu haben?",
+      "mehrfach": true,
+      "nochNicht": true,
+      "freitext": true,
+      "optionen": [
+        {"id": "stress", "text": "Bei Stress"},
+        {"id": "langeweile", "text": "Bei Langeweile"},
+        {"id": "gewohnheit", "text": "Aus Gewohnheit"},
+        {"id": "belohnung", "text": "Zur Belohnung"},
+        {"id": "abends", "text": "Abends zum Runterkommen"}
+      ],
+      "setztSignale": {
+        "stress": "troestendEssen",
+        "belohnung": "troestendEssen",
+        "abends": "troestendEssen",
+        "gewohnheit": "hastig"
+      },
+      "themen": {
+        "stress": ["essen", "anspannung"],
+        "langeweile": ["essen", "freude"],
+        "gewohnheit": ["essen"],
+        "belohnung": ["essen", "freude"],
+        "abends": ["essen", "schlaf"]
+      },
+      "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, wann du isst, ohne Hunger zu haben?",
+      "signale": ["troestendEssen", "hastig"]
+    },
+    {
+      "id": "veraendert",
+      "nummer": 16,
+      "mehr": true,
+      "vertiefung": true,
+      "thema": "anspannung",
+      "info": "last",
+      "warum": "Große Veränderungen wirken oft noch lange nach, auch auf Schlaf und Gewicht.",
+      "text": "Was hat sich in deinem Leben in letzter Zeit verändert?",
+      "mehrfach": true,
+      "nochNicht": true,
+      "freitext": true,
+      "optionen": [
+        {"id": "job", "text": "Job"},
+        {"id": "beziehung", "text": "Trennung oder Beziehung"},
+        {"id": "umzug", "text": "Umzug"},
+        {"id": "wechseljahre", "text": "Wechseljahre", "gesundheit": "wechseljahre"},
+        {"id": "verlust", "text": "Verlust"},
+        {"id": "nichts", "text": "Nichts Besonderes"}
+      ],
+      "exklusiv": ["nichts"],
+      "themen": {
+        "job": ["anspannung"],
+        "beziehung": ["beduerfnisse"],
+        "umzug": ["anspannung"],
+        "verlust": ["beduerfnisse"],
+        "wechseljahre": ["koerper", "schlaf"]
+      },
+      "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, was sich in letzter Zeit bei dir verändert hat?",
+      "signale": []
     }
   ],
 
@@ -1639,7 +1966,11 @@
         "titel": "Erst Freude, dann Süßes",
         "beschreibung": "Bevor ich zu etwas Süßem greife, gönne ich mir fünf Minuten auf einem Freude-Platz und schaue, ob ich es danach noch möchte.",
         "sanft": 2,
-        "passt": [{"frage": "essen", "wert": "abends", "punkte": 3}, {"signal": "troestendEssen", "punkte": 2}]
+        "passt": [
+          {"frage": "essen", "wert": "abends", "punkte": 3},
+          {"signal": "troestendEssen", "punkte": 2},
+          {"frage": "ohneHunger", "wert": "abends", "punkte": 2}
+        ]
       },
       {
         "id": "draussen",
@@ -1657,7 +1988,28 @@
         "titel": "Um 21 Uhr landen",
         "beschreibung": "Um 21 Uhr geht mein Handy schlafen, und ich schaue, ob ich leichter zur Ruhe komme.",
         "sanft": 2,
-        "passt": [{"frage": "schlaf", "wert": "einschlafen", "punkte": 3}, {"signal": "gedankenKreisen", "punkte": 1}]
+        "passt": [
+          {"frage": "schlaf", "wert": "einschlafen", "punkte": 3},
+          {"signal": "gedankenKreisen", "punkte": 1},
+          {"frage": "kopf", "wert": "sorgen", "punkte": 1}
+        ]
+      },
+      {
+        "id": "erledigt",
+        "titel": "Abends ist alles erledigt",
+        "beschreibung": "Bevor ich schlafen gehe, lege ich kurz in der App ab, was noch offen ist, und gebe es für heute bewusst ab. Morgens sehe ich, dass es gut aufgehoben ist.",
+        "sanft": 2,
+        "info": "erledigt",
+        "ablage": true,
+        "passt": [
+          {"frage": "kopf", "wert": "aufgaben", "punkte": 3},
+          {"frage": "kopf", "wert": "morgen", "punkte": 2},
+          {"frage": "kopf", "wert": "mails", "punkte": 2},
+          {"signal": "kopfVoll", "punkte": 2},
+          {"signal": "gedankenKreisen", "punkte": 1},
+          {"frage": "schlaf", "wert": "einschlafen", "punkte": 1},
+          {"frage": "ausruhen", "wert": "sofort", "punkte": 2}
+        ]
       },
       {
         "id": "teller",
@@ -1687,7 +2039,11 @@
         "beschreibung": "Ich tue jeden Tag eine kleine Sache, die nur für mich ist, und beobachte, wie es mir damit geht.",
         "sanft": 1,
         "reserve": true,
-        "passt": [{"signal": "wenigZeitFuerSich", "punkte": 3}]
+        "passt": [
+          {"signal": "wenigZeitFuerSich", "punkte": 3},
+          {"frage": "kuemmern", "wert": "ichkuemmere", "punkte": 2},
+          {"frage": "ausruhen", "wert": "gewissen", "punkte": 2}
+        ]
       },
       {
         "id": "lieblingsessen",

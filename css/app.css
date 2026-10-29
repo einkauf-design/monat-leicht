@@ -210,22 +210,40 @@ a { color: var(--pflaume); }
   gap: 2px;
   padding: 6px 0;
   min-height: 52px;
-  color: var(--text-3);
+  margin: 0 2px;
+  color: var(--text-2);
   text-decoration: none;
   font-size: 0.74rem;
   font-weight: 600;
-  border-radius: 12px;
+  border-radius: 16px;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 .nav-punkt svg {
   width: 25px; height: 25px;
   fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
+  stroke: var(--nav-farbe);
+  stroke-width: 1.8;
   stroke-linecap: round;
   stroke-linejoin: round;
+  opacity: 0.75;
 }
-.nav-punkt[aria-current="page"] { color: var(--pflaume); }
-.nav-punkt[aria-current="page"] svg { stroke-width: 2.1; }
+/* Jeder Bereich hat seine eigene Farbe aus der EMONA-Palette. Kontrast geprüft: Schrift auf der Fläche mindestens 4,5:1. */
+.nav-punkt[data-ansicht="heute"] { --nav-farbe: #8a5916; --nav-weich: #efe3d3; }
+.nav-punkt[data-ansicht="verlauf"] { --nav-farbe: #0e6874; --nav-weich: #dde6e0; }
+.nav-punkt[data-ansicht="freude"] { --nav-farbe: #984a68; --nav-weich: #f1e1df; }
+.nav-punkt[data-ansicht="abend"] { --nav-farbe: #1e4d4b; --nav-weich: #dfe2db; }
+.nav-punkt[data-ansicht="mehr"] { --nav-farbe: #546722; --nav-weich: #e7e5d5; }
+:root[data-modus="abend"] .nav-punkt[data-ansicht="heute"] { --nav-farbe: #e6c97a; --nav-weich: #504235; }
+:root[data-modus="abend"] .nav-punkt[data-ansicht="verlauf"] { --nav-farbe: #6fbab6; --nav-weich: #363f43; }
+:root[data-modus="abend"] .nav-punkt[data-ansicht="freude"] { --nav-farbe: #e095b0; --nav-weich: #4f3741; }
+:root[data-modus="abend"] .nav-punkt[data-ansicht="abend"] { --nav-farbe: #93c4c1; --nav-weich: #3e4145; }
+:root[data-modus="abend"] .nav-punkt[data-ansicht="mehr"] { --nav-farbe: #adc46e; --nav-weich: #444133; }
+.nav-punkt[aria-current="page"] {
+  color: var(--nav-farbe);
+  background: var(--nav-weich);
+  font-weight: 800;
+}
+.nav-punkt[aria-current="page"] svg { stroke-width: 2.2; opacity: 1; }
 
 .spiel-laeuft .app-kopf { display: none; }
 
@@ -1223,3 +1241,59 @@ textarea[name="notiz"] { min-height: 150px; }
 .spiel-karte-kopf p { margin-bottom: 4px; font-size: 0.95rem; }
 .spiel-karte-fuss { padding: 4px 14px 12px; margin-bottom: 10px; border-radius: 0 0 var(--rund-klein) var(--rund-klein); background: var(--hintergrund); }
 .spiel-karte-fuss .knopf-spalte { margin-top: 4px; }
+
+/* ---------- Mein Weg ---------- */
+
+.weg-kachel {
+  display: grid;
+  gap: 3px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: var(--rund-klein);
+  background: var(--petrol-weich);
+  border-left: 4px solid #0e6874;
+  color: var(--text);
+  text-decoration: none;
+  text-align: left;
+}
+:root[data-modus="abend"] .weg-kachel { border-left-color: #6fbab6; }
+.weg-kachel-titel { font-weight: 800; font-size: 0.98rem; }
+.weg-kachel-zeile { font-size: 0.9rem; color: var(--text-2); text-wrap: pretty; }
+.weg-kachel-link { margin-top: 2px; font-weight: 700; font-size: 0.88rem; color: var(--petrol); }
+
+.weg-experiment { font-weight: 600; text-wrap: pretty; }
+.weg-unterzeile { margin: 10px 0 0; }
+.weg-werte { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 8px 0 0; }
+.weg-wert {
+  padding: 5px 10px;
+  line-height: 1.3;
+  border-radius: var(--rund-klein);
+  background: var(--hintergrund);
+}
+.weg-wert dt { color: var(--text-2); font-size: 0.8rem; }
+.weg-wert dd { margin: 0; font-weight: 700; }
+
+.weg-ereignis {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--linie);
+}
+.weg-ereignis:last-child { border-bottom: 0; }
+.weg-symbol { font-size: 1.25rem; line-height: 1.4; text-align: center; }
+.weg-inhalt p { margin: 0; }
+.weg-datum { font-size: 0.8rem; color: var(--text-3); }
+.weg-titel { font-weight: 650; text-wrap: pretty; }
+.weg-text { margin-top: 2px !important; color: var(--text-2); font-size: 0.92rem; text-wrap: pretty; }
+.weg-erkenntnis .weg-text, .weg-ende .weg-text { font-style: italic; }
+.weg-kurz { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.weg-link { display: inline-block; margin-top: 4px; font-weight: 700; font-size: 0.9rem; color: var(--petrol); }
+
+/* Offenes im Kopf: eigene ruhige Farbe, damit sie sich von der Anspannung unterscheidet. */
+.skala-offen .skala-punkt { background: color-mix(in srgb, var(--petrol) calc(20% + (var(--stufe) - 1) * 20%), var(--petrol-weich)); }
+.abgelegt .abgelegt-text { margin: 4px 0; white-space: pre-line; font-weight: 600; }
+
+/* Ein Satz vor einer Kennenlern-Frage, warum wir fragen. */
+.warum { margin: 0 0 6px; color: var(--text-2); font-style: italic; text-wrap: pretty; }
+.zitat { margin: 0 0 8px; padding: 8px 12px; border-left: 3px solid var(--gold-hell); background: var(--gold-weich); border-radius: 0 var(--rund-klein) var(--rund-klein) 0; font-style: italic; text-wrap: pretty; }

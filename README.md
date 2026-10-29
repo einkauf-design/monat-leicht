@@ -33,7 +33,7 @@ emona/
 
 Nicht hochladen musst du `README.md` und `.gitignore`. Die Datei `api/config.example.php` darf mit auf den Server, sie ist dort gesperrt und dient nur als Vorlage.
 
-Am einfachsten nimmst du die fertige ZIP-Datei `emona-leicht-upload.zip`: Sie enthält genau den Ordner `emona/` mit allem, was auf den Server gehört.
+Am einfachsten nimmst du die fertige ZIP-Datei `emona-leicht-upload.zip` aus dem Repository: Sie enthält den Ordner `emona-leicht/` mit allem, was auf den Server gehört, aber ohne `config.php` und ohne Daten. Bei einem Update wird ihr Inhalt in beide Ordner auf dem Server kopiert, die vorhandene `config.php` und der Ordner `api/daten/` bleiben dort unberührt.
 
 Achte darauf, dass dein FTP-Programm auch die versteckten Dateien `.htaccess` hochlädt.
 
@@ -120,6 +120,18 @@ So wählt die App aus: Der erste Rückblick ist zum Hineinfinden und fragt nach 
 
 **Beobachtungen zum Experiment:** Jede Beobachtung ist ein eigenes Dokument (`beobachtung:2026-10-23-…`) mit Datum. Frühere Monatsnotizen aus Version 1.1 werden beim ersten Start einmalig als Beobachtung mit dem Datum dieses Tages übernommen (`beobachtung:uebernommen-2026-10`). Die alte Notiz bleibt zusätzlich im Experiment gespeichert.
 
+## Neu in Version 1.4.0
+
+**Mein Weg:** Der Bereich „Verlauf“ heißt jetzt „Mein Weg“ (die Adresse bleibt `#verlauf`). Er beginnt mit einer Status-Seite (laufendes Experiment mit Tag X von Y, Durchschnitt der letzten sieben Tage) und einer Zeitleiste „Was bisher passiert ist“ (Start, Experimente mit Erkenntnis, Beobachtungen, Rückblicke, kleine Erfolge). Danach folgen die Diagramme. Auf „Heute“ führt die Kachel „So läuft es gerade“ dorthin. Die Ereignisse sammelt `js/weg.js`.
+
+**Leiste:** Jeder Bereich hat eine eigene Farbe aus der EMONA-Palette, der aktive Bereich eine farbige Fläche und fette Schrift. Der Kontrast ist für Tag- und Abendmodus geprüft.
+
+**Entlastung:** Neues Experiment „Abends ist alles erledigt“ mit Ablage am Abend (`tag.abgelegt`), die am nächsten Morgen auf der Experiment-Seite steht. Neue freiwillige Abendfrage „Wie viel liegt heute Abend noch offen in deinem Kopf?“ (`tag.offen`, 1 bis 5), in „Mein Weg“ gegenübergestellt mit Einschlafzeit und Schlafdauer. Beide Werte stehen auch im Export (Spalten `offen_1_bis_5` und `abgelegt` am Ende). Am Ende eines Experiments fragt die App immer „Was hast du herausgefunden?“ (`versuch.erkenntnis`).
+
+**Kennenlernen vertiefen:** Sechs neue Fragen (`kopf`, `druck`, `kuemmern`, `ausruhen`, `ohneHunger`, `veraendert`), jede mit einem Satz, warum wir fragen, einem „i“ und einem freien Feld. `kopf` gehört zum ersten Kennenlernen, die übrigen (`vertiefung: true`) kommen ab dem zweiten Rückblick nach und nach, höchstens eine pro Rückblick (`fragenRegeln.vertiefungAbRueckblick`, `vertiefungAbstand`). Wer das Kennenlernen schon gemacht hat, bekommt die neuen Fragen einmal sanft auf „Heute“ angeboten und findet sie unter „Mehr“ (`#kennenlernen/mehr`). Freier Text taucht einmal in einem späteren Rückblick wieder auf („Du hattest geschrieben …“). Die Optionen „Wechseljahre“ und „Fachleute wie Therapie oder Ärztin“ erscheinen nur mit Einwilligung und liegen im Dokument `gesundheit`.
+
+**Neue Info-Texte:** `erledigt`, `last` und `ohneHunger` sind mit `"pruefung": "zu prüfen"` markiert und sollten vor dem Einsatz im Kurs durchgesehen werden.
+
 ## Neu in Version 1.3.0
 
 **Kennenlernen:** Zehn Eingangsfragen, eine pro Seite (`eingangsfragen` in der Inhaltsdatei). Die Antworten liegen im Dokument `profil`. Wer „noch nicht darüber nachgedacht“ wählt, wird nach dem dritten Rückblick noch einmal behutsam gefragt, höchstens eine Frage pro Rückblick und danach nur noch ein weiteres Mal. „Möchte ich nicht sagen“ wird nie wieder gefragt. Wer die App schon nutzt, bekommt die Fragen einmal mit „Jetzt“ und „Später“ angeboten.
@@ -175,6 +187,7 @@ Der Aufbau ist offen für Erweiterungen:
 | `js/seiten.js` | Aufteilung in Bildschirmseiten mit Weiter, Zurück, Wischen und Punkten |
 | `js/profil.js` | Eingangsfragen, Gesundheitsangaben, Einwilligung |
 | `js/experimente.js` | Auswahl und Start der Experimente |
+| `js/weg.js` | Stand und Zeitleiste für „Mein Weg“ |
 | `js/notizen.js` | Notizen bearbeiten und löschen |
 | `js/wollfaeden.js` | das Spiel Wollfäden |
 | `js/bildpaare.js` | das Spiel Bildpaare |

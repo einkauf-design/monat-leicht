@@ -190,9 +190,29 @@ export function experimentVorbei(v = experimentJetzt()) {
 
 export function starteExperiment(daten) {
   const alt = experimentJetzt();
-  if (alt) schreibe('versuche', [...fruehereExperimente(), { id: alt.id, titel: alt.titel, start: alt.start, ende: heuteKey() }]);
+  if (alt) {
+    const frueher = { id: alt.id, titel: alt.titel, start: alt.start, ende: heuteKey() };
+    if (alt.erkenntnis?.text) frueher.erkenntnis = alt.erkenntnis;
+    schreibe('versuche', [...fruehereExperimente(), frueher]);
+  }
   const start = heuteKey();
   schreibe('versuch', { ...daten, start, ende: plusMonat(start) });
+}
+
+// Der wievielte Tag des Experiments heute ist, und wie viele Tage es insgesamt hat.
+export function experimentTag(v = experimentJetzt()) {
+  if (!v?.start || !v?.ende) return null;
+  const tage = (a, b) => Math.round((new Date(`${b}T12:00:00`) - new Date(`${a}T12:00:00`)) / 86400000);
+  const von = Math.max(1, tage(v.start, v.ende));
+  return { tag: Math.min(von, Math.max(1, tage(v.start, heuteKey()) + 1)), von };
+}
+
+// Was sie bei ihrem Experiment herausgefunden hat. Ein leerer Text löscht die Notiz.
+export function speichereErkenntnis(text) {
+  aendere('versuch', (v) => {
+    if (text) v.erkenntnis = { datum: heuteKey(), text };
+    else delete v.erkenntnis;
+  });
 }
 
 export function verlaengereExperiment() {
@@ -247,7 +267,7 @@ export function uebernimmAlteNotizen() {
 
 /* ---------- Tage mit Eintrag ---------- */
 
-const EINTRAGS_FELDER = ['gewicht', 'einschlafzeit', 'schlafdauer', 'anspannung', 'satz', 'taille', 'koerper'];
+const EINTRAGS_FELDER = ['gewicht', 'einschlafzeit', 'schlafdauer', 'anspannung', 'satz', 'taille', 'koerper', 'offen', 'abgelegt'];
 
 export function hatEintrag(t) {
   return (

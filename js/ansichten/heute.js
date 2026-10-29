@@ -2,7 +2,7 @@
 // Morgens beginnt es mit dem Morgeneintrag, abends mit dem Abendeintrag.
 
 import { t, inhalt, fuelle } from '../inhalte.js';
-import { esc, zahl, leseZahl, zufall, toast, sternchen, ausKey, $, $$ } from '../util.js';
+import { esc, zahl, leseZahl, zufall, toast, sternchen, ausKey, plusTage, $, $$ } from '../util.js';
 import {
   einstellungen, heuteKey, tag, aendereTag, morgenErledigt, letzterWert,
   summenFesthalten, pauseGenommen, freudeListe, freudeNach, freudeGenossen,
@@ -10,10 +10,12 @@ import {
 } from '../daten.js';
 import { infoKnopf, infoFuerExperiment } from '../info.js';
 import { rueckblicke, ungelesenerRueckblick, datumKurz } from '../rueckblick.js';
-import { gewichtModus, sprunghaft, gesundheitHat } from '../profil.js';
+import { gewichtModus, sprunghaft, gesundheitHat, mehrAnbieten, profil, markiereProfil } from '../profil.js';
 import { api } from '../speicher.js';
 import { zeigeSeiten, textBloecke } from '../seiten.js';
 import { feldKopf, stundenText, bestaetige } from './teile.js';
+import { stand } from '../weg.js';
+import { katalogEintrag } from '../experimente.js';
 
 let morgenBearbeiten = false;
 let abendBearbeiten = false;
@@ -75,6 +77,35 @@ function startSeite(datum, zeit) {
         <p>${esc(t('rueckblick.neu_text'))}</p>
         <a class="knopf knopf-haupt" href="#rueckblick/${neu.nummer}">${esc(t('rueckblick.oeffnen'))}</a>
       </div>`);
+  }
+  if (mehrAnbieten()) {
+    // Einmal, an einem Tag: die neuen Fragen sanft anbieten.
+    if (!profil().mehrAngeboten) markiereProfil({ mehrAngeboten: heuteKey() });
+    bloecke.push(`
+      <div class="hinweis-kasten">
+        <h2>${esc(t('kennenlernen.mehr_titel'))}</h2>
+        <p>${esc(t('kennenlernen.mehr_kachel'))}</p>
+        <div class="knopf-spalte eng">
+          <a class="knopf knopf-zweit" href="#kennenlernen/mehr">${esc(t('kennenlernen.mehr_los'))}</a>
+          <button type="button" class="knopf-text leise-knopf" data-aktion="mehr-spaeter">${esc(t('kennenlernen.mehr_spaeter'))}</button>
+        </div>
+      </div>`);
+  }
+  const st = stand();
+  if (st.eintraege || st.experiment) {
+    // „So läuft es gerade“: eine ruhige Kachel, die in „Mein Weg“ führt.
+    const zeilen = [
+      st.experiment
+        ? t('weg.kachel_experiment', { titel: st.experiment.titel, ...(st.tag || { tag: 1, von: 1 }) })
+        : t('weg.kachel_kein_experiment'),
+      `${st.eintraege === 1 ? t('weg.eintraege_eins') : t('weg.eintraege', { anzahl: st.eintraege })} ${st.bisRueckblick === 1 ? t('weg.bis_rueckblick_eins') : t('weg.bis_rueckblick', { anzahl: st.bisRueckblick })}`,
+    ];
+    bloecke.push(`
+      <a class="weg-kachel" href="#verlauf">
+        <span class="weg-kachel-titel">${esc(t('weg.kachel_titel'))}</span>
+        ${zeilen.map((z) => `<span class="weg-kachel-zeile">${esc(z)}</span>`).join('')}
+        <span class="weg-kachel-link">${esc(t('weg.kachel_link'))} →</span>
+      </a>`);
   } else if (!rueckblicke().length) {
     bloecke.push(`<p class="leise klein block-abstand">${esc(t('rueckblick.hinweis_sieben'))} ${infoKnopf('rueckblick')}</p>`);
   }
@@ -166,6 +197,10 @@ function morgenSeiten(heute, datum) {
   return seiten;
 }
 
+function mitAblage(v = experimentJetzt()) {
+  return Boolean(v && !experimentVorbei(v) && katalogEintrag(v.id)?.ablage);
+}
+
 function experimentSeite() {
   const v = experimentJetzt();
   if (!v) {
@@ -185,6 +220,15 @@ function experimentSeite() {
     `<h2 class="experiment-name">${esc(v.titel)} ${infoKnopf(v.info || infoFuerExperiment(v.titel))}</h2>`,
   ];
   if (v.beschreibung) bloecke.push(...textBloecke(v.beschreibung));
+  // Beim Experiment „Abends ist alles erledigt“ liegt hier, was gestern Abend abgelegt wurde.
+  const gestern = mitAblage(v) ? tag(plusTage(heuteKey(), -1)).abgelegt : '';
+  if (gestern) {
+    bloecke.push(`<div class="hinweis-kasten abgelegt">
+      <p class="feld-name">${esc(t('experiment.abgelegt_titel'))}</p>
+      ${textBloecke(gestern, 'abgelegt-text').join('')}
+      <p class="leise klein">${esc(t('experiment.abgelegt_text'))}</p>
+    </div>`);
+  }
   if (v.wann) bloecke.push(`<p>${esc(t('experimentwahl.eigen_wann_anzeige', { text: v.wann }))}</p>`);
   if (v.woran) bloecke.push(`<p>${esc(t('experimentwahl.eigen_woran_anzeige', { text: v.woran }))}</p>`);
   bloecke.push(`<p class="leise klein">${esc(vorbei ? t('experimentwahl.vorbei') : t('experiment.hinweis'))}</p>`);
@@ -308,6 +352,22 @@ function abendSeite(heute) {
             <span class="skala-wort">${esc(wort)}</span>
           </button>`).join('')}
       </div>`,
+      `<div class="feld">
+        <p class="feld-name" id="offen-titel">${esc(t('abendeintrag.offen_frage'))}</p>
+        <p class="leise klein">${esc(t('abendeintrag.offen_hilfe'))}</p>
+        <div class="skala skala-offen" role="radiogroup" aria-labelledby="offen-titel">
+          ${inhalt('texte.abendeintrag.offen_stufen', []).map((wort, i) => `
+            <button class="skala-stufe" role="radio" aria-checked="${heute.offen === i + 1}" data-aktion="offen" data-wert="${i + 1}" style="--stufe:${i + 1}">
+              <span class="skala-punkt" aria-hidden="true"></span>
+              <span class="skala-wort">${esc(wort)}</span>
+            </button>`).join('')}
+        </div>
+      </div>`,
+      mitAblage() ? `<label class="feld">
+        ${feldKopf(t('abendeintrag.ablage_label'), 'erledigt')}
+        <textarea name="abgelegt" rows="3" maxlength="1000" placeholder="${esc(t('abendeintrag.ablage_platzhalter'))}">${esc(heute.abgelegt || '')}</textarea>
+        <span class="feld-hilfe">${esc(t('abendeintrag.ablage_hilfe'))}</span>
+      </label>` : '',
       `<label class="feld">
         <span class="feld-name">${esc(t('abendeintrag.satz_label'))}</span>
         <textarea name="satz" rows="2" maxlength="400" placeholder="${esc(t('abendeintrag.satz_platzhalter'))}">${esc(heute.satz || '')}</textarea>
@@ -432,16 +492,38 @@ function binde(wurzel, ctx, datum) {
     if (aktion === 'anspannung') {
       const wert = Number(ziel.dataset.wert);
       aendereTag(datum, (tg) => { tg.anspannung = wert; });
-      $$('.skala-stufe', wurzel).forEach((s) => s.setAttribute('aria-checked', String(Number(s.dataset.wert) === wert)));
+      $$('[data-aktion="anspannung"]', wurzel).forEach((s) => s.setAttribute('aria-checked', String(Number(s.dataset.wert) === wert)));
       const knopf = $('[data-aktion="abend-speichern"]', wurzel);
       if (knopf) knopf.disabled = false;
       return;
     }
+    if (aktion === 'mehr-spaeter') {
+      // Ein Datum in der Vergangenheit: Die Karte kommt nicht wieder, die Fragen bleiben unter „Mehr“.
+      markiereProfil({ mehrAngeboten: '2000-01-01' });
+      toast(t('kennenlernen.mehr_spaeter_hinweis'));
+      ctx.zeichne();
+      return;
+    }
+    if (aktion === 'offen') {
+      // Freiwillig: ein zweites Antippen derselben Stufe nimmt die Angabe wieder weg.
+      const wert = Number(ziel.dataset.wert);
+      let neu = wert;
+      aendereTag(datum, (tg) => {
+        if (tg.offen === wert) { delete tg.offen; neu = null; } else tg.offen = wert;
+      });
+      $$('[data-aktion="offen"]', wurzel).forEach((s) => s.setAttribute('aria-checked', String(Number(s.dataset.wert) === neu)));
+      return;
+    }
     if (aktion === 'abend-speichern') {
       const satz = wurzel.querySelector('[name="satz"]').value.trim();
+      const abgelegt = wurzel.querySelector('[name="abgelegt"]')?.value.trim();
       aendereTag(datum, (tg) => {
         if (satz) tg.satz = satz;
         else delete tg.satz;
+        if (abgelegt !== undefined) {
+          if (abgelegt) tg.abgelegt = abgelegt;
+          else delete tg.abgelegt;
+        }
       });
       sternchen(ziel, 5);
       abendBearbeiten = false;

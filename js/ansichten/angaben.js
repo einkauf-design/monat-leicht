@@ -38,7 +38,7 @@ export function zeige(wurzel, ctx) {
     ],
   }];
 
-  for (const frage of aktiveEingangsfragen()) {
+  for (const frage of aktiveEingangsfragen({ vertiefung: true })) {
     if (frage.gesundheit && !hatEinwilligung()) continue;
     gruppen.push({
       id: `a-${frage.id}`,

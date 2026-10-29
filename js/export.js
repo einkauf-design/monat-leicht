@@ -24,7 +24,7 @@ function feld(wert) {
 const komma = (n) => (typeof n === 'number' ? String(n).replace('.', ',') : '');
 
 export function exportiereCsv(monat = '') {
-  const kopf = ['datum', 'gewicht_kg', 'taille_cm', 'einschlafzeit', 'schlafdauer_h', 'anspannung_1_bis_5', 'summen', 'summen_anzahl', 'summen_uhrzeiten', 'pausen', 'freude_plaetze', 'freude_genutzt', 'satz', 'koerper', 'beobachtungen'];
+  const kopf = ['datum', 'gewicht_kg', 'taille_cm', 'einschlafzeit', 'schlafdauer_h', 'anspannung_1_bis_5', 'summen', 'summen_anzahl', 'summen_uhrzeiten', 'pausen', 'freude_plaetze', 'freude_genutzt', 'satz', 'koerper', 'beobachtungen', 'offen_1_bis_5', 'abgelegt'];
   const beob = beobachtungen();
   // Auch Tage, an denen nur eine Beobachtung notiert wurde, bekommen eine Zeile.
   const nachDatum = Object.fromEntries(tageIm(monat).map((tg) => [tg.datum, tg]));
@@ -45,6 +45,8 @@ export function exportiereCsv(monat = '') {
     tg.satz || '',
     tg.koerper || '',
     beob.filter((b) => b.datum === tg.datum).reverse().map((b) => b.text).join(' | '),
+    tg.offen || '',
+    tg.abgelegt || '',
   ]);
   const csv = '﻿' + [kopf, ...zeilen].map((z) => z.map(feld).join(';')).join('\r\n');
   herunterladen(`emona-${monat || 'alle'}-${datumKey()}.csv`, csv, 'text/csv;charset=utf-8');

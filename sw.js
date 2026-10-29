@@ -2,7 +2,7 @@
 // Sorgt dafür, dass die App ohne Netz startet, Updates automatisch ankommen und Erinnerungen erscheinen.
 // Bei jeder neuen Fassung die Nummer in CACHE_NAME erhöhen.
 
-const VERSION = '1.3.1';
+const VERSION = '1.4.0';
 // Jede Fassung (jeder Ordner) hat ihren eigenen Zwischenspeicher.
 const BEREICH = self.registration.scope;
 const CACHE_NAME = `emona-leicht-${VERSION}-${BEREICH}`;
@@ -30,6 +30,7 @@ const DATEIEN = [
   'js/profil.js',
   'js/experimente.js',
   'js/notizen.js',
+  'js/weg.js',
   'js/wollfaeden.js',
   'js/bildpaare.js',
   'js/ansichten/heute.js',
