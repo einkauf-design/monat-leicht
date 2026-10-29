@@ -94,7 +94,11 @@ function morgenSeiten(heute, datum) {
     }];
   }
   const kurz = sprunghaft() && !mehrEintragen && !morgenBearbeiten;
-  const mitGewicht = gewichtHeute(datum) || (heute.gewicht !== undefined && gewichtModus() !== 'aus');
+  // Am Wiegetag hat das Gewicht eine eigene Seite, auch in der kurzen Fassung.
+  // An anderen Tagen steht es freiwillig über der Taille, solange es nicht ausgeschaltet ist.
+  const wiegetag = gewichtHeute(datum);
+  const gewichtFreiwillig = !wiegetag && gewichtModus() !== 'aus';
+  const koerperFrage = t(gewichtFreiwillig ? 'morgen.koerper_zusammenfassung_gewicht' : 'morgen.koerper_zusammenfassung');
   const gewicht = heute.gewicht !== undefined ? zahl(heute.gewicht, 1) : '';
   const einschlaf = heute.einschlafzeit ?? letzterWert('einschlafzeit') ?? '23:00';
   const dauer = heute.schlafdauer ?? letzterWert('schlafdauer') ?? 7;
@@ -102,23 +106,19 @@ function morgenSeiten(heute, datum) {
   const speichern = `<button class="knopf knopf-haupt" data-aktion="morgen-speichern">${esc(t('morgen.speichern'))}</button>`;
   const kopf = [`<h2>${esc(t('morgen.titel'))}</h2>`, `<p class="leise">${esc(t('morgen.einleitung'))}</p>`];
 
-  const seiten = [];
-  if (mitGewicht && !kurz) {
-    seiten.push({
-      id: 'morgen-gewicht',
-      bloecke: [
-        ...kopf,
-        `<label class="feld">
+  const gewichtFeld = `<label class="feld">
           ${feldKopf(t('morgen.gewicht'), 'gewicht')}
           <span class="eingabe-mit-einheit">
             <input name="gewicht" type="text" inputmode="decimal" autocomplete="off" value="${esc(gewicht)}" aria-describedby="gewicht-hilfe">
             <span class="einheit">${esc(t('morgen.gewicht_einheit'))}</span>
           </span>
           <span class="feld-hilfe" id="gewicht-hilfe">${esc(t('morgen.gewicht_hilfe'))}</span>
-        </label>`,
-        gesundheitHat('schilddruese') || gesundheitHat('medikamente') ? `<p class="hinweis klein">${esc(t('gesundheit.gewicht_hinweis'))}</p>` : '',
-      ],
-    });
+        </label>`;
+  const gewichtHinweis = gesundheitHat('schilddruese') || gesundheitHat('medikamente') ? `<p class="hinweis klein">${esc(t('gesundheit.gewicht_hinweis'))}</p>` : '';
+
+  const seiten = [];
+  if (wiegetag) {
+    seiten.push({ id: 'morgen-gewicht', bloecke: [...kopf, gewichtFeld, gewichtHinweis] });
   }
   seiten.push({
     id: 'morgen-schlaf',
@@ -137,14 +137,16 @@ function morgenSeiten(heute, datum) {
         </div>
       </div>`,
       kurz ? speichern : '',
-      kurz ? `<button class="knopf-text" data-aktion="mehr-eintragen">${esc(t('morgen.koerper_zusammenfassung'))}</button>` : '',
+      kurz ? `<button class="knopf-text" data-aktion="mehr-eintragen">${esc(koerperFrage)}</button>` : '',
     ],
   });
   if (!kurz) {
     seiten.push({
       id: 'morgen-koerper',
       bloecke: [
-        `<p class="feld-name">${esc(t('morgen.koerper_zusammenfassung'))}</p>`,
+        `<p class="feld-name">${esc(koerperFrage)}</p>`,
+        gewichtFreiwillig ? gewichtFeld : '',
+        gewichtFreiwillig ? gewichtHinweis : '',
         `<label class="feld">
           ${feldKopf(t('morgen.taille'), 'taille')}
           <span class="eingabe-mit-einheit">
@@ -358,7 +360,7 @@ function binde(wurzel, ctx, datum) {
     if (aktion === 'mehr-eintragen') {
       mehrEintragen = true;
       ctx.zeichne();
-      steuerung.gehe(wurzel.querySelector('.seite[data-gruppe^="morgen-"]')?.dataset.gruppe);
+      steuerung.gehe('morgen-koerper');
       return;
     }
 
