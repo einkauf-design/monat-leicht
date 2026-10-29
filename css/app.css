@@ -1297,3 +1297,83 @@ textarea[name="notiz"] { min-height: 150px; }
 /* Ein Satz vor einer Kennenlern-Frage, warum wir fragen. */
 .warum { margin: 0 0 6px; color: var(--text-2); font-style: italic; text-wrap: pretty; }
 .zitat { margin: 0 0 8px; padding: 8px 12px; border-left: 3px solid var(--gold-hell); background: var(--gold-weich); border-radius: 0 var(--rund-klein) var(--rund-klein) 0; font-style: italic; text-wrap: pretty; }
+
+/* ---------- Übersichtlichkeit (1.5.0) ---------- */
+
+/* Überschriften stehen immer oben. Nur Begrüßungsseiten mit dem Stern-Zeichen bleiben mittig. */
+.seite-innen.mitte:not(:has(.start-zeichen))::before { flex: 0 0 0; }
+
+/* Abschnitt statt Punkte, zum Beispiel „Morgen · 2 von 3“. */
+.seiten-punkte[hidden] { display: none; }
+.seiten-schritt {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--flaeche-2);
+  color: var(--text-2);
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* „Weiter“ tritt zurück, wenn die Seite selbst einen Hauptknopf hat. */
+.knopf-rand {
+  background: transparent;
+  color: var(--knopf);
+  box-shadow: inset 0 0 0 2px var(--knopf);
+}
+:root[data-modus="abend"] .knopf-rand { color: var(--pflaume); box-shadow: inset 0 0 0 2px var(--pflaume); }
+
+/* Meldungen erscheinen unten über dem Weiter-Knopf, damit Überschrift und „Zurück“ frei bleiben. */
+#toast {
+  top: auto;
+  bottom: calc(var(--nav-hoehe) + env(safe-area-inset-bottom) + 78px);
+  transform: translate(-50%, 12px);
+}
+#toast.sichtbar { transform: translate(-50%, 0); }
+.spiel-laeuft #toast, .erststart #toast { bottom: calc(env(safe-area-inset-bottom) + 24px); }
+
+/* Heute: was der Tag bereithält */
+.tag-uebersicht { margin-top: 12px; }
+.tag-uebersicht .feld-name { margin: 0; }
+.tag-liste { display: grid; gap: 5px; margin-top: 6px; }
+.tag-schritt {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: var(--rund-klein);
+  background: var(--hintergrund);
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.tag-schritt-symbol { font-size: 1.15rem; text-align: center; }
+.tag-schritt-zeichen { color: var(--text-3); font-weight: 700; }
+.tag-schritt.erledigt .tag-schritt-zeichen { color: var(--petrol); }
+.tag-schritt.erledigt .tag-schritt-name { color: var(--text-2); }
+
+/* Mehr: Inhaltsverzeichnis */
+.mehr-inhalt { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+.mehr-kachel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 8px 10px;
+  line-height: 1.25;
+  border: 0;
+  border-radius: var(--rund-klein);
+  background: var(--hintergrund);
+  color: var(--text);
+  font: inherit;
+  font-weight: 650;
+  text-align: left;
+  cursor: pointer;
+}
+.mehr-kachel-symbol { flex-shrink: 0; width: 24px; font-size: 1.15rem; text-align: center; }
+@media (max-height: 600px) { .mehr-kachel { min-height: 44px; padding: 6px 8px; font-size: 0.92rem; } .mehr-inhalt { gap: 6px; margin-top: 8px; } }

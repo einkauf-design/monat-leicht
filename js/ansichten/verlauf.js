@@ -452,6 +452,12 @@ export function zeige(wurzel, ctx) {
     ...notizenSeiten(),
   ];
 
+  // Abschnitte für die Zeile oben: Wo du stehst, Was passiert ist, Bilder, Notizen.
+  if (!bearbeite) {
+    for (const g of seiten.filter(Boolean)) {
+      g.schritt = g.id === 'status' ? 'stand' : g.id === 'zeitleiste' ? 'zeitleiste' : g.id.startsWith('notiz') ? 'notizen' : 'bilder';
+    }
+  }
   zeigeSeiten(wurzel, seiten, {
     schluessel: bearbeite ? 'verlauf-notiz' : 'verlauf',
     start: ctx.start,

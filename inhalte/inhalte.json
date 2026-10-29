@@ -24,7 +24,14 @@
     },
 
     "heute": {
-      "datum": "Heute ist {wochentag}, der {tag}. {monat}."
+      "datum": "Heute ist {wochentag}, der {tag}. {monat}.",
+      "uebersicht_titel": "Das hält dein Tag für dich bereit.",
+      "schritt_morgen": "Dein Morgen",
+      "schritt_experiment": "Dein Experiment",
+      "schritt_freude": "Deine Freude-Plätze",
+      "schritt_summen": "Summen im Kopf",
+      "schritt_abend": "Dein Abend",
+      "schritt_erledigt": "Schon eingetragen."
     },
 
     "start": {
@@ -250,7 +257,8 @@
       "leer": "Deine ersten kleinen Erfolge sind schon unterwegs.",
       "weitere": "Es warten noch weitere kleine Überraschungen auf dich.",
       "neu": "Ein neuer kleiner Erfolg ist da. {titel}",
-      "erreicht_am": "Das war am {datum}."
+      "erreicht_am": "Das war am {datum}.",
+      "neu_mehrere": "Es sind {anzahl:wort} neue kleine Erfolge da. Du findest sie unter „Mehr“."
     },
 
     "mehr": {
@@ -304,7 +312,17 @@
       "wiegetag_hilfe": "An diesem Tag fragt dich die App nach deinem Gewicht. An den anderen Tagen nicht.",
       "kennenlernen_titel": "Ich lerne dich gern besser kennen.",
       "kennenlernen_text": "Mit deinen Angaben passe ich Experimente, Fragen und Hinweise an dich an.",
-      "mehr_erzaehlen": "Erzähl mir noch etwas mehr"
+      "mehr_erzaehlen": "Erzähl mir noch etwas mehr",
+      "inhalt_titel": "Hier findest du alles Weitere.",
+      "inhalt_text": "Tipp an, was du dir ansehen möchtest.",
+      "inhalt_sammlung": "Sterne und Punkte",
+      "inhalt_erfolge": "Kleine Erfolge",
+      "inhalt_kennenlernen": "Über dich",
+      "inhalt_einstellungen": "Einstellungen",
+      "inhalt_erinnerungen": "Erinnerungen",
+      "inhalt_sync": "Sicherung",
+      "inhalt_export": "Export",
+      "inhalt_ende": "App und Version"
     },
 
     "belohnung": {
@@ -426,7 +444,20 @@
     "seiten": {
       "weiter": "Weiter",
       "zurueck": "Zurück",
-      "stand": "Du bist auf Seite {nummer} von {gesamt}."
+      "stand": "Du bist auf Seite {nummer} von {gesamt}.",
+      "schritt": "{name} · {nummer} von {gesamt}",
+      "schritte": {
+        "tag": "Dein Tag",
+        "morgen": "Morgen",
+        "experiment": "Experiment",
+        "freude": "Freude",
+        "summen": "Summen im Kopf",
+        "abend": "Abend",
+        "stand": "Wo du stehst",
+        "zeitleiste": "Was passiert ist",
+        "bilder": "Deine Wochen in Bildern",
+        "notizen": "Deine Notizen"
+      }
     },
 
     "lob": {
@@ -1001,7 +1032,7 @@
     },
     "erledigt": {
       "titel": "Darum hilft es, abends alles abzulegen.",
-      "pruefung": "zu prüfen",
+      "pruefung": "geprüft am 29.10.2026",
       "text": "Unser Gehirn behält Unerledigtes besonders gut im Blick. Die Psychologin Bljuma Zeigarnik hat schon 1927 beschrieben, dass wir uns an unterbrochene Aufgaben besser erinnern als an abgeschlossene. Man spricht deshalb vom Zeigarnik-Effekt.\n\nIm Alltag heißt das: Was offen ist, meldet sich immer wieder, gerade dann, wenn es still wird. Abends im Bett ist der Kopf oft noch bei den Mails, beim Einkauf oder bei dem Gespräch, das noch ansteht.\n\nEs hilft schon, das Offene aufzuschreiben und einen nächsten Schritt festzuhalten. Dann darf das Gehirn loslassen, weil es weiß, dass nichts verloren geht. In einer Schlafstudie sind Menschen, die vor dem Schlafen ihre Aufgaben für die nächsten Tage notiert haben, schneller eingeschlafen.\n\nViele Menschen mit ADHS erleben offene Schleifen besonders stark. Der Kopf springt zwischen vielen Baustellen hin und her, und abends wird es kaum leiser. Ein fester Ort, an dem alles liegen darf, kann dann besonders entlasten.\n\nEine Frau hat beim Kaffee-Experiment gemerkt, dass sie schon vorher besser schlief, seit abends nichts mehr herumlag. Vielleicht entdeckst du etwas Ähnliches. Probier’ es einfach aus.",
       "quellen": [
         "Zeigarnik B. (1927): Das Behalten erledigter und unerledigter Handlungen. Psychologische Forschung 9, 1–85.",
@@ -1011,7 +1042,7 @@
     },
     "last": {
       "titel": "Darum fragen wir nach dem, was auf dir lastet.",
-      "pruefung": "zu prüfen",
+      "pruefung": "geprüft am 29.10.2026",
       "text": "Gewicht, Schlaf und Essen hängen eng mit dem zusammen, was uns den ganzen Tag beschäftigt. Wer lange unter Druck steht, schläft oft schlechter, und schlechter Schlaf macht es dem Körper schwerer, zur Ruhe zu kommen.\n\nViele Frauen tragen eine unsichtbare Last: Sie denken an Termine, an andere Menschen, an Tiere und an alles, was noch erledigt werden muss. Diese Denkarbeit ist anstrengend, auch wenn sie von außen kaum zu sehen ist.\n\nAuch große Veränderungen wie ein neuer Job, eine Trennung oder ein Verlust wirken oft noch lange nach. Der Körper reagiert darauf, manchmal erst Monate später.\n\nDeine Antworten helfen der App, dir passende Fragen und Experimente vorzuschlagen. Du entscheidest, was du erzählen möchtest.",
       "quellen": [
         "Åkerstedt T. (2006): Psychosocial stress and impaired sleep. Scandinavian Journal of Work, Environment & Health 32(6), 493–501.",
@@ -1021,7 +1052,7 @@
     },
     "ohneHunger": {
       "titel": "Darum essen wir manchmal ohne Hunger.",
-      "pruefung": "zu prüfen",
+      "pruefung": "geprüft am 29.10.2026",
       "text": "Essen ist mehr als Nahrung. Es tröstet, beruhigt und belohnt. Das ist ganz menschlich und kein Zeichen von Schwäche.\n\nBei Stress schüttet der Körper Hormone aus, die den Appetit auf Süßes und Fettiges steigern können. Abends, wenn der Tag nachklingt, ist dieser Wunsch oft besonders groß.\n\nWenn du weißt, wann du ohne Hunger isst, weißt du auch, was dir in diesem Moment vielleicht fehlt: Ruhe, Trost, eine Pause oder etwas Schönes. Genau darum geht es in deinen Experimenten.",
       "quellen": [
         "Adam T. C. & Epel E. S. (2007): Stress, eating and the reward system. Physiology & Behavior 91(4), 449–458.",

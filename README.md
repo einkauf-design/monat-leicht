@@ -120,6 +120,18 @@ So wählt die App aus: Der erste Rückblick ist zum Hineinfinden und fragt nach 
 
 **Beobachtungen zum Experiment:** Jede Beobachtung ist ein eigenes Dokument (`beobachtung:2026-10-23-…`) mit Datum. Frühere Monatsnotizen aus Version 1.1 werden beim ersten Start einmalig als Beobachtung mit dem Datum dieses Tages übernommen (`beobachtung:uebernommen-2026-10`). Die alte Notiz bleibt zusätzlich im Experiment gespeichert.
 
+## Neu in Version 1.5.0
+
+**Übersichtlichkeit:**
+- „Heute“ beginnt mit einer Übersicht „Das hält dein Tag für dich bereit“: Morgen, Experiment, Freude-Plätze, Summen, Abend. Jede Zeile springt direkt dorthin, Erledigtes bekommt ein leises Häkchen.
+- Oben steht auf „Heute“ und in „Mein Weg“ statt der vielen Punkte der Abschnitt, zum Beispiel „Morgen · 2 von 3“ (Gruppen-Option `schritt` in `js/seiten.js`, Namen unter `texte.seiten.schritte`).
+- „Mehr“ beginnt mit einem Inhaltsverzeichnis aus Kacheln.
+- „Weiter“ ist nur noch lila, wenn die Seite keinen eigenen Hauptknopf hat, sonst ein heller Knopf mit Rand.
+- Überschriften stehen immer oben; nur Begrüßungsseiten mit dem Stern bleiben mittig.
+- Meldungen erscheinen unten über dem Weiter-Knopf. Mehrere neue Erfolge kommen als eine Meldung.
+
+Die Info-Texte `erledigt`, `last` und `ohneHunger` sind jetzt „geprüft am 29.10.2026“.
+
 ## Neu in Version 1.4.0
 
 **Mein Weg:** Der Bereich „Verlauf“ heißt jetzt „Mein Weg“ (die Adresse bleibt `#verlauf`). Er beginnt mit einer Status-Seite (laufendes Experiment mit Tag X von Y, Durchschnitt der letzten sieben Tage) und einer Zeitleiste „Was bisher passiert ist“ (Start, Experimente mit Erkenntnis, Beobachtungen, Rückblicke, kleine Erfolge). Danach folgen die Diagramme. Auf „Heute“ führt die Kachel „So läuft es gerade“ dorthin. Die Ereignisse sammelt `js/weg.js`.
@@ -130,7 +142,7 @@ So wählt die App aus: Der erste Rückblick ist zum Hineinfinden und fragt nach 
 
 **Kennenlernen vertiefen:** Sechs neue Fragen (`kopf`, `druck`, `kuemmern`, `ausruhen`, `ohneHunger`, `veraendert`), jede mit einem Satz, warum wir fragen, einem „i“ und einem freien Feld. `kopf` gehört zum ersten Kennenlernen, die übrigen (`vertiefung: true`) kommen ab dem zweiten Rückblick nach und nach, höchstens eine pro Rückblick (`fragenRegeln.vertiefungAbRueckblick`, `vertiefungAbstand`). Wer das Kennenlernen schon gemacht hat, bekommt die neuen Fragen einmal sanft auf „Heute“ angeboten und findet sie unter „Mehr“ (`#kennenlernen/mehr`). Freier Text taucht einmal in einem späteren Rückblick wieder auf („Du hattest geschrieben …“). Die Optionen „Wechseljahre“ und „Fachleute wie Therapie oder Ärztin“ erscheinen nur mit Einwilligung und liegen im Dokument `gesundheit`.
 
-**Neue Info-Texte:** `erledigt`, `last` und `ohneHunger` sind mit `"pruefung": "zu prüfen"` markiert und sollten vor dem Einsatz im Kurs durchgesehen werden.
+**Neue Info-Texte:** `erledigt`, `last` und `ohneHunger`.
 
 ## Neu in Version 1.3.0
 

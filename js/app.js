@@ -161,7 +161,9 @@ function nachAenderung(herkunft) {
     // Erfolge, die durch Daten vom Server entstehen, werden still gesammelt.
     if (herkunft === 'server') return;
     const versatz = neueRueckblicke.length ? 4000 : 0;
-    neu.forEach((erfolg, i) => setTimeout(() => toast(t('erfolge.neu', { titel: erfolg.titel }), erfolg.symbol), 1600 + versatz + i * 4000));
+    // Mehrere neue Erfolge auf einmal kommen gebündelt als eine einzige Meldung.
+    if (neu.length === 1) setTimeout(() => toast(t('erfolge.neu', { titel: neu[0].titel }), neu[0].symbol), 1600 + versatz);
+    if (neu.length > 1) setTimeout(() => toast(t('erfolge.neu_mehrere', { anzahl: neu.length }), '⭐'), 1600 + versatz);
   }, 300);
   // Daten vom Server: Ansicht neu zeichnen, solange gerade nicht getippt oder gespielt wird.
   if (herkunft === 'server') {

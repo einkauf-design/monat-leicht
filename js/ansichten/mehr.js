@@ -94,7 +94,24 @@ export function zeige(wurzel, ctx) {
   const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
   const tage = inhalt('texte.allgemein.wochentage', []);
 
-  zeigeSeiten(wurzel, [
+  // Die erste Seite ist ein Inhaltsverzeichnis. Jede Kachel springt direkt zur passenden Seite.
+  const inhaltsKacheln = [
+    ['sammlung', '★'], ['erfolge', '🏅'], ['kennenlernen', '💬'], ['einstellungen', '⚙️'],
+    ['erinnerungen', '🔔'], ['sync', '☁️'], ['export', '📄'], ['ende', '📱'],
+  ];
+  const steuerung = zeigeSeiten(wurzel, [
+    {
+      id: 'inhalt',
+      bloecke: [
+        `<h1>${esc(t('mehr.inhalt_titel'))}</h1>`,
+        `<p class="leise">${esc(t('mehr.inhalt_text'))}</p>`,
+        `<div class="mehr-inhalt">${inhaltsKacheln.map(([id, symbol]) => `
+          <button type="button" class="mehr-kachel" data-aktion="gehe" data-ziel="${id}">
+            <span class="mehr-kachel-symbol" aria-hidden="true">${symbol}</span>
+            <span>${esc(t(`mehr.inhalt_${id.replace('-', '_')}`))}</span>
+          </button>`).join('')}</div>`,
+      ],
+    },
     {
       id: 'sammlung',
       mitte: true,
@@ -203,6 +220,10 @@ export function zeige(wurzel, ctx) {
     const ziel = ev.target.closest('[data-aktion]');
     if (!ziel) return;
     const aktion = ziel.dataset.aktion;
+    if (aktion === 'gehe') {
+      steuerung.gehe(ziel.dataset.ziel);
+      return;
+    }
     const monat = wurzel.querySelector('[data-feld="export-monat"]')?.value || '';
     if (aktion === 'csv') exportiereCsv(monat);
     if (aktion === 'json') exportiereJson(monat);

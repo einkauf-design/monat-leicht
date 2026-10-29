@@ -48,7 +48,49 @@ function gewichtHeute(datum) {
 
 /* ---------- Seiten ---------- */
 
-function startSeite(datum, zeit) {
+// Zu welchem Abschnitt eine Seite gehört. Daraus entstehen die Zeile „Morgen · 2 von 3“ und die Übersicht.
+function schrittVon(id) {
+  if (id === 'start') return 'tag';
+  if (id.startsWith('morgen')) return 'morgen';
+  if (id === 'experiment' || id.startsWith('beobachtung')) return 'experiment';
+  return ['freude', 'summen', 'abend'].includes(id) ? id : null;
+}
+
+const SCHRITT_SYMBOL = { morgen: '☀️', experiment: '🧪', freude: '💛', summen: '🌀', abend: '🌙' };
+
+// Was heute schon eingetragen ist. Offenes wird nicht hervorgehoben, nur Erledigtes bekommt ein leises Häkchen.
+function schrittErledigt(schritt, heute, datum) {
+  if (schritt === 'morgen') return morgenErledigt(heute);
+  if (schritt === 'experiment') return beobachtungen().some((b) => b.datum === datum);
+  if (schritt === 'freude') return (heute.freudeGenutzt || []).length > 0;
+  if (schritt === 'summen') return (heute.summen || []).length > 0;
+  if (schritt === 'abend') return Boolean(heute.anspannung);
+  return false;
+}
+
+function tagesUebersicht(gruppen, heute, datum) {
+  const gesehen = new Set();
+  const zeilen = [];
+  for (const g of gruppen) {
+    const schritt = schrittVon(g.id);
+    if (!schritt || schritt === 'tag' || gesehen.has(schritt)) continue;
+    gesehen.add(schritt);
+    const fertig = schrittErledigt(schritt, heute, datum);
+    zeilen.push(`
+      <button type="button" class="tag-schritt${fertig ? ' erledigt' : ''}" data-aktion="gehe" data-ziel="${esc(g.id)}">
+        <span class="tag-schritt-symbol" aria-hidden="true">${SCHRITT_SYMBOL[schritt]}</span>
+        <span class="tag-schritt-name">${esc(t(`heute.schritt_${schritt}`))}</span>
+        <span class="tag-schritt-zeichen">${fertig ? `<span aria-hidden="true">✓</span><span class="nur-vorleser">${esc(t('heute.schritt_erledigt'))}</span>` : '<span aria-hidden="true">›</span>'}</span>
+      </button>`);
+  }
+  if (!zeilen.length) return '';
+  return `<div class="tag-uebersicht">
+    <p class="feld-name">${esc(t('heute.uebersicht_titel'))}</p>
+    <div class="tag-liste">${zeilen.join('')}</div>
+  </div>`;
+}
+
+function startSeite(datum, zeit, uebersicht = '') {
   const name = einstellungen().name || '';
   const gruss = t(`begruessung.${zeit === 'nacht' ? 'nacht' : zeit}`, { name }).replace(/,\s*\./, '.');
   const d = ausKey(datum);
@@ -70,6 +112,8 @@ function startSeite(datum, zeit) {
         <button class="knopf knopf-zweit" data-aktion="spaeter-erinnern" data-art="${esc(art)}">${esc(t('erinnerung_spaeter.knopf'))}</button>
       </div>`);
   }
+  // Die Übersicht steht nach „Später erinnern“, damit dieser Knopf nach einer Erinnerung sofort sichtbar ist.
+  if (uebersicht) bloecke.push(uebersicht);
   if (neu) {
     bloecke.push(`
       <div class="hinweis-kasten karte-rueckblick">
@@ -384,7 +428,7 @@ export function zeige(wurzel, ctx) {
   const heute = tag(datum);
   const zeit = tageszeit(ctx);
 
-  const gruppen = [startSeite(datum, zeit)];
+  const gruppen = [];
   if (zeit === 'abend' || zeit === 'nacht') {
     gruppen.push(abendSeite(heute), freudeSeite(heute), summenSeite(heute), experimentSeite(), ...beobachtungsSeiten(datum));
     if (!morgenErledigt(heute) || morgenBearbeiten) gruppen.push(...morgenSeiten(heute, datum));
@@ -392,6 +436,8 @@ export function zeige(wurzel, ctx) {
     gruppen.push(...morgenSeiten(heute, datum), experimentSeite(), ...beobachtungsSeiten(datum), freudeSeite(heute), summenSeite(heute));
     if (new Date().getHours() >= 17) gruppen.push(abendSeite(heute));
   }
+  gruppen.unshift(startSeite(datum, zeit, tagesUebersicht(gruppen, heute, datum)));
+  for (const g of gruppen) g.schritt = schrittVon(g.id);
 
   steuerung = zeigeSeiten(wurzel, gruppen, { schluessel: 'heute' });
   binde(wurzel, ctx, datum);
@@ -495,6 +541,10 @@ function binde(wurzel, ctx, datum) {
       $$('[data-aktion="anspannung"]', wurzel).forEach((s) => s.setAttribute('aria-checked', String(Number(s.dataset.wert) === wert)));
       const knopf = $('[data-aktion="abend-speichern"]', wurzel);
       if (knopf) knopf.disabled = false;
+      return;
+    }
+    if (aktion === 'gehe') {
+      steuerung.gehe(ziel.dataset.ziel);
       return;
     }
     if (aktion === 'mehr-spaeter') {

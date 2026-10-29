@@ -95,7 +95,8 @@ function packe(flaeche, gruppe) {
 /**
  * Zeigt Gruppen als Seiten an.
  * @param {HTMLElement} wurzel
- * @param {Array} gruppen  [{ id, bloecke: [html], huelle?, klasse?, mitte?, fest?, ohneWeiter? }]
+ * @param {Array} gruppen  [{ id, bloecke: [html], huelle?, klasse?, mitte?, fest?, ohneWeiter?, schritt? }]
+ *   schritt: Name eines Abschnitts (zum Beispiel „morgen“). Dann steht oben „Morgen · 2 von 3“ statt der Punkte.
  * @param {Object} optionen { schluessel, zurueck?: {text, href|aktion}, start?: gruppenId }
  */
 export function zeigeSeiten(wurzel, gruppen, optionen = {}) {
@@ -105,6 +106,7 @@ export function zeigeSeiten(wurzel, gruppen, optionen = {}) {
       <div class="blaettern-kopf">
         <button type="button" class="blaettern-zurueck knopf-text" data-blaettern="zurueck"><span aria-hidden="true">←</span> <span class="zurueck-text">${esc(t('seiten.zurueck'))}</span></button>
         <ol class="seiten-punkte" aria-hidden="true"></ol>
+        <span class="seiten-schritt" hidden></span>
         <span class="nur-vorleser seiten-stand" aria-live="polite"></span>
       </div>
       <div class="blaettern-flaeche"></div>
@@ -115,6 +117,7 @@ export function zeigeSeiten(wurzel, gruppen, optionen = {}) {
   const flaeche = wurzel.querySelector('.blaettern-flaeche');
   const punkte = wurzel.querySelector('.seiten-punkte');
   const standText = wurzel.querySelector('.seiten-stand');
+  const schrittText = wurzel.querySelector('.seiten-schritt');
   const zurueckKnopf = wurzel.querySelector('[data-blaettern="zurueck"]');
   const weiterKnopf = wurzel.querySelector('[data-blaettern="weiter"]');
 
@@ -152,8 +155,24 @@ export function zeigeSeiten(wurzel, gruppen, optionen = {}) {
     const hatZurueck = index > 0 || optionen.zurueck;
     zurueckKnopf.style.visibility = hatZurueck ? 'visible' : 'hidden';
     zurueckKnopf.querySelector('.zurueck-text').textContent = index === 0 && optionen.zurueck ? optionen.zurueck.text : t('seiten.zurueck');
+    // Abschnitt: Seiten mit demselben „schritt“, die direkt aufeinander folgen.
+    const schritt = aktuell?.gruppe.schritt;
+    if (schritt) {
+      let von = index;
+      let bis = index;
+      while (von > 0 && seiten[von - 1].gruppe.schritt === schritt) von -= 1;
+      while (bis < seiten.length - 1 && seiten[bis + 1].gruppe.schritt === schritt) bis += 1;
+      const name = t(`seiten.schritte.${schritt}`);
+      schrittText.textContent = bis > von ? t('seiten.schritt', { name, nummer: index - von + 1, gesamt: bis - von + 1 }) : name;
+    }
+    schrittText.hidden = !schritt;
+    punkte.hidden = Boolean(schritt);
     const letzte = index >= seiten.length - 1;
     weiterKnopf.style.visibility = letzte || aktuell?.gruppe.ohneWeiter ? 'hidden' : 'visible';
+    // Hat die Seite selbst einen Hauptknopf, tritt „Weiter“ zurück, damit nur ein Knopf hervorsticht.
+    const eigeneAktion = Boolean(aktuell?.seite.querySelector('.knopf-haupt'));
+    weiterKnopf.classList.toggle('knopf-haupt', !eigeneAktion);
+    weiterKnopf.classList.toggle('knopf-rand', eigeneAktion);
     if (richtung) wurzel.dispatchEvent(new CustomEvent('seitenwechsel', { detail: { index, gruppe: aktuell?.gruppe.id } }));
   }
 
