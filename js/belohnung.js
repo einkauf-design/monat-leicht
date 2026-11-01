@@ -5,6 +5,7 @@ import { lies, schreibe, schluesselMit } from './speicher.js';
 import { inhalt } from './inhalte.js';
 import { alleTage, regalStand, beobachtungen } from './daten.js';
 import { antwortenGesamt } from './rueckblick.js';
+import { eintraege as barometerEintraege } from './barometer.js';
 import { einschlafMinuten, datumKey } from './util.js';
 
 export function statistik() {
@@ -22,7 +23,9 @@ export function statistik() {
   const notizen = Math.max(beobachtungen().length, alteNotizen);
   const spiele = lies('spiele', {});
   const eigene = [lies('versuch', null), ...lies('versuche', [])].filter((v) => v && v.id === 'eigen').length;
-  return { tage, freudeGenutzt, pausen, abende, notizen, antworten: antwortenGesamt(), regal: regalStand(), spiele, eigene };
+  // Fürs Hinhören in die Schultern, nie für den Wert.
+  const hinhoeren = barometerEintraege().length;
+  return { tage, freudeGenutzt, pausen, abende, notizen, antworten: antwortenGesamt(), regal: regalStand(), spiele, eigene, hinhoeren };
 }
 
 export function gesamt(s = statistik()) {
@@ -36,7 +39,8 @@ export function gesamt(s = statistik()) {
       (s.spiele.bildpaare?.punkte || 0) +
       s.freudeGenutzt * (b.punkteFreudePlatz ?? 10) +
       s.pausen * (b.punktePause ?? 5) +
-      s.abende * (b.punkteAbend ?? 5),
+      s.abende * (b.punkteAbend ?? 5) +
+      s.hinhoeren * (b.punkteHinhoeren ?? 2),
   };
 }
 
@@ -60,6 +64,8 @@ function fortschritt(erfolg, s) {
       return s.pausen;
     case 'abende':
       return s.abende;
+    case 'hinhoeren':
+      return s.hinhoeren;
     case 'regale':
       return s.regal.regale;
     case 'experimentNotiz':

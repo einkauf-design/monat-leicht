@@ -29,7 +29,8 @@
       "schritt_freude": "Deine Freude-Plätze",
       "schritt_summen": "Summen im Kopf",
       "schritt_abend": "Dein Abend",
-      "schritt_erledigt": "Schon eingetragen."
+      "schritt_erledigt": "Schon eingetragen.",
+      "schritt_schultern": "Deine Schultern"
     },
     "start": {
       "titel": "Schön, dass du da bist.",
@@ -111,7 +112,8 @@
       ],
       "ablage_label": "Liegt noch etwas herum?",
       "ablage_platzhalter": "Schreib auf, was noch offen ist. Für heute darfst du es hier abgeben.",
-      "ablage_hilfe": "Es ist hier gut aufgehoben, bis morgen."
+      "ablage_hilfe": "Es ist hier gut aufgehoben, bis morgen.",
+      "titel_neu": "Jetzt darf dein Tag leiser werden."
     },
     "experiment": {
       "titel": "Das ist dein Experiment des Monats.",
@@ -494,7 +496,8 @@
         "stand": "Wo du stehst",
         "zeitleiste": "Was passiert ist",
         "bilder": "Deine Wochen in Bildern",
-        "notizen": "Deine Notizen"
+        "notizen": "Deine Notizen",
+        "schultern": "Deine Schultern"
       }
     },
     "lob": {
@@ -723,6 +726,87 @@
       "kachel_experiment": "Dein Experiment „{titel}“ ist bei Tag {tag} von {von}.",
       "kachel_kein_experiment": "Gerade läuft kein Experiment.",
       "kachel_link": "Schau dir deinen Weg an"
+    },
+    "barometer": {
+      "runter_titel": "Schultern runter",
+      "runter_text": "Lass’ deine Schultern sinken. Wir atmen dreimal ruhig ein und aus.",
+      "runter_hilfe": "Atme’ ein, während der Kreis wächst, und aus, während er kleiner wird. Mit „Weiter“ geht es jederzeit weiter.",
+      "frage": "Wie fühlen sich deine Schultern gerade an?",
+      "stufen": [
+        "Meine Schultern sind ganz weich.",
+        "Sie sind locker.",
+        "Da ist ein bisschen Spannung.",
+        "Sie sind hochgezogen und fest.",
+        "Sie sind hart wie ein Brett."
+      ],
+      "kurz": [
+        "ganz weich",
+        "locker",
+        "ein bisschen Spannung",
+        "hochgezogen und fest",
+        "hart wie ein Brett"
+      ],
+      "wo_titel": "Wo spürst du es noch?",
+      "wo_hilfe": "Das ist freiwillig. Du kannst mehrere Stellen antippen oder einfach weitergehen.",
+      "orte": {
+        "kiefer": "Kiefer",
+        "nacken": "Nacken",
+        "atem": "Atem",
+        "bauch": "Bauch",
+        "haende": "Hände",
+        "nirgends": "Nirgends"
+      },
+      "wo_fertig": "Halte es fest",
+      "danke_titel": "Danke, dass du hingehört hast.",
+      "danke_viel": "Dein Körper hat heute viel getragen.",
+      "danke_punkte": "Fürs Hinhören bekommst du zwei Punkte. Es zählt das Spüren, nicht das Ergebnis.",
+      "danke_experiment": "Das gehört zu deinem Experiment „{titel}“.",
+      "danke_ohne": "Gerade läuft kein Experiment. Magst du dir eins aussuchen? Dann gehört dein Hinhören ab jetzt dazu.",
+      "experiment_waehlen": "Such’ dir ein Experiment aus",
+      "zurueck_heute": "Geh’ zurück zu Heute",
+      "frag_knopf": "Frag’ deine Schultern",
+      "heute_eins": "Heute einmal in die Schultern gehorcht.",
+      "heute_anzahl": "Heute {anzahl:mal} in die Schultern gehorcht.",
+      "hinweis_titel": "Magst du kurz deine Schultern fragen?",
+      "start_titel": "Jetzt kann dein Experiment beginnen.",
+      "start_text": "Was du eben gespürt hast, ist dein Ausgangspunkt. Am Ende des Experiments kannst du ihn ruhig daneben legen.",
+      "start_text_ohne": "Du kannst jederzeit später in deine Schultern hören. Dein Experiment beginnt trotzdem gleich.",
+      "start_knopf": "Beginn’ dein Experiment",
+      "vergleich_titel": "So haben sich deine Schultern in diesem Experiment angefühlt.",
+      "vergleich_text": "Hier steht nur, was du gespürt hast. Es gibt nichts zu bewerten.",
+      "vergleich_anfang": "Am Anfang",
+      "vergleich_letzte": "In den letzten Tagen",
+      "vergleich_keine": "In den letzten Tagen hast du nicht gefragt, und das ist in Ordnung.",
+      "muster_titel": "So fühlen sich deine Schultern über den Tag an.",
+      "muster_text": "Hier stehen die letzten zwei Wochen, nach Tageszeit sortiert.",
+      "muster_satz_fest": "{zeit} waren deine Schultern an {fest} von {tage} Tagen bei Stufe 4 oder 5.",
+      "muster_satz_ruhig": "{zeit} lagen deine Schultern an allen {tage} Tagen bei Stufe 1 bis 3.",
+      "muster_leer": "Sobald du an ein paar Tagen in deine Schultern gehorcht hast, siehst du hier, wie sie sich über den Tag anfühlen.",
+      "zeiten": {
+        "morgen": "Am Morgen",
+        "mittag": "Am Mittag",
+        "nachmittag": "Am Nachmittag",
+        "abend": "Am Abend"
+      },
+      "zeiten_klein": {
+        "morgen": "am Morgen",
+        "mittag": "am Mittag",
+        "nachmittag": "am Nachmittag",
+        "abend": "am Abend"
+      },
+      "rueckblick_zeit": "Am lockersten waren deine Schultern in diesen Tagen {zeit}.",
+      "rueckblick_freude": "Am lockersten waren deine Schultern an den Tagen, an denen du einen Freude-Platz genossen hast.",
+      "einstellung_titel": "Schultern-Erinnerungen",
+      "einstellung_text": "Zwei- oder dreimal am Tag fragt dich die App leise, ob du kurz in deine Schultern hören magst. Ohne Erlaubnis für Mitteilungen erscheint der Hinweis, wenn du die App das nächste Mal öffnest.",
+      "einstellung_an": "Die Schultern-Erinnerungen sind eingeschaltet.",
+      "einstellung_aus": "Die Schultern-Erinnerungen sind ausgeschaltet.",
+      "einstellung_einschalten": "Schalte die Schultern-Erinnerungen ein",
+      "einstellung_ausschalten": "Schalte die Schultern-Erinnerungen aus",
+      "einstellung_erlauben": "Erlaube Mitteilungen auf diesem Handy",
+      "einstellung_nur_hinweis": "Mitteilungen sind gerade nicht möglich. Der Hinweis erscheint dann beim Öffnen der App.",
+      "einstellung_zeiten": "Zu diesen Zeiten fragt die App nach deinen Schultern.",
+      "einstellung_zeit": "{nummer}. Zeit",
+      "einstellung_zeiten_hilfe": "Lass’ ein Feld leer, wenn dir zwei Zeiten genügen."
     }
   },
 
@@ -742,6 +826,10 @@
     "spaeter": {
       "titel": "Hier ist deine Erinnerung von vorhin.",
       "text": "Schau einfach vorbei, wenn es gerade passt."
+    },
+    "schultern": {
+      "titel": "Schultern runter.",
+      "text": "Magst du kurz deine Schultern fragen?"
     }
   },
 
@@ -981,7 +1069,8 @@
       "12": 15,
       "16": 25,
       "20": 35
-    }
+    },
+    "punkteHinhoeren": 2
   },
 
   "erfolge": [
@@ -1143,6 +1232,27 @@
       "anzahl": 1,
       "symbol": "🌱",
       "titel": "Du hast dein erstes eigenes Experiment begonnen."
+    },
+    {
+      "id": "hinhoeren-1",
+      "art": "hinhoeren",
+      "anzahl": 1,
+      "symbol": "🫧",
+      "titel": "Du hast zum ersten Mal in deine Schultern gehorcht."
+    },
+    {
+      "id": "hinhoeren-7",
+      "art": "hinhoeren",
+      "anzahl": 7,
+      "symbol": "🫧",
+      "titel": "Du hast siebenmal in deine Schultern gehorcht."
+    },
+    {
+      "id": "hinhoeren-30",
+      "art": "hinhoeren",
+      "anzahl": 30,
+      "symbol": "🫧",
+      "titel": "Du hast dreißigmal in deine Schultern gehorcht."
     }
   ],
 
@@ -1318,6 +1428,17 @@
       "text": "Viele Frauen merken gar nicht, dass sie gestresst sind. Sie funktionieren einfach, eine Aufgabe nach der anderen, und spüren es erst, wenn der Nacken zieht oder abends nichts mehr geht.\n\nDa hilft eine Regel wie „Um 21 Uhr ist das Handy aus“ allein nicht. Es braucht kleine Momente am Tag, in denen du bewusst hinspürst, so wie beim Essen, wenn du kurz prüfst, ob du schon satt bist.\n\nKurze Pausen von wenigen Minuten können die Energie spürbar heben und Müdigkeit verringern. Das zeigt eine Auswertung vieler Studien zu sogenannten Mikropausen.\n\nDie Fragen vor der nächsten Tätigkeit helfen dir außerdem, nicht nur zu funktionieren: Warum mache ich das jetzt? Ist es gerade sinnvoll? Darf es auch später sein?",
       "quellen": [
         "Albulescu P. et al. (2022): „Give me a break!“ A systematic review and meta-analysis on the efficacy of micro-breaks for increasing well-being and performance. PLoS ONE 17(8), e0272460."
+      ]
+    },
+    "barometer": {
+      "titel": "Darum fragt die App nach deinen Schultern.",
+      "pruefung": "zu prüfen",
+      "text": "Den eigenen Körper von innen wahrzunehmen, nennt man Interozeption. Dazu gehört, wie sich Muskeln, Atem oder Bauch gerade anfühlen.\n\nUntersuchungen zeigen, dass sich die Muskeln im Schulter- und Nackenbereich bei geistiger Belastung messbar anspannen, auch wenn man es selbst kaum bemerkt.\n\nWas lange gleich bleibt, fällt uns oft weniger auf. Wenn Anspannung zum Dauerzustand wird, gewöhnt sich der Körper daran, und man merkt sie erst wieder, wenn man bewusst hinspürt. In Studien hat sich die Aufmerksamkeit für den eigenen Körper durch regelmäßige Übung verändert.\n\nDas Barometer ist kein Test und stellt nichts fest. Es lädt dich ein, kurz hinzuspüren. Jeder Wert ist richtig, weil er nur beschreibt, was gerade ist.\n\nWenn du Schmerzen hast oder dir Sorgen um deinen Körper machst, lass’ es bitte ärztlich abklären.",
+      "quellen": [
+        "Craig A. D. (2002): How do you feel? Interoception: the sense of the physiological condition of the body. Nature Reviews Neuroscience 3(8), 655–666.",
+        "Lundberg U. u. a. (1994): Psychophysiological stress and EMG activity of the trapezius muscle. International Journal of Behavioral Medicine 1(4), 354–370.",
+        "Mehling W. E. u. a. (2012): The Multidimensional Assessment of Interoceptive Awareness (MAIA). PLoS ONE 7(11), e48230.",
+        "Bornemann B. u. a. (2015): Differential changes in self-reported aspects of interoceptive awareness through 3 months of contemplative training. Frontiers in Psychology 5, 1504."
       ]
     }
   },

@@ -16,12 +16,16 @@ import { zeigeSeiten, textBloecke } from '../seiten.js';
 import { feldKopf, stundenText, bestaetige } from './teile.js';
 import { stand } from '../weg.js';
 import { katalogEintrag } from '../experimente.js';
+import { eintraegeAm, faelligeErinnerung } from '../barometer.js';
+import { neuerZustand, schulternGruppen, schulternAktion } from '../schultern.js';
 
 let morgenBearbeiten = false;
 let abendBearbeiten = false;
 let mehrEintragen = false;
 let vorschlag = null;
 let steuerung = null;
+// Ein Durchgang „Schultern“ am Abend. Er ersetzt die frühere Frage „Wie war dein Tag?“.
+let abendZustand = null;
 
 function tageszeit(ctx) {
   if (ctx.abendmodus()) return 'abend';
@@ -53,10 +57,11 @@ function schrittVon(id) {
   if (id === 'start') return 'tag';
   if (id.startsWith('morgen')) return 'morgen';
   if (id === 'experiment' || id.startsWith('beobachtung')) return 'experiment';
-  return ['freude', 'summen', 'abend'].includes(id) ? id : null;
+  if (id.startsWith('abend')) return 'abend';
+  return ['freude', 'summen'].includes(id) ? id : null;
 }
 
-const SCHRITT_SYMBOL = { morgen: '☀️', experiment: '🧪', freude: '💛', summen: '🌀', abend: '🌙' };
+const SCHRITT_SYMBOL = { morgen: '☀️', experiment: '🧪', schultern: '🫧', freude: '💛', summen: '🌀', abend: '🌙' };
 
 // Was heute schon eingetragen ist. Offenes wird nicht hervorgehoben, nur Erledigtes bekommt ein leises Häkchen.
 function schrittErledigt(schritt, heute, datum) {
@@ -65,6 +70,7 @@ function schrittErledigt(schritt, heute, datum) {
   if (schritt === 'freude') return (heute.freudeGenutzt || []).length > 0;
   if (schritt === 'summen') return (heute.summen || []).length > 0;
   if (schritt === 'abend') return Boolean(heute.anspannung);
+  if (schritt === 'schultern') return eintraegeAm(datum).length > 0;
   return false;
 }
 
@@ -76,18 +82,38 @@ function tagesUebersicht(gruppen, heute, datum) {
     if (!schritt || schritt === 'tag' || gesehen.has(schritt)) continue;
     gesehen.add(schritt);
     const fertig = schrittErledigt(schritt, heute, datum);
-    zeilen.push(`
-      <button type="button" class="tag-schritt${fertig ? ' erledigt' : ''}" data-aktion="gehe" data-ziel="${esc(g.id)}">
-        <span class="tag-schritt-symbol" aria-hidden="true">${SCHRITT_SYMBOL[schritt]}</span>
-        <span class="tag-schritt-name">${esc(t(`heute.schritt_${schritt}`))}</span>
-        <span class="tag-schritt-zeichen">${fertig ? `<span aria-hidden="true">✓</span><span class="nur-vorleser">${esc(t('heute.schritt_erledigt'))}</span>` : '<span aria-hidden="true">›</span>'}</span>
-      </button>`);
+    zeilen.push(zeile(schritt, fertig, `data-aktion="gehe" data-ziel="${esc(g.id)}"`, 'button'));
+    // Die Schultern gehören zum Experiment und stehen deshalb direkt darunter.
+    if (schritt === 'experiment') zeilen.push(zeile('schultern', schrittErledigt('schultern', heute, datum), 'href="#barometer"', 'a'));
+  }
+  // Ist eine Schultern-Zeit vorbei und seitdem nicht gefragt worden, steht die Zeile oben und fragt leise nach.
+  // Das ist der Hinweis für alle, die keine Mitteilungen bekommen.
+  if (faelligeErinnerung()) {
+    const i = zeilen.findIndex((z) => z.includes('href="#barometer"'));
+    if (i >= 0) zeilen.splice(i, 1);
+    zeilen.unshift(zeile('schultern', false, 'href="#barometer/erinnerung"', 'a', t('barometer.hinweis_titel')));
   }
   if (!zeilen.length) return '';
   return `<div class="tag-uebersicht">
     <p class="feld-name">${esc(t('heute.uebersicht_titel'))}</p>
     <div class="tag-liste">${zeilen.join('')}</div>
   </div>`;
+}
+
+function zeile(schritt, fertig, attribute, element, name = t(`heute.schritt_${schritt}`)) {
+  return `
+      <${element} ${element === 'button' ? 'type="button" ' : ''}class="tag-schritt${fertig ? ' erledigt' : ''}" ${attribute}>
+        <span class="tag-schritt-symbol" aria-hidden="true">${SCHRITT_SYMBOL[schritt]}</span>
+        <span class="tag-schritt-name">${esc(name)}</span>
+        <span class="tag-schritt-zeichen">${fertig ? `<span aria-hidden="true">✓</span><span class="nur-vorleser">${esc(t('heute.schritt_erledigt'))}</span>` : '<span aria-hidden="true">›</span>'}</span>
+      </${element}>`;
+}
+
+// „Heute zweimal in die Schultern gehorcht.“ Ohne Eintrag bleibt die Zeile leer.
+function schulternHeute(datum) {
+  const anzahl = eintraegeAm(datum).length;
+  if (!anzahl) return '';
+  return anzahl === 1 ? t('barometer.heute_eins') : t('barometer.heute_anzahl', { anzahl });
 }
 
 function startSeite(datum, zeit, uebersicht = '') {
@@ -143,7 +169,8 @@ function startSeite(datum, zeit, uebersicht = '') {
         ? t('weg.kachel_experiment', { titel: st.experiment.titel, ...(st.tag || { tag: 1, von: 1 }) })
         : t('weg.kachel_kein_experiment'),
       `${st.eintraege === 1 ? t('weg.eintraege_eins') : t('weg.eintraege', { anzahl: st.eintraege })} ${st.bisRueckblick === 1 ? t('weg.bis_rueckblick_eins') : t('weg.bis_rueckblick', { anzahl: st.bisRueckblick })}`,
-    ];
+      schulternHeute(datum),
+    ].filter(Boolean);
     bloecke.push(`
       <a class="weg-kachel" href="#verlauf">
         <span class="weg-kachel-titel">${esc(t('weg.kachel_titel'))}</span>
@@ -269,7 +296,12 @@ function experimentSeite() {
   if (v.wann) bloecke.push(`<p>${esc(t('experimentwahl.eigen_wann_anzeige', { text: v.wann }))}</p>`);
   if (v.woran) bloecke.push(`<p>${esc(t('experimentwahl.eigen_woran_anzeige', { text: v.woran }))}</p>`);
   bloecke.push(`<p class="leise klein">${esc(vorbei ? t('experimentwahl.vorbei') : t('experiment.hinweis'))}</p>`);
-  bloecke.push(`<a class="knopf-text" href="#experiment">${esc(t('experimentwahl.wechseln'))}</a>`);
+  bloecke.push(`<div class="knopf-zeile">
+    <a class="knopf knopf-zweit knopf-klein" href="#barometer">${esc(t('barometer.frag_knopf'))}</a>
+    <a class="knopf-text" href="#experiment">${esc(t('experimentwahl.wechseln'))}</a>
+  </div>`);
+  const gehorcht = schulternHeute(heuteKey());
+  if (gehorcht) bloecke.push(`<p class="leise klein">${esc(gehorcht)}</p>`);
   return { id: 'experiment', klasse: 'seite-experiment', bloecke };
 }
 
@@ -363,9 +395,12 @@ function summenSeite(heute) {
   };
 }
 
-function abendSeite(heute) {
-  if (heute.anspannung && !abendBearbeiten) {
-    return {
+// Der Abend: erst „Schultern runter“ und das Barometer, dann offene Dinge, Ablage und ein Satz zum Tag.
+// Das Barometer ersetzt die frühere Frage „Wie war dein Tag?“. Beim Ändern bleibt es bei der letzten Seite.
+function abendSeiten(heute, datum) {
+  const laeuft = abendZustand?.datum === datum;
+  if (heute.anspannung && !abendBearbeiten && !laeuft) {
+    return [{
       id: 'abend',
       mitte: true,
       bloecke: [
@@ -374,21 +409,13 @@ function abendSeite(heute) {
         `<a class="knopf knopf-haupt" href="#abend">${esc(t('abendeintrag.zum_abend'))}</a>`,
         `<button class="knopf-text" data-aktion="abend-aendern">${esc(t('abendeintrag.aendern'))}</button>`,
       ],
-    };
+    }];
   }
-  const stufen = inhalt('texte.abendeintrag.stufen', []);
-  return {
+  if (!laeuft && !abendBearbeiten) abendZustand = { ...neuerZustand({ anlass: 'abend' }), datum };
+  return [...(abendBearbeiten ? [] : schulternGruppen('abend', abendZustand)), {
     id: 'abend',
     bloecke: [
-      `<h2 id="abend-titel">${esc(t('abendeintrag.titel'))} ${infoKnopf('anspannung')}</h2>`,
-      `<p class="leise">${esc(t('abendeintrag.frage'))}</p>`,
-      `<div class="skala" role="radiogroup" aria-labelledby="abend-titel">
-        ${stufen.map((wort, i) => `
-          <button class="skala-stufe" role="radio" aria-checked="${heute.anspannung === i + 1}" data-aktion="anspannung" data-wert="${i + 1}" style="--stufe:${i + 1}">
-            <span class="skala-punkt" aria-hidden="true"></span>
-            <span class="skala-wort">${esc(wort)}</span>
-          </button>`).join('')}
-      </div>`,
+      `<h2>${esc(t('abendeintrag.titel_neu'))}</h2>`,
       `<div class="feld">
         <p class="feld-name" id="offen-titel">${esc(t('abendeintrag.offen_frage'))}</p>
         <p class="leise klein">${esc(t('abendeintrag.offen_hilfe'))}</p>
@@ -409,9 +436,9 @@ function abendSeite(heute) {
         <span class="feld-name">${esc(t('abendeintrag.satz_label'))}</span>
         <textarea name="satz" rows="2" maxlength="400" placeholder="${esc(t('abendeintrag.satz_platzhalter'))}">${esc(heute.satz || '')}</textarea>
       </label>`,
-      `<button class="knopf knopf-haupt" data-aktion="abend-speichern" ${heute.anspannung ? '' : 'disabled'}>${esc(t('abendeintrag.speichern'))}</button>`,
+      `<button class="knopf knopf-haupt" data-aktion="abend-speichern">${esc(t('abendeintrag.speichern'))}</button>`,
     ],
-  };
+  }];
 }
 
 /* ---------- Aufbau ---------- */
@@ -423,11 +450,11 @@ export function zeige(wurzel, ctx) {
 
   const gruppen = [];
   if (zeit === 'abend' || zeit === 'nacht') {
-    gruppen.push(abendSeite(heute), freudeSeite(heute), summenSeite(heute), experimentSeite(), ...beobachtungsSeiten(datum));
+    gruppen.push(...abendSeiten(heute, datum), freudeSeite(heute), summenSeite(heute), experimentSeite(), ...beobachtungsSeiten(datum));
     if (!morgenErledigt(heute) || morgenBearbeiten) gruppen.push(...morgenSeiten(heute, datum));
   } else {
     gruppen.push(...morgenSeiten(heute, datum), experimentSeite(), ...beobachtungsSeiten(datum), freudeSeite(heute), summenSeite(heute));
-    if (new Date().getHours() >= 17) gruppen.push(abendSeite(heute));
+    if (new Date().getHours() >= 17) gruppen.push(...abendSeiten(heute, datum));
   }
   gruppen.unshift(startSeite(datum, zeit, tagesUebersicht(gruppen, heute, datum)));
   for (const g of gruppen) g.schritt = schrittVon(g.id);
@@ -442,6 +469,9 @@ function binde(wurzel, ctx, datum) {
     if (!ziel) return;
     const aktion = ziel.dataset.aktion;
 
+    const was = abendZustand ? schulternAktion(ziel, abendZustand, wurzel) : null;
+    if (was === 'stufe' || was === 'fertig') { steuerung.gehe(was === 'stufe' ? 'abend-wo' : 'abend'); return; }
+    if (was) return;
     if (aktion === 'dauer') {
       const ausgabe = $('.stepper-wert', wurzel);
       const neu = Math.min(14, Math.max(0, Number(ausgabe.dataset.dauer) + Number(ziel.dataset.schritt)));
@@ -543,14 +573,6 @@ function binde(wurzel, ctx, datum) {
       bestaetige(t('experiment.gespeichert'), '🔍');
       return;
     }
-    if (aktion === 'anspannung') {
-      const wert = Number(ziel.dataset.wert);
-      aendereTag(datum, (tg) => { tg.anspannung = wert; });
-      $$('[data-aktion="anspannung"]', wurzel).forEach((s) => s.setAttribute('aria-checked', String(Number(s.dataset.wert) === wert)));
-      const knopf = $('[data-aktion="abend-speichern"]', wurzel);
-      if (knopf) knopf.disabled = false;
-      return;
-    }
     if (aktion === 'gehe') {
       steuerung.gehe(ziel.dataset.ziel);
       return;
@@ -585,6 +607,7 @@ function binde(wurzel, ctx, datum) {
       });
       sternchen(ziel, 5);
       abendBearbeiten = false;
+      abendZustand = null;
       ctx.zeichne();
       bestaetige(t('belohnung.abend_gelandet'));
       return;

@@ -2,7 +2,7 @@
 // Sorgt dafür, dass die App ohne Netz startet, Updates automatisch ankommen und Erinnerungen erscheinen.
 // Bei jeder neuen Fassung die Nummer in CACHE_NAME erhöhen.
 
-const VERSION = '1.5.1';
+const VERSION = '1.6.0';
 // Jede Fassung (jeder Ordner) hat ihren eigenen Zwischenspeicher.
 const BEREICH = self.registration.scope;
 const CACHE_NAME = `emona-leicht-${VERSION}-${BEREICH}`;
@@ -31,6 +31,9 @@ const DATEIEN = [
   'js/experimente.js',
   'js/notizen.js',
   'js/weg.js',
+  'js/barometer.js',
+  'js/schultern.js',
+  'js/ansichten/barometer.js',
   'js/wollfaeden.js',
   'js/bildpaare.js',
   'js/ansichten/heute.js',
@@ -119,7 +122,8 @@ async function erinnerungsArt() {
         const abstand = minuten - (h * 60 + m);
         if (abstand >= -5 && abstand <= 95 && (!beste || abstand < beste.abstand)) beste = { art, abstand };
       }
-      return beste ? beste.art : 'spaeter';
+      // schultern0 bis schultern2 sind alle die Schultern-Erinnerung.
+      return beste ? beste.art.replace(/^schultern\d$/, 'schultern') : 'spaeter';
     }
   } catch {
     /* weiter mit der Uhrzeit */
@@ -141,6 +145,7 @@ async function erinnerungsText() {
     mittag: { titel: 'Zeit für dein Mittagessen.', text: 'Magst du dir jetzt einen Moment zum Essen nehmen?' },
     abend: { titel: 'Es ist Zeit zum Landen.', text: 'Der Tag darf jetzt leiser werden.' },
     spaeter: { titel: 'Hier ist deine Erinnerung von vorhin.', text: 'Schau einfach vorbei, wenn es gerade passt.' },
+    schultern: { titel: 'Schultern runter.', text: 'Magst du kurz deine Schultern fragen?' },
   };
   return { art, ...(inhalte?.erinnerungen?.[art] || ersatz[art]) };
 }
@@ -154,8 +159,9 @@ self.addEventListener('push', (event) => {
         badge: 'icons/icon-192.png',
         tag: 'emona-erinnerung',
         renotify: false,
-        silent: false,
-        data: { ziel: `./?erinnerung=${art}#heute`, art },
+        // Die Schultern-Erinnerung kommt leise, wo das Gerät es erlaubt. Auf dem iPhone bestimmt das System den Ton.
+        silent: art === 'schultern',
+        data: { ziel: art === 'schultern' ? './?erinnerung=schultern#barometer/erinnerung' : `./?erinnerung=${art}#heute`, art },
       }),
     ),
   );

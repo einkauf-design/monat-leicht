@@ -120,6 +120,25 @@ So wählt die App aus: Der erste Rückblick ist zum Hineinfinden und fragt nach 
 
 **Beobachtungen zum Experiment:** Jede Beobachtung ist ein eigenes Dokument (`beobachtung:2026-10-23-…`) mit Datum. Frühere Monatsnotizen aus Version 1.1 werden beim ersten Start einmalig als Beobachtung mit dem Datum dieses Tages übernommen (`beobachtung:uebernommen-2026-10`). Die alte Notiz bleibt zusätzlich im Experiment gespeichert.
 
+## Neu in Version 1.6.0: Körper-Barometer
+
+**Schultern statt Stress:** Die App fragt „Wie fühlen sich deine Schultern gerade an?“ (fünf Stufen von „ganz weich“ bis „hart wie ein Brett“). Davor kommt immer „Schultern runter“ mit einem Atemkreis (dreimal 4 Sekunden ein, 4 Sekunden aus), danach freiwillig „Wo spürst du es noch?“. Fürs Hinhören gibt es zwei Punkte, nie für den Wert. Die Seiten stecken in `js/schultern.js`, die Daten und Muster in `js/barometer.js`, die eigene Ansicht ist `#barometer`.
+
+**Immer am Experiment:** Jeder Eintrag (`barometer:<datum>-<id>`) speichert das laufende Experiment als `kennung@startdatum`, ohne Experiment `null`. Vor jedem Experiment-Start wird einmal gefragt (Ausgangspunkt), am Ende stehen Anfang und letzte Tage ruhig nebeneinander vor „Was hast du herausgefunden?“. Neue Experimente bekommen das automatisch.
+
+**Abend:** Das Barometer ersetzt die frühere Frage „Wie war dein Tag?“. Der Abendwert wird zusätzlich als `anspannung` im Tag gespeichert, damit alle bisherigen Diagramme, Rückblicke und Erfolge mit alten und neuen Werten weiterlaufen.
+
+**Muster:** In „Mein Weg“ stehen Sätze nach Tageszeit (letzte zwei Wochen, ab drei Tagen pro Tageszeit). Im Rückblick steht ab sieben Einträgen ein Satz, wann die Schultern am lockersten waren, aber nur bei einem deutlichen Unterschied.
+
+**Schultern-Erinnerungen:** Eigener Schalter `barometerAn` und bis zu drei Zeiten (`barometerZeiten`, Vorschlag 10:30, 15:00, 20:00) unter „Mehr“ → Erinnerungen. In einem Ordner, dessen Name „anemone“ enthält, sind sie ab Werk an, sonst aus (in der App und in `api/erinnerung.php`). Ohne Erlaubnis für Mitteilungen steht beim Öffnen der App oben in der Tagesübersicht „Magst du kurz deine Schultern fragen?“.
+
+Was Mitteilungen können:
+- Android (Chrome oder installiert): zuverlässig, die Schultern-Erinnerung kommt ohne Ton.
+- iPhone: nur, wenn die App auf dem Home-Bildschirm liegt (ab iOS 16.4) und Mitteilungen erlaubt sind. Den Ton bestimmt das iPhone, Fokus-Modi können Mitteilungen zurückhalten.
+- Der Cronjob läuft alle 15 Minuten, eine Erinnerung kann also bis zu 15 Minuten später kommen.
+
+**Info-Text:** `infos.barometer` ist mit „zu prüfen“ markiert.
+
 ## Neu in Version 1.5.0
 
 **Übersichtlichkeit:**

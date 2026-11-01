@@ -9,6 +9,7 @@ import { verlaengereExperiment, experimentJetzt, speichereErkenntnis } from '../
 import { eingangsfrage, antwort, status, speichereAntwort, STATUS, profil } from '../profil.js';
 import { zeigeSeiten, textBloecke, merkeSeite } from '../seiten.js';
 import { datumLang, auswahlKnoepfe } from './teile.js';
+import { vergleichGruppe } from '../schultern.js';
 
 let steuerung = null;
 
@@ -131,6 +132,9 @@ export function zeige(wurzel, ctx) {
     rb.fragen.forEach((f, i) => gruppen.push(frageSeite(rb, f, i)));
   }
   if (rb.experimentEnde && experimentJetzt()?.rueckblickNummer === nummer) {
+    // Erst ruhig nebeneinander, wie sich die Schultern angefühlt haben, dann die eigene Erkenntnis.
+    const vergleich = vergleichGruppe(experimentJetzt());
+    if (vergleich) gruppen.push(vergleich);
     gruppen.push(erkenntnisSeite(experimentJetzt()));
     gruppen.push({
       id: 'naechstes',

@@ -6,6 +6,7 @@ import { rueckblicke, frageText } from './rueckblick.js';
 import { schluesselMit, lies } from './speicher.js';
 import { herunterladen, datumKey } from './util.js';
 import { gesamt } from './belohnung.js';
+import { eintraege as barometerEintraege } from './barometer.js';
 
 export function verfuegbareMonate() {
   const monate = new Set(alleTage().map((tg) => tg.datum.slice(0, 7)));
@@ -24,11 +25,13 @@ function feld(wert) {
 const komma = (n) => (typeof n === 'number' ? String(n).replace('.', ',') : '');
 
 export function exportiereCsv(monat = '') {
-  const kopf = ['datum', 'gewicht_kg', 'taille_cm', 'einschlafzeit', 'schlafdauer_h', 'anspannung_1_bis_5', 'summen', 'summen_anzahl', 'summen_uhrzeiten', 'pausen', 'freude_plaetze', 'freude_genutzt', 'satz', 'koerper', 'beobachtungen', 'offen_1_bis_5', 'abgelegt'];
+  const kopf = ['datum', 'gewicht_kg', 'taille_cm', 'einschlafzeit', 'schlafdauer_h', 'anspannung_1_bis_5', 'summen', 'summen_anzahl', 'summen_uhrzeiten', 'pausen', 'freude_plaetze', 'freude_genutzt', 'satz', 'koerper', 'beobachtungen', 'offen_1_bis_5', 'abgelegt', 'schultern'];
   const beob = beobachtungen();
+  const schultern = barometerEintraege();
   // Auch Tage, an denen nur eine Beobachtung notiert wurde, bekommen eine Zeile.
   const nachDatum = Object.fromEntries(tageIm(monat).map((tg) => [tg.datum, tg]));
   for (const b of beob) if ((!monat || b.datum.startsWith(monat)) && !nachDatum[b.datum]) nachDatum[b.datum] = { datum: b.datum };
+  for (const e of schultern) if ((!monat || e.datum.startsWith(monat)) && !nachDatum[e.datum]) nachDatum[e.datum] = { datum: e.datum };
   const zeilen = Object.values(nachDatum).sort((a, b) => (a.datum < b.datum ? -1 : 1)).map((tg) => [
     tg.datum,
     komma(tg.gewicht),
@@ -47,6 +50,8 @@ export function exportiereCsv(monat = '') {
     beob.filter((b) => b.datum === tg.datum).reverse().map((b) => b.text).join(' | '),
     tg.offen || '',
     tg.abgelegt || '',
+    // Alle Schultern-Einträge des Tages, zum Beispiel „10:30=3 15:00=4“.
+    schultern.filter((e) => e.datum === tg.datum).map((e) => `${e.zeit}=${e.stufe}`).join(' '),
   ]);
   const csv = '﻿' + [kopf, ...zeilen].map((z) => z.map(feld).join(';')).join('\r\n');
   herunterladen(`emona-${monat || 'alle'}-${datumKey()}.csv`, csv, 'text/csv;charset=utf-8');
@@ -77,6 +82,9 @@ export function exportiereJson(monat = '') {
       })),
     experimente,
     freudeListe: freudeListe(),
+    schultern: barometerEintraege()
+      .filter((e) => !monat || e.datum.startsWith(monat))
+      .map(({ datum, zeit, stufe, orte, anlass, experiment: zu }) => ({ datum, zeit, stufe, orte, anlass, experiment: zu || 'ohne Experiment' })),
     experimentAktuell: lies('versuch', null),
     fruehereExperimente: lies('versuche', []),
     angaben: lies('profil', null),

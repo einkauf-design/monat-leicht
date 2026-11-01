@@ -22,14 +22,15 @@ import * as kennenlernen from './ansichten/kennenlernen.js';
 import * as experimentAnsicht from './ansichten/experiment.js';
 import * as angaben from './ansichten/angaben.js';
 import * as angebot from './ansichten/angebot.js';
+import * as barometer from './ansichten/barometer.js';
 
 const ANSICHTEN = {
   heute, verlauf, freude, abend, mehr,
-  rueckblick: rueckblickAnsicht, kennenlernen, experiment: experimentAnsicht, angaben, angebot,
+  rueckblick: rueckblickAnsicht, kennenlernen, experiment: experimentAnsicht, angaben, angebot, barometer,
 };
 const NAVIGATION = ['heute', 'verlauf', 'freude', 'abend', 'mehr'];
 // Unterseiten zeigen in der Navigation auf ihren Bereich.
-const BEREICH = { rueckblick: 'verlauf', kennenlernen: 'mehr', angaben: 'mehr', experiment: 'heute', angebot: 'heute' };
+const BEREICH = { rueckblick: 'verlauf', kennenlernen: 'mehr', angaben: 'mehr', experiment: 'heute', angebot: 'heute', barometer: 'heute' };
 // Kurzadressen für eine bestimmte Seite in einer Ansicht.
 const ABKUERZUNGEN = { notizen: ['verlauf', 'notizen'] };
 const SYMBOLE = {
@@ -233,12 +234,18 @@ async function los() {
   const adresse = new URL(location.href);
   const erinnerung = adresse.searchParams.get('erinnerung');
   if (erinnerung) {
-    sessionStorage.setItem('emona-erinnerung', erinnerung);
     adresse.searchParams.delete('erinnerung');
+    // Die Schultern-Erinnerung führt direkt zum Barometer, die anderen zu „Heute“ mit „Später erinnern“.
+    if (erinnerung === 'schultern') adresse.hash = '#barometer/erinnerung';
+    else sessionStorage.setItem('emona-erinnerung', erinnerung);
     history.replaceState(null, '', adresse.pathname + adresse.search + adresse.hash);
   }
   navigator.serviceWorker?.addEventListener('message', (e) => {
     if (!e.data?.erinnerung) return;
+    if (e.data.erinnerung === 'schultern') {
+      location.hash = '#barometer/erinnerung';
+      return;
+    }
     sessionStorage.setItem('emona-erinnerung', e.data.erinnerung);
     if (aktuell === 'heute') zeichne();
   });

@@ -1,4 +1,5 @@
-// Sanfte Erinnerungen über Web-Push. Der Server (api/erinnerung.php) verschickt höchstens zwei am Tag.
+// Sanfte Erinnerungen über Web-Push. Der Server (api/erinnerung.php) verschickt sie zu den eingestellten Zeiten.
+// Zwei Schalter teilen sich ein Abo: die Tages-Erinnerungen (erinnerungenAn) und die Schultern-Erinnerungen (barometerAn).
 
 import { api, geraetDaten } from './speicher.js';
 import { setzeEinstellungen, einstellungen } from './daten.js';
@@ -24,7 +25,7 @@ function schluesselZuBytes(text) {
   return Uint8Array.from(roh, (z) => z.charCodeAt(0));
 }
 
-export async function einschalten() {
+export async function einschalten(schalter = 'erinnerungenAn') {
   if (!geraetDaten().code) throw new Error('kein-code');
   const antwort = await Notification.requestPermission();
   if (antwort !== 'granted') throw new Error('abgelehnt');
@@ -38,11 +39,14 @@ export async function einschalten() {
     });
   }
   await api('abo', { abo: abo.toJSON() });
-  setzeEinstellungen({ erinnerungenAn: true });
+  setzeEinstellungen({ [schalter]: true });
 }
 
-export async function ausschalten() {
-  setzeEinstellungen({ erinnerungenAn: false });
+export async function ausschalten(schalter = 'erinnerungenAn') {
+  setzeEinstellungen({ [schalter]: false });
+  // Das Abo bleibt, solange der andere Schalter noch an ist.
+  const e = einstellungen();
+  if (e.erinnerungenAn || e.barometerAn) return;
   try {
     const registrierung = await navigator.serviceWorker.ready;
     const abo = await registrierung.pushManager.getSubscription();
@@ -64,6 +68,9 @@ export async function merkeErinnerungszeiten() {
     abend: e.erinnerungAbend,
     mittag: mittagsErinnerungAktiv() ? e.erinnerungMittag : null,
   };
+  // Die Schultern-Zeiten heißen schultern0 bis schultern2; der Service Worker macht daraus „schultern“.
+  if (e.barometerAn) (e.barometerZeiten || []).forEach((z, i) => { if (z) zeiten[`schultern${i}`] = z; });
+  if (!e.erinnerungenAn) { delete zeiten.morgen; delete zeiten.abend; }
   try {
     const ablage = await caches.open('emona-zeiten');
     await ablage.put(new URL('erinnerungszeiten.json', location.href).href, new Response(JSON.stringify(zeiten), { headers: { 'Content-Type': 'application/json' } }));

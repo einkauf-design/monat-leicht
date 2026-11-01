@@ -1246,9 +1246,9 @@ textarea[name="notiz"] { min-height: 150px; }
 
 .weg-kachel {
   display: grid;
-  gap: 3px;
-  margin-top: 14px;
-  padding: 12px 14px;
+  gap: 2px;
+  margin-top: 10px;
+  padding: 9px 12px;
   border-radius: var(--rund-klein);
   background: var(--petrol-weich);
   border-left: 4px solid #0e6874;
@@ -1258,7 +1258,7 @@ textarea[name="notiz"] { min-height: 150px; }
 }
 :root[data-modus="abend"] .weg-kachel { border-left-color: #6fbab6; }
 .weg-kachel-titel { font-weight: 800; font-size: 0.98rem; }
-.weg-kachel-zeile { font-size: 0.9rem; color: var(--text-2); text-wrap: pretty; }
+.weg-kachel-zeile { font-size: 0.86rem; line-height: 1.35; color: var(--text-2); text-wrap: pretty; }
 .weg-kachel-link { margin-top: 2px; font-weight: 700; font-size: 0.88rem; color: var(--petrol); }
 
 .weg-experiment { font-weight: 600; text-wrap: pretty; }
@@ -1335,14 +1335,14 @@ textarea[name="notiz"] { min-height: 150px; }
 /* Heute: was der Tag bereithält */
 .tag-uebersicht { margin-top: 12px; }
 .tag-uebersicht .feld-name { margin: 0; }
-.tag-liste { display: grid; gap: 5px; margin-top: 6px; }
+.tag-liste { display: grid; gap: 4px; margin-top: 6px; }
 .tag-schritt {
   display: grid;
   grid-template-columns: 28px 1fr auto;
   align-items: center;
   gap: 10px;
-  min-height: 42px;
-  padding: 6px 12px;
+  min-height: 40px;
+  padding: 4px 12px;
   border: 0;
   border-radius: var(--rund-klein);
   background: var(--hintergrund);
@@ -1377,3 +1377,92 @@ textarea[name="notiz"] { min-height: 150px; }
 }
 .mehr-kachel-symbol { flex-shrink: 0; width: 24px; font-size: 1.15rem; text-align: center; }
 @media (max-height: 600px) { .mehr-kachel { min-height: 44px; padding: 6px 8px; font-size: 0.92rem; } .mehr-inhalt { gap: 6px; margin-top: 8px; } }
+
+/* ---------- Körper-Barometer (1.6.0) ---------- */
+
+/* „Schultern runter“: ein Kreis, der 4 Sekunden wächst und 4 Sekunden kleiner wird, dreimal. */
+.atem-kreis-flaeche { display: grid; place-items: center; height: 170px; margin: 8px 0; }
+.atem-kreis {
+  width: 150px; height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--petrol) 30%, transparent), color-mix(in srgb, var(--petrol) 10%, transparent));
+  border: 2px solid color-mix(in srgb, var(--petrol) 45%, transparent);
+  transform: scale(0.45);
+}
+.seite.aktiv .atem-kreis { animation: atmen 8s ease-in-out 3 forwards; }
+@keyframes atmen {
+  0% { transform: scale(0.45); }
+  50% { transform: scale(1); }
+  100% { transform: scale(0.45); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .seite.aktiv .atem-kreis { animation: none; transform: scale(0.75); }
+}
+
+/* Fünf große Tippflächen: Gesicht, ein Balken in einer ruhigen Farbe und ein ganzer Satz. */
+.barometer-liste { display: grid; gap: 7px; }
+.barometer-liste h2 { margin-bottom: 4px; }
+.barometer-stufe {
+  display: grid;
+  grid-template-columns: 44px 14px 1fr;
+  align-items: center;
+  gap: 12px;
+  min-height: 62px;
+  padding: 6px 12px;
+  border: 2px solid transparent;
+  border-radius: var(--rund-klein);
+  background: var(--hintergrund);
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.barometer-stufe[aria-checked="true"] { border-color: var(--petrol); background: var(--petrol-weich); }
+.barometer-gesicht { width: 44px; height: 44px; color: var(--petrol); }
+.barometer-balken { display: grid; grid-template-rows: repeat(5, 1fr); gap: 2px; width: 12px; height: 40px; }
+.barometer-balken span { border-radius: 2px; background: var(--linie); }
+.barometer-balken span.voll { background: var(--petrol); }
+.barometer-satz { text-wrap: pretty; line-height: 1.3; }
+
+/* Vergleich am Ende eines Experiments: nebeneinander, ohne Pfeile und ohne Farben für gut oder schlecht. */
+.vergleich { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+.vergleich-liste { display: grid; gap: 6px; margin: 6px 0 0; padding: 0; list-style: none; }
+.vergleich-eintrag {
+  display: grid;
+  grid-template-columns: 12px 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--rund-klein);
+  background: var(--hintergrund);
+  font-size: 0.86rem;
+  line-height: 1.25;
+}
+.vergleich-eintrag .barometer-balken { height: 30px; width: 10px; }
+.vergleich-eintrag > span { display: grid; }
+.vergleich-datum { color: var(--text-3); font-size: 0.76rem; }
+
+.schultern-muster { padding: 8px 12px; border-radius: var(--rund-klein); background: var(--hintergrund); text-wrap: pretty; }
+.knopf-zeile { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-top: 8px; }
+.zeit-reihe { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.zeit-reihe .feld { min-width: 0; }
+.zeit-reihe input { width: 100%; min-width: 0; padding-inline: 6px; }
+@media (max-height: 600px) {
+  .barometer-stufe { min-height: 52px; }
+  .atem-kreis-flaeche { height: 130px; }
+  .atem-kreis { width: 115px; height: 115px; }
+}
+.tag-schritt[href="#barometer/erinnerung"] { box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--petrol) 45%, transparent); text-decoration: none; }
+a.tag-schritt { text-decoration: none; }
+@media (max-height: 700px) {
+  .tag-schritt { min-height: 38px; padding: 4px 12px; }
+  .tag-liste { gap: 4px; }
+  .barometer-stufe { min-height: 56px; }
+}
+/* Sehr kleine Bildschirme (zum Beispiel iPhone SE der ersten Generation): Antworten etwas enger, damit lange Fragen auf eine Seite passen. */
+@media (max-height: 600px) {
+  .auswahl-liste.zweispaltig .auswahl { padding: 5px 8px; font-size: 0.82rem; line-height: 1.25; min-height: 38px; }
+  .auswahl-liste { gap: 5px; }
+  .warum { font-size: 0.86rem; margin-bottom: 4px; }
+}

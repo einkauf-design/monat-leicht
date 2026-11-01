@@ -81,6 +81,30 @@ function erinnerungsSeiten(e) {
         </label>` : '',
       ],
     },
+    {
+      id: 'schultern-erinnerung',
+      bloecke: [
+        `<h2>${esc(t('barometer.einstellung_titel'))}</h2>`,
+        `<p class="leise klein">${esc(t('barometer.einstellung_text'))}</p>`,
+        `<p class="leise klein">${esc(e.barometerAn ? t('barometer.einstellung_an') : t('barometer.einstellung_aus'))}</p>`,
+        // Ab Werk an, aber noch ohne Erlaubnis: Mitteilungen muss jede Frau einmal selbst erlauben.
+        e.barometerAn && unterstuetzt() && geraetDaten().code && erlaubnis() === 'default'
+          ? `<button class="knopf knopf-haupt" data-aktion="schultern-erlauben">${esc(t('barometer.einstellung_erlauben'))}</button>` : '',
+        `<button class="knopf ${e.barometerAn ? 'knopf-zweit' : 'knopf-haupt'}" data-aktion="schultern-erinnerungen">${esc(e.barometerAn ? t('barometer.einstellung_ausschalten') : t('barometer.einstellung_einschalten'))}</button>`,
+      ],
+    },
+    {
+      id: 'schultern-zeiten',
+      bloecke: [
+        `<p class="feld-name">${esc(t('barometer.einstellung_zeiten'))}</p>`,
+        `<div class="zeit-reihe">${[0, 1, 2].map((i) => `
+          <label class="feld" data-zeit-schultern="${i}">
+            <span class="feld-name klein">${esc(t('barometer.einstellung_zeit', { nummer: i + 1 }))}</span>
+            <input type="time" value="${esc((e.barometerZeiten || [])[i] || '')}">
+          </label>`).join('')}</div>`,
+        `<p class="leise klein">${esc(t('barometer.einstellung_zeiten_hilfe'))}</p>`,
+      ],
+    },
   ];
 }
 
@@ -235,6 +259,36 @@ export function zeige(wurzel, ctx) {
       installAufforderung.prompt();
       installAufforderung = null;
     }
+    if (aktion === 'schultern-erlauben') {
+      ziel.disabled = true;
+      try {
+        await einschalten('barometerAn');
+      } catch {
+        toast(t('barometer.einstellung_nur_hinweis'));
+      }
+      merkeErinnerungszeiten();
+      ctx.zeichne();
+      return;
+    }
+    if (aktion === 'schultern-erinnerungen') {
+      // Mitteilungen gibt es nur mit Erlaubnis. Ohne sie bleibt der leise Hinweis beim Öffnen der App.
+      ziel.disabled = true;
+      if (einstellungen().barometerAn) await ausschalten('barometerAn');
+      else if (unterstuetzt() && geraetDaten().code && erlaubnis() !== 'denied') {
+        try {
+          await einschalten('barometerAn');
+        } catch {
+          setzeEinstellungen({ barometerAn: true });
+          toast(t('barometer.einstellung_nur_hinweis'));
+        }
+      } else {
+        setzeEinstellungen({ barometerAn: true });
+        toast(t('barometer.einstellung_nur_hinweis'));
+      }
+      merkeErinnerungszeiten();
+      ctx.zeichne();
+      return;
+    }
     if (aktion === 'erinnerungen') {
       ziel.disabled = true;
       try {
@@ -252,6 +306,15 @@ export function zeige(wurzel, ctx) {
   };
 
   wurzel.onchange = (ev) => {
+    const schulter = ev.target.closest('[data-zeit-schultern]');
+    if (schulter) {
+      const zeiten = [...(einstellungen().barometerZeiten || ['', '', ''])];
+      zeiten[Number(schulter.dataset.zeitSchultern)] = ev.target.value || '';
+      setzeEinstellungen({ barometerZeiten: zeiten });
+      merkeErinnerungszeiten();
+      toast(t('mehr.zeit_gespeichert'));
+      return;
+    }
     if (ev.target.closest('[data-zeit]') && ev.target.value) {
       setzeEinstellungen({ [ev.target.name]: ev.target.value });
       merkeErinnerungszeiten();

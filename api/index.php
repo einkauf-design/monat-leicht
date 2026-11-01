@@ -173,11 +173,26 @@ function emona_export(array $anfrage): void
             }
         }
     }
+    // Körper-Barometer: alle Einträge, sortiert nach Datum und Uhrzeit.
+    $schultern = [];
+    foreach ($docs as $schluessel => $doc) {
+        if (strpos($schluessel, 'barometer:') === 0 && is_array($doc['wert'] ?? null)) {
+            $e = $doc['wert'];
+            $datum = (string) ($e['datum'] ?? '');
+            if ($datum !== '' && ($monat === '' || strpos($datum, $monat) === 0)) {
+                $schultern[] = $e;
+                if (!isset($tage[$datum])) {
+                    $tage[$datum] = [];
+                }
+            }
+        }
+    }
+    usort($schultern, fn ($a, $b) => strcmp(($a['datum'] ?? '') . ($a['zeit'] ?? ''), ($b['datum'] ?? '') . ($b['zeit'] ?? '')));
     ksort($tage);
     $name = 'emona-' . ($monat ?: 'alle') . '-' . date('Y-m-d');
 
     if (($anfrage['format'] ?? 'json') === 'csv') {
-        $zeilen = [['datum', 'gewicht_kg', 'taille_cm', 'einschlafzeit', 'schlafdauer_h', 'anspannung_1_bis_5', 'summen', 'summen_anzahl', 'pausen', 'freude_genutzt', 'satz', 'koerper', 'offen_1_bis_5', 'abgelegt']];
+        $zeilen = [['datum', 'gewicht_kg', 'taille_cm', 'einschlafzeit', 'schlafdauer_h', 'anspannung_1_bis_5', 'summen', 'summen_anzahl', 'pausen', 'freude_genutzt', 'satz', 'koerper', 'offen_1_bis_5', 'abgelegt', 'schultern']];
         foreach ($tage as $datum => $tag) {
             $zeilen[] = [
                 $datum,
@@ -194,6 +209,7 @@ function emona_export(array $anfrage): void
                 $tag['koerper'] ?? '',
                 $tag['offen'] ?? '',
                 $tag['abgelegt'] ?? '',
+                implode(' ', array_map(fn ($e) => ($e['zeit'] ?? '') . '=' . ($e['stufe'] ?? ''), array_values(array_filter($schultern, fn ($e) => ($e['datum'] ?? '') === $datum)))),
             ];
         }
         $csv = "\xEF\xBB\xBF";
@@ -210,7 +226,7 @@ function emona_export(array $anfrage): void
         exit;
     }
 
-    $ausgabe = ['exportiert' => date('c'), 'zeitraum' => $monat ?: 'alle', 'tage' => $tage, 'weitere' => []];
+    $ausgabe = ['exportiert' => date('c'), 'zeitraum' => $monat ?: 'alle', 'tage' => $tage, 'schultern' => $schultern, 'weitere' => []];
     foreach ($docs as $schluessel => $doc) {
         if (strpos($schluessel, 'tag:') !== 0) {
             $ausgabe['weitere'][$schluessel] = $doc['wert'];

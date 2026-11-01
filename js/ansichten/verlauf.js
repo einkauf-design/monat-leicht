@@ -9,6 +9,7 @@ import {
 import { alleTage } from '../daten.js';
 import { infoKnopf } from '../info.js';
 import { stand, ereignisse } from '../weg.js';
+import { muster } from '../barometer.js';
 import { datumLang, stundenText } from './teile.js';
 import { gewichtSichtbar, gesundheitHat } from '../profil.js';
 import { zeigeSeiten, textBloecke, merkeSeite } from '../seiten.js';
@@ -281,6 +282,23 @@ function statusSeite(tage) {
   };
 }
 
+// Die Schultern nach Tageszeit: nur Beobachtungen, keine Ratschläge.
+function schulternSeite() {
+  const liste = muster();
+  return {
+    id: 'schultern',
+    bloecke: [
+      `<h2>${esc(t('barometer.muster_titel'))} ${infoKnopf('barometer')}</h2>`,
+      `<p class="leise klein">${esc(t('barometer.muster_text'))}</p>`,
+      ...(liste.length
+        ? liste.map((m) => `<p class="schultern-muster">${esc(m.fest
+          ? t('barometer.muster_satz_fest', { zeit: t(`barometer.zeiten.${m.zeit}`), fest: m.fest, tage: m.tage })
+          : t('barometer.muster_satz_ruhig', { zeit: t(`barometer.zeiten.${m.zeit}`), tage: m.tage }))}</p>`)
+        : [`<p>${esc(t('barometer.muster_leer'))}</p>`]),
+    ],
+  };
+}
+
 function zeitleisteSeite() {
   const liste = ereignisse();
   return {
@@ -385,6 +403,7 @@ export function zeige(wurzel, ctx) {
   const seiten = bearbeite ? notizenSeiten() : [
     statusSeite(tage),
     zeitleisteSeite(),
+    schulternSeite(),
     { id: 'diagramme', mitte: true, bloecke: [`<h2>${esc(t('verlauf.titel'))}</h2>`, ...textBloecke(t('verlauf.einleitung'), 'leise')] },
     mitGewicht ? {
       id: 'gewicht',
@@ -455,7 +474,7 @@ export function zeige(wurzel, ctx) {
   // Abschnitte für die Zeile oben: Wo du stehst, Was passiert ist, Bilder, Notizen.
   if (!bearbeite) {
     for (const g of seiten.filter(Boolean)) {
-      g.schritt = g.id === 'status' ? 'stand' : g.id === 'zeitleiste' ? 'zeitleiste' : g.id.startsWith('notiz') ? 'notizen' : 'bilder';
+      g.schritt = { status: 'stand', zeitleiste: 'zeitleiste', schultern: 'schultern' }[g.id] || (g.id.startsWith('notiz') ? 'notizen' : 'bilder');
     }
   }
   zeigeSeiten(wurzel, seiten, {

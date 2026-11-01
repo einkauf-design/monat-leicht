@@ -3,6 +3,7 @@
 import { lies, schreibe, aendere, schluesselMit } from './speicher.js';
 import { inhalt } from './inhalte.js';
 import { logischerTag, monatKey, neueId, jetztZeit } from './util.js';
+import { BEREICH } from './ablage.js';
 
 /* ---------- Einstellungen (werden zwischen Geräten geteilt) ---------- */
 
@@ -14,6 +15,9 @@ const STANDARD_EINSTELLUNGEN = {
   erinnerungMittag: '12:30',
   erinnerungenAn: false,
   wiegetag: 1,
+  // Schultern-Erinnerungen: in Anemones Fassung (Ordnername mit „anemone“) ab Werk an, sonst aus.
+  barometerAn: /anemone/i.test(BEREICH),
+  barometerZeiten: ['10:30', '15:00', '20:00'],
 };
 
 export function einstellungen() {

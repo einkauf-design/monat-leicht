@@ -12,6 +12,9 @@
  * ausdrücklich „Erinnere mich in einer Stunde noch einmal“ wählt, bekommt genau eine weitere.
  * Ist die Uhrzeit schon länger als 90 Minuten vorbei, wird nichts nachgeschickt.
  * Ist der Eintrag schon gemacht, wird gar nicht erst erinnert.
+ *
+ * Seit Version 1.6.0 gibt es dazu bis zu drei Schultern-Erinnerungen („Magst du kurz deine Schultern fragen?“).
+ * Sie haben einen eigenen Schalter (barometerAn) und kommen nicht, wenn seit der Uhrzeit schon gefragt wurde.
  */
 
 declare(strict_types=1);
@@ -31,7 +34,12 @@ const EMONA_FENSTER_MINUTEN = 90;
 
 $ergebnis = emona_mit_daten(function (array &$daten) {
     $einstellungen = $daten['docs']['einstellungen']['wert'] ?? [];
-    if (empty($einstellungen['erinnerungenAn']) || empty($daten['system']['abos'])) {
+    // Schultern-Erinnerungen: ohne eigene Einstellung in Anemones Fassung (Ordnername mit „anemone“) an, sonst aus.
+    $barometerAn = array_key_exists('barometerAn', $einstellungen)
+        ? !empty($einstellungen['barometerAn'])
+        : stripos(basename(dirname(__DIR__)), 'anemone') !== false;
+    $tagesErinnerungen = !empty($einstellungen['erinnerungenAn']);
+    if ((!$tagesErinnerungen && !$barometerAn) || empty($daten['system']['abos'])) {
         return ['gesendet' => [], 'hinweis' => 'Die Erinnerungen sind ausgeschaltet, oder es ist noch kein Gerät angemeldet.'];
     }
     $gesendet = [];
@@ -54,7 +62,7 @@ $ergebnis = emona_mit_daten(function (array &$daten) {
     $mittagAktiv = ($versuch['erinnerung'] ?? '') === 'mittag'
         && ($versuch['start'] ?? '9999') <= $heute && $heute < ($versuch['ende'] ?? '0000');
 
-    $arten = [
+    $arten = !$tagesErinnerungen ? [] : [
         'morgen' => [
             'uhrzeit' => $einstellungen['erinnerungMorgen'] ?? '08:00',
             'schon_erledigt' => isset($tag['gewicht']) || isset($tag['einschlafzeit']) || isset($tag['schlafdauer']),
@@ -65,8 +73,31 @@ $ergebnis = emona_mit_daten(function (array &$daten) {
         ],
     ];
     // Die dritte Erinnerung gibt es nur, solange das Experiment mit der Ess-Erinnerung am Mittag läuft.
-    if ($mittagAktiv) {
+    if ($mittagAktiv && $tagesErinnerungen) {
         $arten['mittag'] = ['uhrzeit' => $einstellungen['erinnerungMittag'] ?? '12:30', 'schon_erledigt' => false];
+    }
+
+    // Bis zu drei Schultern-Zeiten. Wer seit der Zeit schon in die Schultern gehorcht hat, wird nicht erinnert.
+    if ($barometerAn) {
+        $zeiten = $einstellungen['barometerZeiten'] ?? ['10:30', '15:00', '20:00'];
+        $heutigeEintraege = [];
+        foreach ($daten['docs'] as $schluessel => $doc) {
+            if (strpos($schluessel, 'barometer:' . $heute) === 0 && is_array($doc['wert'] ?? null)) {
+                $heutigeEintraege[] = (string) ($doc['wert']['zeit'] ?? '');
+            }
+        }
+        foreach (array_values((array) $zeiten) as $i => $uhrzeit) {
+            if (!is_string($uhrzeit) || $uhrzeit === '' || $i > 2) {
+                continue;
+            }
+            $schon = false;
+            foreach ($heutigeEintraege as $zeit) {
+                if (strcmp(str_pad($zeit, 5, '0', STR_PAD_LEFT), str_pad($uhrzeit, 5, '0', STR_PAD_LEFT)) >= 0) {
+                    $schon = true;
+                }
+            }
+            $arten['schultern' . $i] = ['uhrzeit' => $uhrzeit, 'schon_erledigt' => $schon];
+        }
     }
 
     foreach ($arten as $art => $info) {

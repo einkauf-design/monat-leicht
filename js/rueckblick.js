@@ -8,6 +8,7 @@ import { inhalt, t } from './inhalte.js';
 import { tag, eintragsTage, beobachtungen, experiment, heuteKey, experimentJetzt, fruehereExperimente, experimentVorbei, aendereExperiment } from './daten.js';
 import { profilSignale, ohneKaffee, themenGewichte, gewichtSichtbar, eingangsfragen, nachfrageMoeglich, merkeNachfrage, naechsteVertiefung, profil } from './profil.js';
 import { mittelwert, einschlafMinuten, minutenZuZeit, zahl, plusTage, ausKey } from './util.js';
+import { lockersterMoment } from './barometer.js';
 
 const PRO_RUECKBLICK = 7;
 
@@ -201,6 +202,9 @@ export function auswertung(rb) {
     if (k.pausen) satz += ` ${k.pausen === 1 ? t('rueckblick.pausen_eins') : t('rueckblick.pausen', { anzahl: k.pausen })}`;
     saetze.push(satz);
   }
+  // Ab sieben Einträgen: wann die Schultern am lockersten waren, aber nur bei einem deutlichen Unterschied.
+  const locker = lockersterMoment(tage);
+  if (locker) saetze.push(locker.art === 'zeit' ? t('barometer.rueckblick_zeit', { zeit: t(`barometer.zeiten_klein.${locker.wert}`) }) : t('barometer.rueckblick_freude'));
   if (k.freude) saetze.push(k.freude === 1 ? t('rueckblick.freude_eins') : t('rueckblick.freude', { anzahl: k.freude }));
   if (k.gewicht !== null && gewichtSichtbar()) saetze.push(`${t('rueckblick.gewicht', { wert: zahl(k.gewicht, 1) })} ${t('rueckblick.gewicht_hinweis')}`);
   if (k.taille !== null) saetze.push(t('rueckblick.taille', { wert: zahl(k.taille, 1).replace(/,0$/, '') }));
