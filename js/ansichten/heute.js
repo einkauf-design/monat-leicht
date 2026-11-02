@@ -168,12 +168,11 @@ function morgenSeiten(heute, datum) {
       ],
     }];
   }
-  const kurz = sprunghaft() && !mehrEintragen && !morgenBearbeiten;
-  // Am Wiegetag hat das Gewicht eine eigene Seite, auch in der kurzen Fassung.
-  // An anderen Tagen steht es freiwillig über der Taille, solange es nicht ausgeschaltet ist.
+  // Ablauf (seit 1.5.1): Erst der Schlaf, „Weiter“ speichert ihn sofort.
+  // Danach eine Seite für Gewicht (wenn nicht ausgeschaltet), Taille und Körper – alles freiwillig.
   const wiegetag = gewichtHeute(datum);
-  const gewichtFreiwillig = !wiegetag && gewichtModus() !== 'aus';
-  const koerperFrage = t(gewichtFreiwillig ? 'morgen.koerper_zusammenfassung_gewicht' : 'morgen.koerper_zusammenfassung');
+  const gewichtZeigen = gewichtModus() !== 'aus';
+  const koerperFrage = t('morgen.koerper_freiwillig');
   const gewicht = heute.gewicht !== undefined ? zahl(heute.gewicht, 1) : '';
   const einschlaf = heute.einschlafzeit ?? letzterWert('einschlafzeit') ?? '23:00';
   const dauer = heute.schlafdauer ?? letzterWert('schlafdauer') ?? 7;
@@ -187,18 +186,16 @@ function morgenSeiten(heute, datum) {
             <input name="gewicht" type="text" inputmode="decimal" autocomplete="off" value="${esc(gewicht)}" aria-describedby="gewicht-hilfe">
             <span class="einheit">${esc(t('morgen.gewicht_einheit'))}</span>
           </span>
-          <span class="feld-hilfe" id="gewicht-hilfe">${esc(t('morgen.gewicht_hilfe'))}</span>
+          <span class="feld-hilfe" id="gewicht-hilfe">${esc(t(wiegetag ? 'morgen.gewicht_hilfe_wiegetag' : 'morgen.gewicht_hilfe'))}</span>
         </label>`;
   const gewichtHinweis = gesundheitHat('schilddruese') || gesundheitHat('medikamente') ? `<p class="hinweis klein">${esc(t('gesundheit.gewicht_hinweis'))}</p>` : '';
 
   const seiten = [];
-  if (wiegetag) {
-    seiten.push({ id: 'morgen-gewicht', bloecke: [...kopf, gewichtFeld, gewichtHinweis] });
-  }
   seiten.push({
     id: 'morgen-schlaf',
+    ohneWeiter: true,
     bloecke: [
-      ...(seiten.length ? [] : kopf),
+      ...kopf,
       `<label class="feld">
         ${feldKopf(t('morgen.einschlafzeit'), 'einschlafzeit')}
         <input name="einschlafzeit" type="time" value="${esc(einschlaf)}">
@@ -211,33 +208,29 @@ function morgenSeiten(heute, datum) {
           <button type="button" class="stepper-knopf" data-aktion="dauer" data-schritt="0.25" aria-label="${esc(t('morgen.mehr'))}">+</button>
         </div>
       </div>`,
-      kurz ? speichern : '',
-      kurz ? `<button class="knopf-text" data-aktion="mehr-eintragen">${esc(koerperFrage)}</button>` : '',
+      `<button class="knopf knopf-haupt" data-aktion="schlaf-weiter">${esc(t('morgen.schlaf_weiter'))}</button>`,
     ],
   });
-  if (!kurz) {
-    seiten.push({
-      id: 'morgen-koerper',
-      bloecke: [
-        `<p class="feld-name">${esc(koerperFrage)}</p>`,
-        gewichtFreiwillig ? gewichtFeld : '',
-        gewichtFreiwillig ? gewichtHinweis : '',
-        `<label class="feld">
-          ${feldKopf(t('morgen.taille'), 'taille')}
-          <span class="eingabe-mit-einheit">
-            <input name="taille" type="text" inputmode="decimal" autocomplete="off" value="${esc(taille)}" aria-describedby="taille-hilfe">
-            <span class="einheit">${esc(t('morgen.taille_einheit'))}</span>
-          </span>
-          <span class="feld-hilfe" id="taille-hilfe">${esc(t('morgen.taille_hilfe'))}</span>
-        </label>`,
-        `<label class="feld">
-          ${feldKopf(t('morgen.koerper'), 'koerper')}
-          <textarea name="koerper" rows="2" maxlength="600" placeholder="${esc(t('morgen.koerper_platzhalter'))}">${esc(heute.koerper || '')}</textarea>
-        </label>`,
-        speichern,
-      ],
-    });
-  }
+  seiten.push({
+    id: 'morgen-koerper',
+    bloecke: [
+      `<p class="feld-name">${esc(koerperFrage)}</p>`,
+      gewichtZeigen ? gewichtFeld : '',
+      gewichtZeigen ? gewichtHinweis : '',
+      `<label class="feld">
+        ${feldKopf(t('morgen.taille'), 'taille')}
+        <span class="eingabe-mit-einheit">
+          <input name="taille" type="text" inputmode="decimal" autocomplete="off" value="${esc(taille)}" aria-label="${esc(t('morgen.taille'))}">
+          <span class="einheit">${esc(t('morgen.taille_einheit'))}</span>
+        </span>
+      </label>`,
+      `<label class="feld">
+        ${feldKopf(t('morgen.koerper'), 'koerper')}
+        <textarea name="koerper" rows="2" maxlength="600" placeholder="${esc(t('morgen.koerper_platzhalter'))}">${esc(heute.koerper || '')}</textarea>
+      </label>`,
+      speichern,
+    ],
+  });
   return seiten;
 }
 
@@ -470,6 +463,21 @@ function binde(wurzel, ctx, datum) {
       return;
     }
 
+    if (aktion === 'schlaf-weiter') {
+      // Der Schlaf wird sofort gespeichert, auch wenn danach nichts mehr eingetragen wird.
+      const einschlafzeit = wurzel.querySelector('[name="einschlafzeit"]')?.value || null;
+      const dauer = Number($('.stepper-wert', wurzel).dataset.dauer);
+      aendereTag(datum, (tg) => {
+        if (einschlafzeit) tg.einschlafzeit = einschlafzeit;
+        else delete tg.einschlafzeit;
+        tg.schlafdauer = dauer;
+      });
+      // Die Körper-Seite bleibt offen, obwohl der Morgen jetzt schon als eingetragen zählt.
+      morgenBearbeiten = true;
+      steuerung.gehe('morgen-koerper');
+      toast(t('morgen.schlaf_gespeichert'), '🌙');
+      return;
+    }
     if (aktion === 'morgen-speichern') {
       const feld = (name) => wurzel.querySelector(`[name="${name}"]`);
       const gewicht = feld('gewicht') ? leseZahl(feld('gewicht').value) : undefined;

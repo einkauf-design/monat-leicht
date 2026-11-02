@@ -15,14 +15,12 @@
       "abend": "Abend",
       "mehr": "Mehr"
     },
-
     "begruessung": {
       "nacht": "Schön, dass du da bist, {name}.",
       "morgen": "Guten Morgen, {name}.",
       "tag": "Schön, dass du vorbeischaust, {name}.",
       "abend": "Guten Abend, {name}."
     },
-
     "heute": {
       "datum": "Heute ist {wochentag}, der {tag}. {monat}.",
       "uebersicht_titel": "Das hält dein Tag für dich bereit.",
@@ -33,7 +31,6 @@
       "schritt_abend": "Dein Abend",
       "schritt_erledigt": "Schon eingetragen."
     },
-
     "start": {
       "titel": "Schön, dass du da bist.",
       "text": "Diese App begleitet dich leise durch deinen Tag. Sie zeigt dir, wie Anspannung, Schlaf und Gewicht zusammenhängen.\n\nSie hilft dir auch, Freude fest in deinen Alltag zu holen. Nichts hier ist Pflicht.",
@@ -47,19 +44,22 @@
       "code_falsch": "Der Code passt leider nicht. Schau bitte noch einmal nach, oder trag ihn später ein.",
       "kein_netz": "Gerade ist kein Netz da. Ich merke mir deinen Code und versuche es später noch einmal."
     },
-
     "morgen": {
       "titel": "Dein Morgen beginnt hier.",
       "einleitung": "Du brauchst nur drei kleine Angaben, dann bist du schon fertig.",
       "gewicht": "Was zeigt deine Waage heute?",
       "gewicht_einheit": "kg",
       "gewicht_hilfe": "Du siehst dein Gewicht später nur als Wochendurchschnitt.",
+      "gewicht_hilfe_wiegetag": "Heute ist dein Wiegetag. Du siehst dein Gewicht später nur als Wochendurchschnitt.",
       "einschlafzeit": "Wann bist du gestern eingeschlafen?",
       "schlafdauer": "Wie lange hast du geschlafen?",
       "stunden": "Stunden",
       "weniger": "Zieh eine Viertelstunde ab",
       "mehr": "Leg eine Viertelstunde dazu",
       "speichern": "Trag deinen Morgen ein",
+      "schlaf_weiter": "Weiter",
+      "schlaf_gespeichert": "Dein Schlaf ist schon gespeichert.",
+      "koerper_freiwillig": "Magst du noch mehr eintragen? Alles hier ist freiwillig.",
       "fertig_titel": "Dein Morgen ist eingetragen.",
       "fertig_text": "Danke, dass du kurz bei dir warst. Jetzt darf der Tag kommen.",
       "aendern": "Ändere deinen Eintrag",
@@ -71,7 +71,6 @@
       "koerper": "Was bemerkst du an deinem Körper?",
       "koerper_platzhalter": "Zum Beispiel, wie deine Kleidung sitzt."
     },
-
     "summen": {
       "knopf": "Summen im Kopf",
       "knopf_hilfe": "Ein Tipp genügt, um es festzuhalten.",
@@ -84,11 +83,16 @@
       "spaeter": "Lass es für jetzt",
       "angenommen": "Schön, dass du dir die Pause nimmst. Sie gehört ganz dir."
     },
-
     "abendeintrag": {
       "titel": "Wie war dein Tag?",
       "frage": "Tipp einfach an, wie er sich angefühlt hat.",
-      "stufen": ["ganz leicht", "eher leicht", "mittendrin", "eher angespannt", "sehr angespannt"],
+      "stufen": [
+        "ganz leicht",
+        "eher leicht",
+        "mittendrin",
+        "eher angespannt",
+        "sehr angespannt"
+      ],
       "satz_label": "Magst du einen Satz zu deinem Tag aufschreiben?",
       "satz_platzhalter": "Was war heute wichtig?",
       "speichern": "Leg deinen Tag ab",
@@ -98,12 +102,17 @@
       "aendern": "Ändere deinen Eintrag",
       "offen_frage": "Wie viel liegt heute Abend noch offen in deinem Kopf?",
       "offen_hilfe": "Das ist freiwillig. Tipp einfach an, was gerade passt.",
-      "offen_stufen": ["fast nichts", "wenig", "einiges", "ziemlich viel", "sehr viel"],
+      "offen_stufen": [
+        "fast nichts",
+        "wenig",
+        "einiges",
+        "ziemlich viel",
+        "sehr viel"
+      ],
       "ablage_label": "Liegt noch etwas herum?",
       "ablage_platzhalter": "Schreib auf, was noch offen ist. Für heute darfst du es hier abgeben.",
       "ablage_hilfe": "Es ist hier gut aufgehoben, bis morgen."
     },
-
     "experiment": {
       "titel": "Das ist dein Experiment des Monats.",
       "monat": "Das ist dein Experiment im {monat}.",
@@ -125,7 +134,6 @@
       "abgelegt_titel": "Gestern Abend hast du das hier abgelegt.",
       "abgelegt_text": "Es ist gut aufgehoben. Du entscheidest heute in Ruhe, was du davon anpackst."
     },
-
     "freudeplaetze": {
       "titel": "Das sind deine Freude-Plätze für heute.",
       "leer": "Such dir in der Freude-Liste ein, zwei Dinge für heute aus. Sie warten dann hier auf dich.",
@@ -134,7 +142,6 @@
       "nutzen": "Hak es als genossen ab",
       "belohnung": "Dafür bekommst du einen Stern. Zeit für dich ist gut angelegte Zeit."
     },
-
     "freude": {
       "titel": "Das ist deine Freude-Liste.",
       "einleitung": "Hier stehen die Dinge, die dir guttun.\n\nTipp auf den Kreis, wenn etwas heute ein Freude-Platz sein soll.",
@@ -154,7 +161,6 @@
       "zaehler": "Du hast es schon {anzahl:mal} genossen.",
       "zaehler_eins": "Du hast es schon einmal genossen."
     },
-
     "abend": {
       "titel": "Es ist Zeit zum Landen.",
       "einleitung": "Der Tag darf jetzt leiser werden.\n\nHier findest du ein paar Ideen, die dir beim Runterkommen helfen.",
@@ -169,7 +175,6 @@
       "knobeln_titel": "Diese Spiele sind zum Knobeln.",
       "nach_spiel": "Leg dein Handy jetzt weg und stell das Display dunkel. Der Abend darf leise ausklingen."
     },
-
     "regal": {
       "anleitung": "Tipp auf eine Ware und dann auf das passende Fach.",
       "anleitung_kurz": "Wähl eine Ware aus dem Korb.",
@@ -190,7 +195,6 @@
       "spielname": "Abendregal",
       "beschreibung": "Du sortierst Waren in die passenden Fächer. Es gibt keinen Timer und kein Verlieren."
     },
-
     "verlauf": {
       "titel": "Hier siehst du deine Wochen in Bildern.",
       "einleitung": "So fühlen sich deine Wochen an.\n\nEs gibt hier nichts zu bewerten, nur etwas zu entdecken.",
@@ -250,7 +254,6 @@
       "tipp_gruppe_einiges": "Abenden, an denen einiges offen war",
       "tipp_gruppe_viel": "Abenden mit viel Offenem"
     },
-
     "erfolge": {
       "titel": "Das sind deine kleinen Erfolge.",
       "einleitung": "Hier sammelt sich die Zeit, die du dir selbst geschenkt hast.",
@@ -260,7 +263,6 @@
       "erreicht_am": "Das war am {datum}.",
       "neu_mehrere": "Es sind {anzahl:wort} neue kleine Erfolge da. Du findest sie unter „Mehr“."
     },
-
     "mehr": {
       "titel": "Hier findest du alles Weitere.",
       "sammlung_titel": "Das hast du schon gesammelt.",
@@ -324,32 +326,71 @@
       "inhalt_export": "Export",
       "inhalt_ende": "App und Version"
     },
-
     "belohnung": {
       "sterne": "Sterne",
       "punkte": "Punkte",
       "pause_genommen": "Du hast dir eine Pause genommen. Dafür bekommst du fünf Punkte.",
       "abend_gelandet": "Du bist gelandet. Dafür bekommst du fünf Punkte."
     },
-
     "status": {
       "offline": "Gerade ist kein Netz da. Ich speichere alles auf deinem Gerät.",
       "update": "Eine neue Version ist da. Sie wird beim nächsten Öffnen geladen.",
       "server_fehler": "Der Server hat gerade nicht wie erwartet geantwortet. Deine Einträge sind sicher auf dem Gerät.",
       "sync_punkt": "Hier siehst du, ob deine Einträge gesichert sind."
     },
-
     "allgemein": {
-      "monate": ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
-      "wochentage": ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
-      "zahlwoerter": ["null", "einem", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf", "zwölf"],
-      "wochentage_kurz": ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+      "monate": [
+        "Januar",
+        "Februar",
+        "März",
+        "April",
+        "Mai",
+        "Juni",
+        "Juli",
+        "August",
+        "September",
+        "Oktober",
+        "November",
+        "Dezember"
+      ],
+      "wochentage": [
+        "Sonntag",
+        "Montag",
+        "Dienstag",
+        "Mittwoch",
+        "Donnerstag",
+        "Freitag",
+        "Samstag"
+      ],
+      "zahlwoerter": [
+        "null",
+        "einem",
+        "zwei",
+        "drei",
+        "vier",
+        "fünf",
+        "sechs",
+        "sieben",
+        "acht",
+        "neun",
+        "zehn",
+        "elf",
+        "zwölf"
+      ],
+      "wochentage_kurz": [
+        "So",
+        "Mo",
+        "Di",
+        "Mi",
+        "Do",
+        "Fr",
+        "Sa"
+      ],
       "uhr": "Uhr",
       "ja": "ja",
       "nein": "nein",
       "schliessen": "Schließ das Fenster"
     },
-
     "haltung": {
       "saetze": [
         "Du musst hier nichts. Trag nur ein, was sich heute stimmig anfühlt.",
@@ -361,7 +402,6 @@
         "Kleine Einträge zählen genauso wie große."
       ]
     },
-
     "rueckblick": {
       "hinweis_sieben": "Sobald sieben Einträge da sind, schaut die App mit dir zurück. Wie lange das dauert, bestimmst du.",
       "liste_titel": "Das sind deine Rückblicke.",
@@ -433,14 +473,12 @@
       "ordnung_ersatz": "{nummer}.",
       "zitat": "Du hattest geschrieben: „{text}“"
     },
-
     "info": {
       "knopf": "Hier erfährst du, warum das sinnvoll ist.",
       "hinweis": "Dieser Text ist eine allgemeine Information und ersetzt keine ärztliche Beratung. Wenn dich etwas beschäftigt, sprich gern mit deiner Hausarztpraxis.",
       "schliessen": "Schließ den Hinweis",
       "quellen_titel": "Hier findest du Quellen zum Nachlesen."
     },
-
     "seiten": {
       "weiter": "Weiter",
       "zurueck": "Zurück",
@@ -459,7 +497,6 @@
         "notizen": "Deine Notizen"
       }
     },
-
     "lob": {
       "saetze": [
         "Schön, dass du da warst. Jeder Eintrag zählt, auch ein halber.",
@@ -469,7 +506,6 @@
         "Du warst heute kurz bei dir, und das ist richtig gut."
       ]
     },
-
     "kennenlernen": {
       "titel": "Darf ich dich ein bisschen kennenlernen?",
       "text": "Bevor wir loslegen, möchte ich dich ein bisschen kennenlernen. Es gibt keine richtigen oder falschen Antworten, und du kannst alles später unter ‚Mehr‘ ändern.",
@@ -514,7 +550,6 @@
       "mehr_frage_von": "Das ist Frage {nummer} von {gesamt}.",
       "mehr_kachel": "Ich habe ein paar neue Fragen an dich. Sie sind ganz freiwillig."
     },
-
     "experimentwahl": {
       "vorschlag_titel": "Dieses Experiment könnte gut zu dir passen.",
       "vorschlag_text": "Es ist eine Einladung für einen Monat und keine Regel.",
@@ -556,7 +591,6 @@
       "erkenntnis_ohne": "Mach ohne Notiz weiter",
       "erkenntnis_gespeichert": "Deine Erkenntnis ist gespeichert. Du findest sie auf deinem Weg."
     },
-
     "notizen": {
       "titel": "Hier stehen deine Notizen.",
       "text": "Mit dem Stift kannst du jede Notiz ändern oder löschen.",
@@ -579,7 +613,6 @@
       "wieder_da": "Die Notiz ist wieder da.",
       "gespeichert": "Deine Änderung ist gespeichert."
     },
-
     "angaben": {
       "knopf": "Meine Angaben ansehen und löschen",
       "titel": "Das hast du mir über dich erzählt.",
@@ -601,18 +634,15 @@
       "neu_beantworten": "Beantworte die Fragen noch einmal",
       "weitermachen": "Beantworte die übrigen Fragen"
     },
-
     "erinnerung_spaeter": {
       "frage": "Passt es gerade nicht?",
       "knopf": "Erinnere mich in einer Stunde noch einmal",
       "ok": "Gut, ich erinnere dich in einer Stunde noch einmal.",
       "fehler": "Das hat gerade nicht geklappt. Schau einfach vorbei, wenn es besser passt."
     },
-
     "gesundheit": {
       "gewicht_hinweis": "Wenn deine Schilddrüse oder Medikamente mitspielen, sagt die Waage gerade wenig aus. Bei Fragen dazu ist deine Ärztin die richtige Ansprechpartnerin."
     },
-
     "wollfaeden": {
       "name": "Wollfäden",
       "beschreibung": "Du spannst farbige Fäden zwischen zwei gleichen Knöpfen. Die Fäden kreuzen sich nicht, und am Ende ist jedes Feld gefüllt.",
@@ -631,7 +661,6 @@
       "zurueck": "Geh zurück zum Abend",
       "faden": "Faden {nummer}"
     },
-
     "bildpaare": {
       "name": "Bildpaare",
       "beschreibung": "Du deckst zwei Karten auf. Gleiche Bilder bleiben offen liegen, alle anderen drehen sich wieder um.",
@@ -662,7 +691,6 @@
         "pilz": "Pilz"
       }
     },
-
     "weg": {
       "titel": "Hier siehst du, wo du gerade stehst.",
       "experiment": "Dein Experiment ist „{titel}“.",
@@ -703,17 +731,14 @@
       "titel": "Guten Morgen.",
       "text": "Magst du kurz deinen Morgen eintragen? Es dauert nur einen Moment."
     },
-
     "abend": {
       "titel": "Es ist Zeit zum Landen.",
       "text": "Der Tag darf jetzt leiser werden."
     },
-
     "mittag": {
       "titel": "Zeit für dein Mittagessen.",
       "text": "Magst du dir jetzt einen Moment zum Essen nehmen?"
     },
-
     "spaeter": {
       "titel": "Hier ist deine Erinnerung von vorhin.",
       "text": "Schau einfach vorbei, wenn es gerade passt."
@@ -721,13 +746,41 @@
   },
 
   "freudeStartwerte": [
-    {"titel": "Zeit mit den Tieren", "symbol": "🐾", "pause": true},
-    {"titel": "Stricken", "symbol": "🧶", "pause": true},
-    {"titel": "Line Dance", "symbol": "💃", "pause": false},
-    {"titel": "Musik hören", "symbol": "🎶", "pause": true},
-    {"titel": "Spanisch", "symbol": "🇪🇸", "pause": false},
-    {"titel": "Ein gemütlicher Krimi", "symbol": "📖", "pause": true},
-    {"titel": "Ein Powernap von einer halben Stunde", "symbol": "😴", "pause": true}
+    {
+      "titel": "Zeit mit den Tieren",
+      "symbol": "🐾",
+      "pause": true
+    },
+    {
+      "titel": "Stricken",
+      "symbol": "🧶",
+      "pause": true
+    },
+    {
+      "titel": "Line Dance",
+      "symbol": "💃",
+      "pause": false
+    },
+    {
+      "titel": "Musik hören",
+      "symbol": "🎶",
+      "pause": true
+    },
+    {
+      "titel": "Spanisch",
+      "symbol": "🇪🇸",
+      "pause": false
+    },
+    {
+      "titel": "Ein gemütlicher Krimi",
+      "symbol": "📖",
+      "pause": true
+    },
+    {
+      "titel": "Ein Powernap von einer halben Stunde",
+      "symbol": "😴",
+      "pause": true
+    }
   ],
 
   "freudeSymbole": [
@@ -806,16 +859,113 @@
     "punkteProWare": 10,
     "punkteRuhigeHand": 20,
     "kategorien": [
-      {"id": "obst", "name": "Obst", "waren": ["🍎", "🍐", "🍊", "🍋", "🍌", "🍇", "🍓", "🍒", "🍑"]},
-      {"id": "gemuese", "name": "Gemüse", "waren": ["🥕", "🥦", "🥒", "🌽", "🍅", "🥔", "🧅", "🥬", "🫑"]},
-      {"id": "backstube", "name": "Backstube", "waren": ["🍞", "🥐", "🥨", "🥯", "🧁", "🍪", "🥧", "🥖"]},
-      {"id": "strickecke", "name": "Strickecke", "waren": ["🧶", "🧵", "🪡", "🧣", "🧤", "🧦"]},
-      {"id": "hofladen", "name": "Hofladen", "waren": ["🥚", "🧀", "🥛", "🍯", "🧈"]},
-      {"id": "blumen", "name": "Blumen", "waren": ["🌷", "🌻", "🌹", "🌼", "🌸", "💐"]},
-      {"id": "leseecke", "name": "Lese- und Musikecke", "waren": ["📚", "📖", "🎧", "📻", "🎻", "🎼"]},
-      {"id": "garten", "name": "Garten", "waren": ["🪴", "🌱", "🧺", "🪣", "🌿", "🍂"]}
+      {
+        "id": "obst",
+        "name": "Obst",
+        "waren": [
+          "🍎",
+          "🍐",
+          "🍊",
+          "🍋",
+          "🍌",
+          "🍇",
+          "🍓",
+          "🍒",
+          "🍑"
+        ]
+      },
+      {
+        "id": "gemuese",
+        "name": "Gemüse",
+        "waren": [
+          "🥕",
+          "🥦",
+          "🥒",
+          "🌽",
+          "🍅",
+          "🥔",
+          "🧅",
+          "🥬",
+          "🫑"
+        ]
+      },
+      {
+        "id": "backstube",
+        "name": "Backstube",
+        "waren": [
+          "🍞",
+          "🥐",
+          "🥨",
+          "🥯",
+          "🧁",
+          "🍪",
+          "🥧",
+          "🥖"
+        ]
+      },
+      {
+        "id": "strickecke",
+        "name": "Strickecke",
+        "waren": [
+          "🧶",
+          "🧵",
+          "🪡",
+          "🧣",
+          "🧤",
+          "🧦"
+        ]
+      },
+      {
+        "id": "hofladen",
+        "name": "Hofladen",
+        "waren": [
+          "🥚",
+          "🧀",
+          "🥛",
+          "🍯",
+          "🧈"
+        ]
+      },
+      {
+        "id": "blumen",
+        "name": "Blumen",
+        "waren": [
+          "🌷",
+          "🌻",
+          "🌹",
+          "🌼",
+          "🌸",
+          "💐"
+        ]
+      },
+      {
+        "id": "leseecke",
+        "name": "Lese- und Musikecke",
+        "waren": [
+          "📚",
+          "📖",
+          "🎧",
+          "📻",
+          "🎻",
+          "🎼"
+        ]
+      },
+      {
+        "id": "garten",
+        "name": "Garten",
+        "waren": [
+          "🪴",
+          "🌱",
+          "🧺",
+          "🪣",
+          "🌿",
+          "🍂"
+        ]
+      }
     ],
-    "atemNichtBei": ["meditation"]
+    "atemNichtBei": [
+      "meditation"
+    ]
   },
 
   "belohnungen": {
@@ -875,18 +1025,90 @@
       "symbol": "🛏️",
       "titel": "Du hast zwanzig Nächte lang sieben Stunden oder mehr geschlafen."
     },
-    {"id": "freude-1", "art": "freudeGenutzt", "anzahl": 1, "symbol": "💛", "titel": "Du hast deinen ersten Freude-Platz genossen."},
-    {"id": "freude-5", "art": "freudeGenutzt", "anzahl": 5, "symbol": "💛", "titel": "Du hast fünf Freude-Plätze genutzt."},
-    {"id": "freude-20", "art": "freudeGenutzt", "anzahl": 20, "symbol": "🌻", "titel": "Du hast zwanzig Freude-Plätze genutzt."},
-    {"id": "freude-50", "art": "freudeGenutzt", "anzahl": 50, "symbol": "🌻", "titel": "Du hast fünfzig Freude-Plätze genutzt."},
-    {"id": "pause-3", "art": "pausen", "anzahl": 3, "symbol": "🍃", "titel": "Du hast dir dreimal eine Pause genommen, als es im Kopf summte."},
-    {"id": "pause-10", "art": "pausen", "anzahl": 10, "symbol": "🍃", "titel": "Du hast dir zehnmal eine Pause genommen, als es im Kopf summte."},
-    {"id": "abend-7", "art": "abende", "anzahl": 7, "symbol": "🕯️", "titel": "Du bist an sieben Abenden bewusst gelandet."},
-    {"id": "abend-30", "art": "abende", "anzahl": 30, "symbol": "🕯️", "titel": "Du bist an dreißig Abenden bewusst gelandet."},
-    {"id": "regal-1", "art": "regale", "anzahl": 1, "symbol": "🧺", "titel": "Du hast dein erstes Abendregal eingeräumt."},
-    {"id": "regal-10", "art": "regale", "anzahl": 10, "symbol": "🧺", "titel": "Du hast zehn Abendregale eingeräumt."},
-    {"id": "regal-30", "art": "regale", "anzahl": 30, "symbol": "🏡", "titel": "Du hast dreißig Abendregale eingeräumt."},
-    {"id": "experiment-1", "art": "experimentNotiz", "anzahl": 1, "symbol": "🔍", "titel": "Du hast deine erste Beobachtung zum Experiment notiert."},
+    {
+      "id": "freude-1",
+      "art": "freudeGenutzt",
+      "anzahl": 1,
+      "symbol": "💛",
+      "titel": "Du hast deinen ersten Freude-Platz genossen."
+    },
+    {
+      "id": "freude-5",
+      "art": "freudeGenutzt",
+      "anzahl": 5,
+      "symbol": "💛",
+      "titel": "Du hast fünf Freude-Plätze genutzt."
+    },
+    {
+      "id": "freude-20",
+      "art": "freudeGenutzt",
+      "anzahl": 20,
+      "symbol": "🌻",
+      "titel": "Du hast zwanzig Freude-Plätze genutzt."
+    },
+    {
+      "id": "freude-50",
+      "art": "freudeGenutzt",
+      "anzahl": 50,
+      "symbol": "🌻",
+      "titel": "Du hast fünfzig Freude-Plätze genutzt."
+    },
+    {
+      "id": "pause-3",
+      "art": "pausen",
+      "anzahl": 3,
+      "symbol": "🍃",
+      "titel": "Du hast dir dreimal eine Pause genommen, als es im Kopf summte."
+    },
+    {
+      "id": "pause-10",
+      "art": "pausen",
+      "anzahl": 10,
+      "symbol": "🍃",
+      "titel": "Du hast dir zehnmal eine Pause genommen, als es im Kopf summte."
+    },
+    {
+      "id": "abend-7",
+      "art": "abende",
+      "anzahl": 7,
+      "symbol": "🕯️",
+      "titel": "Du bist an sieben Abenden bewusst gelandet."
+    },
+    {
+      "id": "abend-30",
+      "art": "abende",
+      "anzahl": 30,
+      "symbol": "🕯️",
+      "titel": "Du bist an dreißig Abenden bewusst gelandet."
+    },
+    {
+      "id": "regal-1",
+      "art": "regale",
+      "anzahl": 1,
+      "symbol": "🧺",
+      "titel": "Du hast dein erstes Abendregal eingeräumt."
+    },
+    {
+      "id": "regal-10",
+      "art": "regale",
+      "anzahl": 10,
+      "symbol": "🧺",
+      "titel": "Du hast zehn Abendregale eingeräumt."
+    },
+    {
+      "id": "regal-30",
+      "art": "regale",
+      "anzahl": 30,
+      "symbol": "🏡",
+      "titel": "Du hast dreißig Abendregale eingeräumt."
+    },
+    {
+      "id": "experiment-1",
+      "art": "experimentNotiz",
+      "anzahl": 1,
+      "symbol": "🔍",
+      "titel": "Du hast deine erste Beobachtung zum Experiment notiert."
+    },
     {
       "id": "experiment-7",
       "art": "experimentNotiz",
@@ -901,9 +1123,27 @@
       "symbol": "🌱",
       "titel": "Du hast dir zum ersten Mal Zeit für eine Frage aus dem Rückblick genommen."
     },
-    {"id": "wolle-1", "art": "wollfaeden", "anzahl": 1, "symbol": "🧶", "titel": "Du hast dein erstes Brett mit Wollfäden gespannt."},
-    {"id": "bildpaare-1", "art": "bildpaare", "anzahl": 1, "symbol": "🌙", "titel": "Du hast zum ersten Mal alle Bildpaare gefunden."},
-    {"id": "experiment-eigen", "art": "eigenesExperiment", "anzahl": 1, "symbol": "🌱", "titel": "Du hast dein erstes eigenes Experiment begonnen."}
+    {
+      "id": "wolle-1",
+      "art": "wollfaeden",
+      "anzahl": 1,
+      "symbol": "🧶",
+      "titel": "Du hast dein erstes Brett mit Wollfäden gespannt."
+    },
+    {
+      "id": "bildpaare-1",
+      "art": "bildpaare",
+      "anzahl": 1,
+      "symbol": "🌙",
+      "titel": "Du hast zum ersten Mal alle Bildpaare gefunden."
+    },
+    {
+      "id": "experiment-eigen",
+      "art": "eigenesExperiment",
+      "anzahl": 1,
+      "symbol": "🌱",
+      "titel": "Du hast dein erstes eigenes Experiment begonnen."
+    }
   ],
 
   "infos": {
@@ -979,7 +1219,9 @@
       "titel": "Darum trägst du abends deine Anspannung ein.",
       "pruefung": "geprüft am 25.10.2026",
       "text": "Anspannung zeigt sich nicht nur im Kopf, sondern auch im Körper, im Schlaf und beim Essen. Viele essen unter Druck schneller, nebenbei oder mehr, andere haben kaum Appetit.\n\nMit einem kurzen Blick am Abend entsteht mit der Zeit ein Bild davon, wie deine Tage sich anfühlen und was sie beeinflusst. Du musst dafür nicht lange nachdenken.\n\nEs gibt keine richtige oder falsche Zahl. Jede Stufe ist einfach eine Beschreibung deines Tages.",
-      "quellen": ["Adam T. C., Epel E. S. (2007): Stress, eating and the reward system. Physiology & Behavior 91(4), 449–458."]
+      "quellen": [
+        "Adam T. C., Epel E. S. (2007): Stress, eating and the reward system. Physiology & Behavior 91(4), 449–458."
+      ]
     },
     "summen": {
       "titel": "Darum hältst du das Summen im Kopf fest.",
@@ -993,7 +1235,9 @@
       "titel": "Darum bekommt Freude einen festen Platz.",
       "pruefung": "geprüft am 25.10.2026",
       "text": "Kleine angenehme Tätigkeiten sind kein Luxus. In der Psychologie ist gut untersucht, dass bewusst eingeplante angenehme Aktivitäten die Stimmung heben und helfen können, mit Belastungen besser umzugehen.\n\nWenn Freude einen festen Platz im Tag hat, wird sie weniger leicht vom Alltag verdrängt. Manchmal wird dadurch auch Essen seltener zum einzigen Trost.\n\nEs kommt nicht darauf an, wie viele Freude-Plätze du nutzt. Jeder einzelne zählt.",
-      "quellen": ["Cuijpers P. u. a. (2007): Behavioral activation treatments of depression: A meta-analysis. Clinical Psychology Review 27(3), 318–326."]
+      "quellen": [
+        "Cuijpers P. u. a. (2007): Behavioral activation treatments of depression: A meta-analysis. Clinical Psychology Review 27(3), 318–326."
+      ]
     },
     "rueckblick": {
       "titel": "Darum schaut die App nach sieben Einträgen zurück.",
@@ -1058,6 +1302,23 @@
         "Adam T. C. & Epel E. S. (2007): Stress, eating and the reward system. Physiology & Behavior 91(4), 449–458.",
         "Macht M. (2008): How emotions affect eating: A five-way model. Appetite 50(1), 1–11."
       ]
+    },
+    "wassergewebe": {
+      "titel": "Darum fragen wir nach Wasser im Körper.",
+      "pruefung": "geprüft am 01.11.2026",
+      "text": "Die Waage zeigt nicht nur Fett, sondern auch Wasser. Und Wasser kann an einem einzigen Tag ein, zwei Kilo ausmachen.\n\nKohlenhydrate speichert der Körper als Glykogen in Muskeln und Leber. Jedes Gramm davon bindet etwa drei Gramm Wasser. Wer weniger Kohlenhydrate isst, zum Beispiel bei Keto, verliert deshalb am Anfang oft schnell Wasser. Das ist kein Fett, aber es fühlt sich leichter an.\n\nManche Menschen reagieren außerdem auf Gluten mit Blähbauch, Müdigkeit oder dem Gefühl, aufgedunsen zu sein, auch ohne Zöliakie. Wenn du vermutest, dass du Gluten nicht verträgst, lass das bitte ärztlich abklären, bevor du es weglässt. Sonst ist der Test auf Zöliakie nicht mehr zuverlässig.\n\nDeine Antworten helfen der App, Schwankungen auf der Waage gelassener einzuordnen und dir passende Experimente vorzuschlagen.",
+      "quellen": [
+        "Olsson K.-E. & Saltin B. (1970): Variation in total body water with muscle glycogen changes in man. Acta Physiologica Scandinavica 80(1), 11–18.",
+        "Catassi C. et al. (2015): Diagnosis of Non-Celiac Gluten Sensitivity (NCGS): The Salerno Experts’ Criteria. Nutrients 7(6), 4966–4977."
+      ]
+    },
+    "innehalten": {
+      "titel": "Darum hilft es, zwischendurch innezuhalten.",
+      "pruefung": "geprüft am 01.11.2026",
+      "text": "Viele Frauen merken gar nicht, dass sie gestresst sind. Sie funktionieren einfach, eine Aufgabe nach der anderen, und spüren es erst, wenn der Nacken zieht oder abends nichts mehr geht.\n\nDa hilft eine Regel wie „Um 21 Uhr ist das Handy aus“ allein nicht. Es braucht kleine Momente am Tag, in denen du bewusst hinspürst, so wie beim Essen, wenn du kurz prüfst, ob du schon satt bist.\n\nKurze Pausen von wenigen Minuten können die Energie spürbar heben und Müdigkeit verringern. Das zeigt eine Auswertung vieler Studien zu sogenannten Mikropausen.\n\nDie Fragen vor der nächsten Tätigkeit helfen dir außerdem, nicht nur zu funktionieren: Warum mache ich das jetzt? Ist es gerade sinnvoll? Darf es auch später sein?",
+      "quellen": [
+        "Albulescu P. et al. (2022): „Give me a break!“ A systematic review and meta-analysis on the efficacy of micro-breaks for increasing well-being and performance. PLoS ONE 17(8), e0272460."
+      ]
     }
   },
 
@@ -1094,17 +1355,107 @@
       "schmecke nichts",
       "schmecke kaum"
     ],
-    "kaffeeEnergie": ["wach werden", "wachmacher", "brauche ihn", "brauche kaffee", "ohne kaffee", "durchhalten", "energie", "in gang kommen"],
-    "kaffeeGenuss": ["genieße meinen kaffee", "kaffeeduft", "ritual", "gemütlich", "lecker", "duft"],
-    "kaffeeUnruhe": ["unruhig", "nervös", "herzklopfen", "zittrig", "hibbelig", "aufgedreht"],
-    "troestendEssen": ["trost", "tröst", "belohnung", "frust", "nervennahrung", "naschen", "schokolade", "heißhunger", "süßes"],
-    "koerperAngespannt": ["verspannt", "nacken", "schulter", "kiefer", "enge in der brust", "kopfschmerz", "bauchweh", "magen"],
-    "muede": ["müde", "erschöpft", "kaputt", "ausgelaugt", "schlapp", "k.o."],
-    "wenigZeitFuerSich": ["keine zeit für mich", "für alle anderen", "für andere da", "funktionieren", "nie dran", "zu kurz"],
-    "freudeGut": ["gut getan", "gutgetan", "genossen", "entspannt", "leicht gefühlt", "gefreut"],
-    "gedankenKreisen": ["grübel", "gedanken kreisen", "nicht abschalten", "wach liegen", "wach gelegen", "liege wach"],
-    "kopfVoll": ["to-do", "erledigen", "unerledigt", "liegt noch", "posteingang", "mails", "nicht fertig", "noch so viel", "aufgabenbox", "abarbeiten"],
-    "ansprueche": ["perfekt", "nicht gut genug", "muss noch", "zu wenig geschafft", "schlechtes gewissen", "faul"]
+    "kaffeeEnergie": [
+      "wach werden",
+      "wachmacher",
+      "brauche ihn",
+      "brauche kaffee",
+      "ohne kaffee",
+      "durchhalten",
+      "energie",
+      "in gang kommen"
+    ],
+    "kaffeeGenuss": [
+      "genieße meinen kaffee",
+      "kaffeeduft",
+      "ritual",
+      "gemütlich",
+      "lecker",
+      "duft"
+    ],
+    "kaffeeUnruhe": [
+      "unruhig",
+      "nervös",
+      "herzklopfen",
+      "zittrig",
+      "hibbelig",
+      "aufgedreht"
+    ],
+    "troestendEssen": [
+      "trost",
+      "tröst",
+      "belohnung",
+      "frust",
+      "nervennahrung",
+      "naschen",
+      "schokolade",
+      "heißhunger",
+      "süßes"
+    ],
+    "koerperAngespannt": [
+      "verspannt",
+      "nacken",
+      "schulter",
+      "kiefer",
+      "enge in der brust",
+      "kopfschmerz",
+      "bauchweh",
+      "magen",
+      "gestresst",
+      "stress"
+    ],
+    "muede": [
+      "müde",
+      "erschöpft",
+      "kaputt",
+      "ausgelaugt",
+      "schlapp",
+      "k.o."
+    ],
+    "wenigZeitFuerSich": [
+      "keine zeit für mich",
+      "für alle anderen",
+      "für andere da",
+      "funktionieren",
+      "nie dran",
+      "zu kurz"
+    ],
+    "freudeGut": [
+      "gut getan",
+      "gutgetan",
+      "genossen",
+      "entspannt",
+      "leicht gefühlt",
+      "gefreut"
+    ],
+    "gedankenKreisen": [
+      "grübel",
+      "gedanken kreisen",
+      "nicht abschalten",
+      "wach liegen",
+      "wach gelegen",
+      "liege wach"
+    ],
+    "kopfVoll": [
+      "to-do",
+      "erledigen",
+      "unerledigt",
+      "liegt noch",
+      "posteingang",
+      "mails",
+      "nicht fertig",
+      "noch so viel",
+      "aufgabenbox",
+      "abarbeiten"
+    ],
+    "ansprueche": [
+      "perfekt",
+      "nicht gut genug",
+      "muss noch",
+      "zu wenig geschafft",
+      "schlechtes gewissen",
+      "faul"
+    ]
   },
 
   "fragenStufen": {
@@ -1171,15 +1522,30 @@
         "experimentEnthaelt": "kaffee"
       }
     },
-    {"id": "h-ankommen-1", "stufe": "hineinfinden", "thema": "ankommen", "text": "Wie hat es sich angefühlt, ein paar Tage lang auf dich zu achten?"},
+    {
+      "id": "h-ankommen-1",
+      "stufe": "hineinfinden",
+      "thema": "ankommen",
+      "text": "Wie hat es sich angefühlt, ein paar Tage lang auf dich zu achten?"
+    },
     {
       "id": "h-ankommen-2",
       "stufe": "hineinfinden",
       "thema": "ankommen",
       "text": "Was war in den letzten Tagen leichter, als du gedacht hast, und was war schwerer?"
     },
-    {"id": "h-freude-1", "stufe": "hineinfinden", "thema": "freude", "text": "Welcher Moment hat dir in den letzten Tagen gutgetan?"},
-    {"id": "h-schlaf-1", "stufe": "hineinfinden", "thema": "schlaf", "text": "Wie fühlst du dich morgens meistens, wenn du aufwachst?"},
+    {
+      "id": "h-freude-1",
+      "stufe": "hineinfinden",
+      "thema": "freude",
+      "text": "Welcher Moment hat dir in den letzten Tagen gutgetan?"
+    },
+    {
+      "id": "h-schlaf-1",
+      "stufe": "hineinfinden",
+      "thema": "schlaf",
+      "text": "Wie fühlst du dich morgens meistens, wenn du aufwachst?"
+    },
     {
       "id": "h-anspannung-1",
       "stufe": "hineinfinden",
@@ -1198,14 +1564,54 @@
         "summenTageAb": 2
       }
     },
-    {"id": "h-beduerfnis-1", "stufe": "hineinfinden", "thema": "beduerfnisse", "text": "Was hättest du dir in den letzten Tagen öfter gewünscht?"},
-    {"id": "w-essen-1", "stufe": "wahrnehmen", "thema": "essen", "text": "Wie fühlst du dich, wenn du isst?"},
-    {"id": "w-essen-2", "stufe": "wahrnehmen", "thema": "essen", "text": "Was schmeckst du gerade?"},
-    {"id": "w-essen-3", "stufe": "wahrnehmen", "thema": "essen", "text": "Wo isst du meistens, am Tisch, nebenbei oder unterwegs?"},
-    {"id": "w-essen-4", "stufe": "wahrnehmen", "thema": "essen", "text": "Woran merkst du, dass du satt bist?"},
-    {"id": "w-essen-5", "stufe": "wahrnehmen", "thema": "essen", "text": "Gab es in letzter Zeit ein Essen, das du richtig genossen hast?"},
-    {"id": "w-kaffee-4", "stufe": "wahrnehmen", "thema": "kaffee", "text": "Wie fühlst du dich, wenn du deinen Kaffee trinkst?"},
-    {"id": "w-kaffee-5", "stufe": "wahrnehmen", "thema": "kaffee", "text": "Was gibt dir dein Kaffee, außer dem Geschmack?"},
+    {
+      "id": "h-beduerfnis-1",
+      "stufe": "hineinfinden",
+      "thema": "beduerfnisse",
+      "text": "Was hättest du dir in den letzten Tagen öfter gewünscht?"
+    },
+    {
+      "id": "w-essen-1",
+      "stufe": "wahrnehmen",
+      "thema": "essen",
+      "text": "Wie fühlst du dich, wenn du isst?"
+    },
+    {
+      "id": "w-essen-2",
+      "stufe": "wahrnehmen",
+      "thema": "essen",
+      "text": "Was schmeckst du gerade?"
+    },
+    {
+      "id": "w-essen-3",
+      "stufe": "wahrnehmen",
+      "thema": "essen",
+      "text": "Wo isst du meistens, am Tisch, nebenbei oder unterwegs?"
+    },
+    {
+      "id": "w-essen-4",
+      "stufe": "wahrnehmen",
+      "thema": "essen",
+      "text": "Woran merkst du, dass du satt bist?"
+    },
+    {
+      "id": "w-essen-5",
+      "stufe": "wahrnehmen",
+      "thema": "essen",
+      "text": "Gab es in letzter Zeit ein Essen, das du richtig genossen hast?"
+    },
+    {
+      "id": "w-kaffee-4",
+      "stufe": "wahrnehmen",
+      "thema": "kaffee",
+      "text": "Wie fühlst du dich, wenn du deinen Kaffee trinkst?"
+    },
+    {
+      "id": "w-kaffee-5",
+      "stufe": "wahrnehmen",
+      "thema": "kaffee",
+      "text": "Was gibt dir dein Kaffee, außer dem Geschmack?"
+    },
     {
       "id": "w-kaffee-6",
       "stufe": "wahrnehmen",
@@ -1233,7 +1639,12 @@
         "signal": "kaffeeGenuss"
       }
     },
-    {"id": "w-koerper-1", "stufe": "wahrnehmen", "thema": "koerper", "text": "Was ist gerade in deinem Körper los?"},
+    {
+      "id": "w-koerper-1",
+      "stufe": "wahrnehmen",
+      "thema": "koerper",
+      "text": "Was ist gerade in deinem Körper los?"
+    },
     {
       "id": "w-koerper-2",
       "stufe": "wahrnehmen",
@@ -1243,7 +1654,12 @@
         "anspannungAb": 3
       }
     },
-    {"id": "w-koerper-3", "stufe": "wahrnehmen", "thema": "koerper", "text": "Wie fühlt sich dein Körper nach einer ruhigen Nacht an?"},
+    {
+      "id": "w-koerper-3",
+      "stufe": "wahrnehmen",
+      "thema": "koerper",
+      "text": "Wie fühlt sich dein Körper nach einer ruhigen Nacht an?"
+    },
     {
       "id": "w-koerper-4",
       "stufe": "wahrnehmen",
@@ -1403,15 +1819,30 @@
         "signal": "geschmackFehlt"
       }
     },
-    {"id": "v-essen-4", "stufe": "vertiefen", "thema": "essen", "text": "Welches Gefühl ist oft da, kurz bevor du Lust auf etwas Süßes bekommst?"},
-    {"id": "v-essen-5", "stufe": "vertiefen", "thema": "essen", "text": "Wie fühlt sich echter Hunger bei dir an, und wie fühlt sich Appetit an?"},
+    {
+      "id": "v-essen-4",
+      "stufe": "vertiefen",
+      "thema": "essen",
+      "text": "Welches Gefühl ist oft da, kurz bevor du Lust auf etwas Süßes bekommst?"
+    },
+    {
+      "id": "v-essen-5",
+      "stufe": "vertiefen",
+      "thema": "essen",
+      "text": "Wie fühlt sich echter Hunger bei dir an, und wie fühlt sich Appetit an?"
+    },
     {
       "id": "v-kaffee-9",
       "stufe": "vertiefen",
       "thema": "kaffee",
       "text": "Wenn du an deine Kaffeemomente denkst, welcher davon ist dir wirklich wichtig?"
     },
-    {"id": "v-koerper-5", "stufe": "vertiefen", "thema": "koerper", "text": "Was möchte dein Körper dir in diesen Tagen vielleicht sagen?"},
+    {
+      "id": "v-koerper-5",
+      "stufe": "vertiefen",
+      "thema": "koerper",
+      "text": "Was möchte dein Körper dir in diesen Tagen vielleicht sagen?"
+    },
     {
       "id": "v-koerper-6",
       "stufe": "vertiefen",
@@ -1436,8 +1867,18 @@
         "anspannungAb": 3.5
       }
     },
-    {"id": "v-schlaf-5", "stufe": "vertiefen", "thema": "schlaf", "text": "Wie sähe ein Abend aus, nach dem du gut einschlafen kannst?"},
-    {"id": "v-freude-4", "stufe": "vertiefen", "thema": "freude", "text": "Welche Freude aus früheren Zeiten würdest du gern wieder einladen?"},
+    {
+      "id": "v-schlaf-5",
+      "stufe": "vertiefen",
+      "thema": "schlaf",
+      "text": "Wie sähe ein Abend aus, nach dem du gut einschlafen kannst?"
+    },
+    {
+      "id": "v-freude-4",
+      "stufe": "vertiefen",
+      "thema": "freude",
+      "text": "Welche Freude aus früheren Zeiten würdest du gern wieder einladen?"
+    },
     {
       "id": "v-freude-5",
       "stufe": "vertiefen",
@@ -1533,8 +1974,18 @@
       "thema": "kopf",
       "text": "Was lag in dieser Woche abends noch in deinem Kopf, als du schlafen gehen wolltest?"
     },
-    {"id": "w-kopf-2", "stufe": "wahrnehmen", "thema": "kopf", "text": "Gab es einen Abend, an dem alles erledigt war? Wie hat sich das angefühlt?"},
-    {"id": "v-kopf-1", "stufe": "vertiefen", "thema": "kopf", "text": "Was von dem, was auf dir lastet, müsste eigentlich gar nicht bei dir liegen?"},
+    {
+      "id": "w-kopf-2",
+      "stufe": "wahrnehmen",
+      "thema": "kopf",
+      "text": "Gab es einen Abend, an dem alles erledigt war? Wie hat sich das angefühlt?"
+    },
+    {
+      "id": "v-kopf-1",
+      "stufe": "vertiefen",
+      "thema": "kopf",
+      "text": "Was von dem, was auf dir lastet, müsste eigentlich gar nicht bei dir liegen?"
+    },
     {
       "id": "v-kopf-2",
       "stufe": "vertiefen",
@@ -1553,20 +2004,58 @@
       "text": "Was wünschst du dir gerade am meisten?",
       "mehrfach": true,
       "optionen": [
-        {"id": "leichter", "text": "Leichter werden"},
-        {"id": "schlafen", "text": "Besser schlafen"},
-        {"id": "ruhiger", "text": "Ruhiger werden"},
-        {"id": "essen", "text": "Entspannter essen"},
-        {"id": "freude", "text": "Mehr Freude"},
-        {"id": "weissnicht", "text": "Das weiß ich noch nicht"}
+        {
+          "id": "leichter",
+          "text": "Leichter werden"
+        },
+        {
+          "id": "schlafen",
+          "text": "Besser schlafen"
+        },
+        {
+          "id": "ruhiger",
+          "text": "Ruhiger werden"
+        },
+        {
+          "id": "essen",
+          "text": "Entspannter essen"
+        },
+        {
+          "id": "freude",
+          "text": "Mehr Freude"
+        },
+        {
+          "id": "wohler",
+          "text": "Mich in meinem Körper wohler fühlen"
+        },
+        {
+          "id": "weissnicht",
+          "text": "Das weiß ich noch nicht"
+        }
       ],
-      "exklusiv": ["weissnicht"],
+      "exklusiv": [
+        "weissnicht"
+      ],
       "themen": {
-        "leichter": ["essen", "koerper"],
-        "schlafen": ["schlaf"],
-        "ruhiger": ["anspannung"],
-        "essen": ["essen"],
-        "freude": ["freude"]
+        "leichter": [
+          "essen",
+          "koerper"
+        ],
+        "schlafen": [
+          "schlaf"
+        ],
+        "ruhiger": [
+          "anspannung"
+        ],
+        "essen": [
+          "essen"
+        ],
+        "freude": [
+          "freude"
+        ],
+        "wohler": [
+          "koerper"
+        ]
       }
     },
     {
@@ -1576,12 +2065,23 @@
       "mehrfach": false,
       "nochNicht": true,
       "optionen": [
-        {"id": "fest", "text": "Mit festen Abläufen"},
-        {"id": "wechselnd", "text": "Mal so und mal so"},
-        {"id": "sprunghaft", "text": "Eher sprunghaft, mit vielen Baustellen"}
+        {
+          "id": "fest",
+          "text": "Mit festen Abläufen"
+        },
+        {
+          "id": "wechselnd",
+          "text": "Mal so und mal so"
+        },
+        {
+          "id": "sprunghaft",
+          "text": "Eher sprunghaft, mit vielen Baustellen"
+        }
       ],
       "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, wie dein Alltag meistens läuft?",
-      "signale": ["wenigZeitFuerSich"]
+      "signale": [
+        "wenigZeitFuerSich"
+      ]
     },
     {
       "id": "essen",
@@ -1590,17 +2090,136 @@
       "mehrfach": true,
       "nochNicht": true,
       "optionen": [
-        {"id": "regelmaessig", "text": "Regelmäßig"},
-        {"id": "vergesse", "text": "Ich vergesse das Essen oft und habe dann großen Hunger"},
-        {"id": "nebenbei", "text": "Ich esse viel nebenbei"},
-        {"id": "abends", "text": "Abends wird es mehr"}
+        {
+          "id": "regelmaessig",
+          "text": "Regelmäßig"
+        },
+        {
+          "id": "vergesse",
+          "text": "Ich vergesse das Essen oft und habe dann großen Hunger"
+        },
+        {
+          "id": "nebenbei",
+          "text": "Ich esse viel nebenbei"
+        },
+        {
+          "id": "abends",
+          "text": "Abends wird es mehr"
+        }
       ],
       "setztSignale": {
         "nebenbei": "hastig",
         "abends": "troestendEssen"
       },
       "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, wie du an einem normalen Tag isst?",
-      "signale": ["hastig", "troestendEssen", "geschmackFehlt"]
+      "signale": [
+        "hastig",
+        "troestendEssen",
+        "geschmackFehlt"
+      ]
+    },
+    {
+      "id": "ernaehrung",
+      "nummer": 17,
+      "mehr": true,
+      "thema": "essen",
+      "warum": "Damit die App dir keine Vorschläge macht, die gar nicht zu deinem Essen passen.",
+      "text": "Wie isst du gerade?",
+      "mehrfach": true,
+      "nochNicht": true,
+      "freitext": true,
+      "optionen": [
+        {
+          "id": "alles",
+          "text": "Ich esse alles"
+        },
+        {
+          "id": "lowcarb",
+          "text": "Wenig Kohlenhydrate oder Keto"
+        },
+        {
+          "id": "vegetarisch",
+          "text": "Vegetarisch"
+        },
+        {
+          "id": "vegan",
+          "text": "Vegan"
+        },
+        {
+          "id": "glutenfrei",
+          "text": "Ohne Gluten"
+        },
+        {
+          "id": "pausen",
+          "text": "Mit Essenspausen"
+        },
+        {
+          "id": "wechselt",
+          "text": "Das wechselt bei mir oft"
+        }
+      ],
+      "exklusiv": [
+        "alles"
+      ]
+    },
+    {
+      "id": "aufgedunsen",
+      "nummer": 18,
+      "mehr": true,
+      "thema": "koerper",
+      "info": "wassergewebe",
+      "warum": "Manchmal zeigt die Waage mehr, obwohl gar kein Fett dazugekommen ist. Dann hält der Körper Wasser.",
+      "text": "Nach welchen Lebensmitteln fühlst du dich aufgedunsen, schwer oder müde?",
+      "mehrfach": true,
+      "nochNicht": true,
+      "freitext": true,
+      "optionen": [
+        {
+          "id": "brot",
+          "text": "Brot, Nudeln und Gebäck"
+        },
+        {
+          "id": "milch",
+          "text": "Milchprodukte"
+        },
+        {
+          "id": "suess",
+          "text": "Süßes"
+        },
+        {
+          "id": "alkohol",
+          "text": "Alkohol"
+        },
+        {
+          "id": "huelsen",
+          "text": "Hülsenfrüchte oder Kohl"
+        },
+        {
+          "id": "nichts",
+          "text": "Das ist mir noch nicht aufgefallen"
+        }
+      ],
+      "exklusiv": [
+        "nichts"
+      ],
+      "themen": {
+        "brot": [
+          "koerper",
+          "essen"
+        ],
+        "milch": [
+          "koerper"
+        ],
+        "suess": [
+          "essen"
+        ],
+        "alkohol": [
+          "koerper"
+        ],
+        "huelsen": [
+          "koerper"
+        ]
+      }
     },
     {
       "id": "trinken",
@@ -1609,14 +2228,31 @@
       "mehrfach": true,
       "nochNicht": true,
       "optionen": [
-        {"id": "kaffee", "text": "Kaffee"},
-        {"id": "tee", "text": "Schwarzen oder grünen Tee"},
-        {"id": "cola", "text": "Cola oder Energydrinks"},
-        {"id": "kaum", "text": "Kaum etwas mit Koffein"}
+        {
+          "id": "kaffee",
+          "text": "Kaffee"
+        },
+        {
+          "id": "tee",
+          "text": "Schwarzen oder grünen Tee"
+        },
+        {
+          "id": "cola",
+          "text": "Cola oder Energydrinks"
+        },
+        {
+          "id": "kaum",
+          "text": "Kaum etwas mit Koffein"
+        }
       ],
-      "exklusiv": ["kaum"],
+      "exklusiv": [
+        "kaum"
+      ],
       "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, was du über den Tag trinkst?",
-      "signale": ["kaffeeEnergie", "kaffeeGenuss"]
+      "signale": [
+        "kaffeeEnergie",
+        "kaffeeGenuss"
+      ]
     },
     {
       "id": "kaffeewirkung",
@@ -1625,17 +2261,32 @@
       "mehrfach": false,
       "nochNicht": true,
       "optionen": [
-        {"id": "wach", "text": "Er macht mich wach"},
-        {"id": "ruhig", "text": "Er beruhigt mich eher"},
-        {"id": "kaum", "text": "Ich merke kaum etwas"},
-        {"id": "unruhig", "text": "Er macht mich unruhig"}
+        {
+          "id": "wach",
+          "text": "Er macht mich wach"
+        },
+        {
+          "id": "ruhig",
+          "text": "Er beruhigt mich eher"
+        },
+        {
+          "id": "kaum",
+          "text": "Ich merke kaum etwas"
+        },
+        {
+          "id": "unruhig",
+          "text": "Er macht mich unruhig"
+        }
       ],
       "nurMitKaffee": true,
       "setztSignale": {
         "unruhig": "kaffeeUnruhe"
       },
       "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, wie Kaffee bei dir wirkt?",
-      "signale": ["kaffeeUnruhe", "kaffeeEnergie"]
+      "signale": [
+        "kaffeeUnruhe",
+        "kaffeeEnergie"
+      ]
     },
     {
       "id": "schlaf",
@@ -1644,14 +2295,31 @@
       "mehrfach": true,
       "nochNicht": true,
       "optionen": [
-        {"id": "gut", "text": "Gut"},
-        {"id": "einschlafen", "text": "Ich schlafe schwer ein"},
-        {"id": "aufwachen", "text": "Ich wache nachts auf"},
-        {"id": "frueh", "text": "Ich bin zu früh wach"}
+        {
+          "id": "gut",
+          "text": "Gut"
+        },
+        {
+          "id": "einschlafen",
+          "text": "Ich schlafe schwer ein"
+        },
+        {
+          "id": "aufwachen",
+          "text": "Ich wache nachts auf"
+        },
+        {
+          "id": "frueh",
+          "text": "Ich bin zu früh wach"
+        }
       ],
-      "exklusiv": ["gut"],
+      "exklusiv": [
+        "gut"
+      ],
       "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, wie du meistens schläfst?",
-      "signale": ["gedankenKreisen", "muede"]
+      "signale": [
+        "gedankenKreisen",
+        "muede"
+      ]
     },
     {
       "id": "kopf",
@@ -1665,13 +2333,30 @@
       "nochNicht": true,
       "freitext": true,
       "optionen": [
-        {"id": "aufgaben", "text": "Unerledigte Aufgaben"},
-        {"id": "morgen", "text": "Gedanken an morgen"},
-        {"id": "sorgen", "text": "Sorgen um andere"},
-        {"id": "mails", "text": "Mails und Nachrichten"},
-        {"id": "abschalten", "text": "Ich kann gut abschalten"}
+        {
+          "id": "aufgaben",
+          "text": "Unerledigte Aufgaben"
+        },
+        {
+          "id": "morgen",
+          "text": "Gedanken an morgen"
+        },
+        {
+          "id": "sorgen",
+          "text": "Sorgen um andere"
+        },
+        {
+          "id": "mails",
+          "text": "Mails und Nachrichten"
+        },
+        {
+          "id": "abschalten",
+          "text": "Ich kann gut abschalten"
+        }
       ],
-      "exklusiv": ["abschalten"],
+      "exklusiv": [
+        "abschalten"
+      ],
       "setztSignale": {
         "aufgaben": "kopfVoll",
         "morgen": "kopfVoll",
@@ -1679,13 +2364,112 @@
         "sorgen": "gedankenKreisen"
       },
       "themen": {
-        "aufgaben": ["kopf"],
-        "morgen": ["kopf"],
-        "mails": ["kopf"],
-        "sorgen": ["kopf", "anspannung"]
+        "aufgaben": [
+          "kopf"
+        ],
+        "morgen": [
+          "kopf"
+        ],
+        "mails": [
+          "kopf"
+        ],
+        "sorgen": [
+          "kopf",
+          "anspannung"
+        ]
       },
       "nachfrage": "Du hast inzwischen einige Abende beobachtet. Magst du noch einmal schauen, was abends noch in deinem Kopf liegt?",
-      "signale": ["kopfVoll", "gedankenKreisen"]
+      "signale": [
+        "kopfVoll",
+        "gedankenKreisen"
+      ]
+    },
+    {
+      "id": "stressMerken",
+      "nummer": 19,
+      "mehr": true,
+      "thema": "anspannung",
+      "info": "innehalten",
+      "warum": "Viele Frauen merken Stress erst, wenn der Körper schon laut wird. Dann helfen kleine Pausen mehr als jede Regel.",
+      "text": "Woran merkst du, dass du gestresst bist?",
+      "mehrfach": true,
+      "nochNicht": true,
+      "freitext": true,
+      "optionen": [
+        {
+          "id": "koerper",
+          "text": "Mein Körper meldet sich, zum Beispiel Nacken, Bauch oder Kopf"
+        },
+        {
+          "id": "gereizt",
+          "text": "Ich werde schneller gereizt"
+        },
+        {
+          "id": "essen",
+          "text": "Ich esse mehr oder vergesse das Essen"
+        },
+        {
+          "id": "schlaf",
+          "text": "Ich schlafe schlechter"
+        },
+        {
+          "id": "spaet",
+          "text": "Ich merke es erst, wenn gar nichts mehr geht"
+        },
+        {
+          "id": "garnicht",
+          "text": "Das merke ich meistens gar nicht"
+        }
+      ],
+      "setztSignale": {
+        "spaet": "koerperAngespannt",
+        "garnicht": "koerperAngespannt",
+        "koerper": "koerperAngespannt"
+      },
+      "themen": {
+        "spaet": [
+          "anspannung"
+        ],
+        "garnicht": [
+          "anspannung"
+        ],
+        "koerper": [
+          "anspannung",
+          "koerper"
+        ]
+      }
+    },
+    {
+      "id": "bewegung",
+      "nummer": 20,
+      "mehr": true,
+      "thema": "koerper",
+      "warum": "Mehr Sport ist nicht automatisch besser. Manchmal bringt er sogar mehr Anspannung.",
+      "text": "Wie bewegst du dich im Alltag?",
+      "mehrfach": true,
+      "nochNicht": true,
+      "optionen": [
+        {
+          "id": "beine",
+          "text": "Ich bin viel auf den Beinen, mit Tieren, Hof oder Garten"
+        },
+        {
+          "id": "spazieren",
+          "text": "Spaziergänge"
+        },
+        {
+          "id": "sport",
+          "text": "Sport oder Training"
+        },
+        {
+          "id": "wenig",
+          "text": "Eher wenig"
+        },
+        {
+          "id": "wechselnd",
+          "text": "Mal so und mal so"
+        }
+      ]
     },
     {
       "id": "nichtGeholfen",
@@ -1694,12 +2478,38 @@
       "mehrfach": true,
       "freitext": true,
       "optionen": [
-        {"id": "kalorien", "text": "Kalorien zählen"},
-        {"id": "verbote", "text": "Verbote"},
-        {"id": "plaene", "text": "Strenge Pläne"},
-        {"id": "meditation", "text": "Affirmationen und Meditation"},
-        {"id": "wiegen", "text": "Tägliches Wiegen"},
-        {"id": "gruppen", "text": "Druck in Gruppen"}
+        {
+          "id": "kalorien",
+          "text": "Kalorien zählen"
+        },
+        {
+          "id": "verbote",
+          "text": "Verbote"
+        },
+        {
+          "id": "plaene",
+          "text": "Strenge Pläne"
+        },
+        {
+          "id": "meditation",
+          "text": "Affirmationen und Meditation"
+        },
+        {
+          "id": "wiegen",
+          "text": "Tägliches Wiegen"
+        },
+        {
+          "id": "gruppen",
+          "text": "Druck in Gruppen"
+        },
+        {
+          "id": "sport",
+          "text": "Viel Sport"
+        },
+        {
+          "id": "diaeten",
+          "text": "Diäten, die nur am Anfang wirken"
+        }
       ],
       "thema": "essen"
     },
@@ -1709,13 +2519,34 @@
       "text": "Was tut dir gut?",
       "mehrfach": true,
       "optionen": [
-        {"id": "bewegung", "text": "Bewegung"},
-        {"id": "draussen", "text": "Draußen sein"},
-        {"id": "tiere", "text": "Tiere"},
-        {"id": "musik", "text": "Musik"},
-        {"id": "haende", "text": "Etwas mit den Händen machen"},
-        {"id": "ordnung", "text": "Ordnung schaffen"},
-        {"id": "reden", "text": "Mit jemandem reden"}
+        {
+          "id": "bewegung",
+          "text": "Bewegung"
+        },
+        {
+          "id": "draussen",
+          "text": "Draußen sein"
+        },
+        {
+          "id": "tiere",
+          "text": "Tiere"
+        },
+        {
+          "id": "musik",
+          "text": "Musik"
+        },
+        {
+          "id": "haende",
+          "text": "Etwas mit den Händen machen"
+        },
+        {
+          "id": "ordnung",
+          "text": "Ordnung schaffen"
+        },
+        {
+          "id": "reden",
+          "text": "Mit jemandem reden"
+        }
       ]
     },
     {
@@ -1724,9 +2555,18 @@
       "text": "Wie möchtest du dein Gewicht sehen?",
       "mehrfach": false,
       "optionen": [
-        {"id": "woche", "text": "Als Wochendurchschnitt"},
-        {"id": "garnicht", "text": "Gar nicht, lieber über Taille und Körpergefühl"},
-        {"id": "spaeter", "text": "Das entscheide ich später"}
+        {
+          "id": "woche",
+          "text": "Als Wochendurchschnitt"
+        },
+        {
+          "id": "garnicht",
+          "text": "Gar nicht, lieber über Taille und Körpergefühl"
+        },
+        {
+          "id": "spaeter",
+          "text": "Das entscheide ich später"
+        }
       ]
     },
     {
@@ -1736,12 +2576,32 @@
       "mehrfach": true,
       "gesundheit": true,
       "optionen": [
-        {"id": "adhs", "text": "ADHS oder ein anderes neurodivergentes Gehirn"},
-        {"id": "wechseljahre", "text": "Wechseljahre"},
-        {"id": "schilddruese", "text": "Schilddrüse"},
-        {"id": "medikamente", "text": "Medikamente, die auf Gewicht oder Appetit wirken"},
-        {"id": "schicht", "text": "Schichtarbeit"}
-      ]
+        {
+          "id": "adhs",
+          "text": "ADHS oder ein anderes neurodivergentes Gehirn"
+        },
+        {
+          "id": "wechseljahre",
+          "text": "Wechseljahre"
+        },
+        {
+          "id": "schilddruese",
+          "text": "Schilddrüse"
+        },
+        {
+          "id": "medikamente",
+          "text": "Medikamente, die auf Gewicht oder Appetit wirken"
+        },
+        {
+          "id": "schicht",
+          "text": "Schichtarbeit"
+        },
+        {
+          "id": "unvertraeglichkeit",
+          "text": "Eine Unverträglichkeit oder Allergie"
+        }
+      ],
+      "freitext": true
     },
     {
       "id": "druck",
@@ -1756,29 +2616,68 @@
       "nochNicht": true,
       "freitext": true,
       "optionen": [
-        {"id": "arbeit", "text": "Arbeit"},
-        {"id": "familie", "text": "Familie"},
-        {"id": "pflege", "text": "Pflege von Angehörigen"},
-        {"id": "hof", "text": "Tiere und Hof"},
-        {"id": "geld", "text": "Geld"},
-        {"id": "ichselbst", "text": "Ich selbst und meine Ansprüche"},
-        {"id": "gesundheit", "text": "Gesundheit"}
+        {
+          "id": "arbeit",
+          "text": "Arbeit"
+        },
+        {
+          "id": "familie",
+          "text": "Familie"
+        },
+        {
+          "id": "pflege",
+          "text": "Pflege von Angehörigen"
+        },
+        {
+          "id": "hof",
+          "text": "Tiere und Hof"
+        },
+        {
+          "id": "geld",
+          "text": "Geld"
+        },
+        {
+          "id": "ichselbst",
+          "text": "Ich selbst und meine Ansprüche"
+        },
+        {
+          "id": "gesundheit",
+          "text": "Gesundheit"
+        }
       ],
       "setztSignale": {
         "ichselbst": "ansprueche",
         "pflege": "wenigZeitFuerSich"
       },
       "themen": {
-        "arbeit": ["anspannung"],
-        "familie": ["anspannung"],
-        "pflege": ["beduerfnisse"],
-        "hof": ["anspannung"],
-        "geld": ["anspannung"],
-        "ichselbst": ["beduerfnisse", "kopf"],
-        "gesundheit": ["koerper"]
+        "arbeit": [
+          "anspannung"
+        ],
+        "familie": [
+          "anspannung"
+        ],
+        "pflege": [
+          "beduerfnisse"
+        ],
+        "hof": [
+          "anspannung"
+        ],
+        "geld": [
+          "anspannung"
+        ],
+        "ichselbst": [
+          "beduerfnisse",
+          "kopf"
+        ],
+        "gesundheit": [
+          "koerper"
+        ]
       },
       "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, woher dein Druck gerade kommt?",
-      "signale": ["ansprueche", "koerperAngespannt"]
+      "signale": [
+        "ansprueche",
+        "koerperAngespannt"
+      ]
     },
     {
       "id": "kuemmern",
@@ -1793,20 +2692,40 @@
       "nochNicht": true,
       "freitext": true,
       "optionen": [
-        {"id": "partner", "text": "Partner"},
-        {"id": "freundinnen", "text": "Freundinnen"},
-        {"id": "familie", "text": "Familie"},
-        {"id": "ichkuemmere", "text": "Ich bin meistens die, die sich kümmert"},
-        {"id": "fachleute", "text": "Fachleute wie Therapie oder Ärztin", "gesundheit": true}
+        {
+          "id": "partner",
+          "text": "Partner"
+        },
+        {
+          "id": "freundinnen",
+          "text": "Freundinnen"
+        },
+        {
+          "id": "familie",
+          "text": "Familie"
+        },
+        {
+          "id": "ichkuemmere",
+          "text": "Ich bin meistens die, die sich kümmert"
+        },
+        {
+          "id": "fachleute",
+          "text": "Fachleute wie Therapie oder Ärztin",
+          "gesundheit": true
+        }
       ],
       "setztSignale": {
         "ichkuemmere": "wenigZeitFuerSich"
       },
       "themen": {
-        "ichkuemmere": ["beduerfnisse"]
+        "ichkuemmere": [
+          "beduerfnisse"
+        ]
       },
       "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, wer sich um dich kümmert?",
-      "signale": ["wenigZeitFuerSich"]
+      "signale": [
+        "wenigZeitFuerSich"
+      ]
     },
     {
       "id": "ausruhen",
@@ -1821,10 +2740,22 @@
       "nochNicht": true,
       "freitext": true,
       "optionen": [
-        {"id": "geniessen", "text": "Ich genieße es"},
-        {"id": "gewissen", "text": "Ich habe ein schlechtes Gewissen"},
-        {"id": "sofort", "text": "Mir fällt sofort etwas ein, das noch zu tun ist"},
-        {"id": "nichtdazu", "text": "Ich komme gar nicht dazu"}
+        {
+          "id": "geniessen",
+          "text": "Ich genieße es"
+        },
+        {
+          "id": "gewissen",
+          "text": "Ich habe ein schlechtes Gewissen"
+        },
+        {
+          "id": "sofort",
+          "text": "Mir fällt sofort etwas ein, das noch zu tun ist"
+        },
+        {
+          "id": "nichtdazu",
+          "text": "Ich komme gar nicht dazu"
+        }
       ],
       "setztSignale": {
         "gewissen": "wenigZeitFuerSich",
@@ -1832,12 +2763,21 @@
         "nichtdazu": "wenigZeitFuerSich"
       },
       "themen": {
-        "gewissen": ["beduerfnisse"],
-        "sofort": ["kopf"],
-        "nichtdazu": ["beduerfnisse"]
+        "gewissen": [
+          "beduerfnisse"
+        ],
+        "sofort": [
+          "kopf"
+        ],
+        "nichtdazu": [
+          "beduerfnisse"
+        ]
       },
       "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, was passiert, wenn du dich ausruhst?",
-      "signale": ["wenigZeitFuerSich", "kopfVoll"]
+      "signale": [
+        "wenigZeitFuerSich",
+        "kopfVoll"
+      ]
     },
     {
       "id": "ohneHunger",
@@ -1852,11 +2792,26 @@
       "nochNicht": true,
       "freitext": true,
       "optionen": [
-        {"id": "stress", "text": "Bei Stress"},
-        {"id": "langeweile", "text": "Bei Langeweile"},
-        {"id": "gewohnheit", "text": "Aus Gewohnheit"},
-        {"id": "belohnung", "text": "Zur Belohnung"},
-        {"id": "abends", "text": "Abends zum Runterkommen"}
+        {
+          "id": "stress",
+          "text": "Bei Stress"
+        },
+        {
+          "id": "langeweile",
+          "text": "Bei Langeweile"
+        },
+        {
+          "id": "gewohnheit",
+          "text": "Aus Gewohnheit"
+        },
+        {
+          "id": "belohnung",
+          "text": "Zur Belohnung"
+        },
+        {
+          "id": "abends",
+          "text": "Abends zum Runterkommen"
+        }
       ],
       "setztSignale": {
         "stress": "troestendEssen",
@@ -1865,14 +2820,31 @@
         "gewohnheit": "hastig"
       },
       "themen": {
-        "stress": ["essen", "anspannung"],
-        "langeweile": ["essen", "freude"],
-        "gewohnheit": ["essen"],
-        "belohnung": ["essen", "freude"],
-        "abends": ["essen", "schlaf"]
+        "stress": [
+          "essen",
+          "anspannung"
+        ],
+        "langeweile": [
+          "essen",
+          "freude"
+        ],
+        "gewohnheit": [
+          "essen"
+        ],
+        "belohnung": [
+          "essen",
+          "freude"
+        ],
+        "abends": [
+          "essen",
+          "schlaf"
+        ]
       },
       "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, wann du isst, ohne Hunger zu haben?",
-      "signale": ["troestendEssen", "hastig"]
+      "signale": [
+        "troestendEssen",
+        "hastig"
+      ]
     },
     {
       "id": "veraendert",
@@ -1887,23 +2859,165 @@
       "nochNicht": true,
       "freitext": true,
       "optionen": [
-        {"id": "job", "text": "Job"},
-        {"id": "beziehung", "text": "Trennung oder Beziehung"},
-        {"id": "umzug", "text": "Umzug"},
-        {"id": "wechseljahre", "text": "Wechseljahre", "gesundheit": "wechseljahre"},
-        {"id": "verlust", "text": "Verlust"},
-        {"id": "nichts", "text": "Nichts Besonderes"}
+        {
+          "id": "job",
+          "text": "Job"
+        },
+        {
+          "id": "beziehung",
+          "text": "Trennung oder Beziehung"
+        },
+        {
+          "id": "umzug",
+          "text": "Umzug"
+        },
+        {
+          "id": "wechseljahre",
+          "text": "Wechseljahre",
+          "gesundheit": "wechseljahre"
+        },
+        {
+          "id": "verlust",
+          "text": "Verlust"
+        },
+        {
+          "id": "nichts",
+          "text": "Nichts Besonderes"
+        }
       ],
-      "exklusiv": ["nichts"],
+      "exklusiv": [
+        "nichts"
+      ],
       "themen": {
-        "job": ["anspannung"],
-        "beziehung": ["beduerfnisse"],
-        "umzug": ["anspannung"],
-        "verlust": ["beduerfnisse"],
-        "wechseljahre": ["koerper", "schlaf"]
+        "job": [
+          "anspannung"
+        ],
+        "beziehung": [
+          "beduerfnisse"
+        ],
+        "umzug": [
+          "anspannung"
+        ],
+        "verlust": [
+          "beduerfnisse"
+        ],
+        "wechseljahre": [
+          "koerper",
+          "schlaf"
+        ]
       },
       "nachfrage": "Du hast inzwischen einiges beobachtet. Magst du noch einmal schauen, was sich in letzter Zeit bei dir verändert hat?",
       "signale": []
+    },
+    {
+      "id": "trinkmenge",
+      "nummer": 21,
+      "mehr": true,
+      "vertiefung": true,
+      "thema": "koerper",
+      "info": "wassergewebe",
+      "warum": "Wer zu wenig trinkt, hält oft mehr Wasser fest.",
+      "text": "Wie viel trinkst du ungefähr am Tag, ohne Kaffee?",
+      "mehrfach": false,
+      "nochNicht": true,
+      "optionen": [
+        {
+          "id": "unter1",
+          "text": "Weniger als einen Liter"
+        },
+        {
+          "id": "bis15",
+          "text": "Ein bis anderthalb Liter"
+        },
+        {
+          "id": "bis2",
+          "text": "Anderthalb bis zwei Liter"
+        },
+        {
+          "id": "ueber2",
+          "text": "Mehr als zwei Liter"
+        },
+        {
+          "id": "weissnicht",
+          "text": "Das weiß ich nicht"
+        }
+      ]
+    },
+    {
+      "id": "wasserZeichen",
+      "nummer": 22,
+      "mehr": true,
+      "vertiefung": true,
+      "thema": "koerper",
+      "info": "wassergewebe",
+      "warum": "Die Waage kann über Nacht ein, zwei Kilo springen. Das ist meistens Wasser und kein Fett.",
+      "text": "Woran merkst du, dass dein Körper Wasser hält?",
+      "mehrfach": true,
+      "nochNicht": true,
+      "freitext": true,
+      "optionen": [
+        {
+          "id": "ringe",
+          "text": "Ringe sitzen enger"
+        },
+        {
+          "id": "socken",
+          "text": "Socken drücken sich ab"
+        },
+        {
+          "id": "gesicht",
+          "text": "Gesicht oder Augen sind morgens geschwollen"
+        },
+        {
+          "id": "waage",
+          "text": "Die Waage springt über Nacht"
+        },
+        {
+          "id": "merke",
+          "text": "Ich merke es nicht"
+        }
+      ],
+      "exklusiv": [
+        "merke"
+      ]
+    },
+    {
+      "id": "ziel",
+      "nummer": 23,
+      "mehr": true,
+      "vertiefung": true,
+      "thema": "beduerfnisse",
+      "warum": "Dein Ziel in deinen eigenen Worten. Im Rückblick kommen wir darauf zurück.",
+      "text": "Woran würdest du in drei Monaten merken, dass es dir besser geht?",
+      "mehrfach": true,
+      "nochNicht": true,
+      "freitext": true,
+      "optionen": [
+        {
+          "id": "schlaf",
+          "text": "Ich schlafe besser"
+        },
+        {
+          "id": "leichter",
+          "text": "Ich fühle mich leichter"
+        },
+        {
+          "id": "essen",
+          "text": "Ich esse entspannter"
+        },
+        {
+          "id": "ruhe",
+          "text": "Ich habe mehr Ruhe im Kopf"
+        },
+        {
+          "id": "kleidung",
+          "text": "Meine Kleidung sitzt bequemer"
+        },
+        {
+          "id": "freude",
+          "text": "Ich habe mehr Freude im Alltag"
+        }
+      ]
     }
   ],
 
@@ -1912,40 +3026,38 @@
       "titel": "Ein kleiner Spaziergang",
       "symbol": "🚶‍♀️",
       "pause": true,
-      "auch": ["Line Dance"]
+      "auch": [
+        "Line Dance"
+      ]
     },
-
     "draussen": {
       "titel": "Ein paar Minuten an der frischen Luft",
       "symbol": "🌿",
       "pause": true
     },
-
     "tiere": {
       "titel": "Zeit mit den Tieren",
       "symbol": "🐾",
       "pause": true
     },
-
     "musik": {
       "titel": "Musik hören",
       "symbol": "🎶",
       "pause": true
     },
-
     "haende": {
       "titel": "Etwas mit den Händen machen",
       "symbol": "🧶",
       "pause": true,
-      "auch": ["Stricken"]
+      "auch": [
+        "Stricken"
+      ]
     },
-
     "ordnung": {
       "titel": "Eine kleine Ecke ordnen",
       "symbol": "🧺",
       "pause": true
     },
-
     "reden": {
       "titel": "Mit jemandem reden",
       "symbol": "💬",
@@ -1963,9 +3075,21 @@
         "sanft": 3,
         "info": "kaffee",
         "passt": [
-          {"frage": "trinken", "wert": "kaffee", "punkte": 3},
-          {"frage": "schlaf", "wert": "einschlafen", "punkte": 2},
-          {"frage": "kaffeewirkung", "wert": "unruhig", "punkte": 2}
+          {
+            "frage": "trinken",
+            "wert": "kaffee",
+            "punkte": 3
+          },
+          {
+            "frage": "schlaf",
+            "wert": "einschlafen",
+            "punkte": 2
+          },
+          {
+            "frage": "kaffeewirkung",
+            "wert": "unruhig",
+            "punkte": 2
+          }
         ],
         "braucht": "kaffee",
         "start": true
@@ -1975,21 +3099,51 @@
         "titel": "Erst hinsetzen, dann essen",
         "beschreibung": "Ich setze mich zum Essen hin und schaue, ob ich dann mehr schmecke und eher satt bin.",
         "sanft": 2,
-        "passt": [{"frage": "essen", "wert": "nebenbei", "punkte": 3}, {"signal": "hastig", "punkte": 2}]
+        "passt": [
+          {
+            "frage": "essen",
+            "wert": "nebenbei",
+            "punkte": 3
+          },
+          {
+            "signal": "hastig",
+            "punkte": 2
+          }
+        ]
       },
       {
         "id": "bildschirm",
         "titel": "Eine Mahlzeit ohne Bildschirm",
         "beschreibung": "Bei einer Mahlzeit am Tag bleiben Handy und Fernseher aus, und ich beobachte, was sich verändert.",
         "sanft": 2,
-        "passt": [{"frage": "essen", "wert": "nebenbei", "punkte": 2}, {"signal": "geschmackFehlt", "punkte": 2}]
+        "passt": [
+          {
+            "frage": "essen",
+            "wert": "nebenbei",
+            "punkte": 2
+          },
+          {
+            "signal": "geschmackFehlt",
+            "punkte": 2
+          }
+        ]
       },
       {
         "id": "mittag",
         "titel": "Eine sanfte Ess-Erinnerung am Mittag",
         "beschreibung": "Die App erinnert mich mittags ans Essen, und ich schaue, ob der große Hunger am Nachmittag kleiner wird.",
         "sanft": 2,
-        "passt": [{"frage": "essen", "wert": "vergesse", "punkte": 3}, {"gesundheit": "adhs", "punkte": 2}],
+        "passt": [
+          {
+            "frage": "essen",
+            "wert": "vergesse",
+            "punkte": 3
+          },
+          {
+            "gesundheit": "adhs",
+            "punkte": 2
+          }
+        ],
         "erinnerung": "mittag"
       },
       {
@@ -1998,9 +3152,20 @@
         "beschreibung": "Bevor ich zu etwas Süßem greife, gönne ich mir fünf Minuten auf einem Freude-Platz und schaue, ob ich es danach noch möchte.",
         "sanft": 2,
         "passt": [
-          {"frage": "essen", "wert": "abends", "punkte": 3},
-          {"signal": "troestendEssen", "punkte": 2},
-          {"frage": "ohneHunger", "wert": "abends", "punkte": 2}
+          {
+            "frage": "essen",
+            "wert": "abends",
+            "punkte": 3
+          },
+          {
+            "signal": "troestendEssen",
+            "punkte": 2
+          },
+          {
+            "frage": "ohneHunger",
+            "wert": "abends",
+            "punkte": 2
+          }
         ]
       },
       {
@@ -2009,9 +3174,20 @@
         "beschreibung": "Ich bin jeden Tag zehn Minuten draußen und beobachte, wie es meiner Anspannung damit geht.",
         "sanft": 1,
         "passt": [
-          {"frage": "gutTut", "wert": "draussen", "punkte": 2},
-          {"frage": "gutTut", "wert": "bewegung", "punkte": 2},
-          {"gesundheit": "adhs", "punkte": 2}
+          {
+            "frage": "gutTut",
+            "wert": "draussen",
+            "punkte": 2
+          },
+          {
+            "frage": "gutTut",
+            "wert": "bewegung",
+            "punkte": 2
+          },
+          {
+            "gesundheit": "adhs",
+            "punkte": 2
+          }
         ]
       },
       {
@@ -2020,9 +3196,20 @@
         "beschreibung": "Um 21 Uhr geht mein Handy schlafen, und ich schaue, ob ich leichter zur Ruhe komme.",
         "sanft": 2,
         "passt": [
-          {"frage": "schlaf", "wert": "einschlafen", "punkte": 3},
-          {"signal": "gedankenKreisen", "punkte": 1},
-          {"frage": "kopf", "wert": "sorgen", "punkte": 1}
+          {
+            "frage": "schlaf",
+            "wert": "einschlafen",
+            "punkte": 3
+          },
+          {
+            "signal": "gedankenKreisen",
+            "punkte": 1
+          },
+          {
+            "frage": "kopf",
+            "wert": "sorgen",
+            "punkte": 1
+          }
         ]
       },
       {
@@ -2033,13 +3220,39 @@
         "info": "erledigt",
         "ablage": true,
         "passt": [
-          {"frage": "kopf", "wert": "aufgaben", "punkte": 3},
-          {"frage": "kopf", "wert": "morgen", "punkte": 2},
-          {"frage": "kopf", "wert": "mails", "punkte": 2},
-          {"signal": "kopfVoll", "punkte": 2},
-          {"signal": "gedankenKreisen", "punkte": 1},
-          {"frage": "schlaf", "wert": "einschlafen", "punkte": 1},
-          {"frage": "ausruhen", "wert": "sofort", "punkte": 2}
+          {
+            "frage": "kopf",
+            "wert": "aufgaben",
+            "punkte": 3
+          },
+          {
+            "frage": "kopf",
+            "wert": "morgen",
+            "punkte": 2
+          },
+          {
+            "frage": "kopf",
+            "wert": "mails",
+            "punkte": 2
+          },
+          {
+            "signal": "kopfVoll",
+            "punkte": 2
+          },
+          {
+            "signal": "gedankenKreisen",
+            "punkte": 1
+          },
+          {
+            "frage": "schlaf",
+            "wert": "einschlafen",
+            "punkte": 1
+          },
+          {
+            "frage": "ausruhen",
+            "wert": "sofort",
+            "punkte": 2
+          }
         ]
       },
       {
@@ -2055,14 +3268,32 @@
         "beschreibung": "Bevor ich mir nachnehme, atme ich einmal durch und spüre nach, ob ich noch Hunger habe.",
         "sanft": 2,
         "reserve": true,
-        "nichtBei": ["meditation"]
+        "nichtBei": [
+          "meditation"
+        ]
       },
       {
         "id": "wasser",
         "titel": "Wasser griffbereit",
         "beschreibung": "Eine Flasche Wasser steht immer in meiner Nähe, und ich schaue, ob ich seltener zum Snack greife.",
         "sanft": 1,
-        "reserve": true
+        "passt": [
+          {
+            "frage": "trinkmenge",
+            "wert": "unter1",
+            "punkte": 3
+          },
+          {
+            "frage": "trinkmenge",
+            "wert": "bis15",
+            "punkte": 1
+          },
+          {
+            "frage": "wasserZeichen",
+            "wert": "waage",
+            "punkte": 1
+          }
+        ]
       },
       {
         "id": "fuer-mich",
@@ -2071,9 +3302,20 @@
         "sanft": 1,
         "reserve": true,
         "passt": [
-          {"signal": "wenigZeitFuerSich", "punkte": 3},
-          {"frage": "kuemmern", "wert": "ichkuemmere", "punkte": 2},
-          {"frage": "ausruhen", "wert": "gewissen", "punkte": 2}
+          {
+            "signal": "wenigZeitFuerSich",
+            "punkte": 3
+          },
+          {
+            "frage": "kuemmern",
+            "wert": "ichkuemmere",
+            "punkte": 2
+          },
+          {
+            "frage": "ausruhen",
+            "wert": "gewissen",
+            "punkte": 2
+          }
         ]
       },
       {
@@ -2082,6 +3324,73 @@
         "beschreibung": "Einmal in der Woche esse ich mein Lieblingsessen ganz bewusst und ohne schlechtes Gewissen.",
         "sanft": 1,
         "reserve": true
+      },
+      {
+        "id": "innehalten",
+        "titel": "Kurz innehalten",
+        "beschreibung": "Zwischen zwei Tätigkeiten mache ich eine kleine Pause und frage mich: Warum mache ich das jetzt? Ist es gerade sinnvoll? Darf es auch später sein?",
+        "sanft": 1,
+        "info": "innehalten",
+        "passt": [
+          {
+            "frage": "stressMerken",
+            "wert": "garnicht",
+            "punkte": 4
+          },
+          {
+            "frage": "stressMerken",
+            "wert": "spaet",
+            "punkte": 3
+          },
+          {
+            "frage": "ausruhen",
+            "wert": "sofort",
+            "punkte": 2
+          },
+          {
+            "frage": "ausruhen",
+            "wert": "gewissen",
+            "punkte": 2
+          },
+          {
+            "frage": "kuemmern",
+            "wert": "ichkuemmere",
+            "punkte": 1
+          },
+          {
+            "signal": "koerperAngespannt",
+            "punkte": 1
+          }
+        ]
+      },
+      {
+        "id": "brotpause",
+        "titel": "Eine Woche ohne Brot und Nudeln",
+        "beschreibung": "Eine Woche lang lasse ich Brot, Nudeln und Gebäck weg und schaue, ob ich mich weniger aufgedunsen fühle und wie meine Ringe und Socken sitzen.",
+        "sanft": 3,
+        "info": "wassergewebe",
+        "passt": [
+          {
+            "frage": "aufgedunsen",
+            "wert": "brot",
+            "punkte": 4
+          },
+          {
+            "frage": "wasserZeichen",
+            "wert": "ringe",
+            "punkte": 1
+          },
+          {
+            "frage": "wasserZeichen",
+            "wert": "socken",
+            "punkte": 1
+          },
+          {
+            "frage": "wasserZeichen",
+            "wert": "gesicht",
+            "punkte": 1
+          }
+        ]
       }
     ]
   },
