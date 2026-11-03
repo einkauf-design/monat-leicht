@@ -1465,6 +1465,8 @@
       "am handy",
       "beim fernsehen"
     ],
+    "grosserHunger": ["hungrig", "ausgehungert", "riesenhunger", "großen hunger", "großer hunger", "so leer", "ganz leer", "magen knurrt", "verhungert", "zu lange nicht gegessen", "nichts gegessen", "mahlzeit ausgelassen", "frühstück ausgelassen", "reinschling"],
+    "trinken": ["wasser", "flasche", "durst", "schluck", "zu wenig getrunken", "genug getrunken", "mehr getrunken", "viel getrunken", "kaum getrunken", "vergesse zu trinken", "vergesse das trinken", "vergessen zu trinken", "trinke mehr", "trinke zu wenig", "trinke kaum", "trinken fällt"],
     "geschmackFehlt": [
       "kaum geschmeckt",
       "nichts geschmeckt",
@@ -1913,6 +1915,13 @@
         "signal": "troestendEssen"
       }
     },
+    {"id": "w-hunger-1", "stufe": "wahrnehmen", "thema": "hunger", "text": "Du hast beschrieben, dass du manchmal sehr hungrig bist, bevor du isst. Woran merkst du den Hunger als Erstes, lange bevor er groß wird?", "bedingungen": {"signal": "grosserHunger"}},
+    {"id": "w-hunger-2", "stufe": "wahrnehmen", "thema": "hunger", "text": "Wenn du an einen Moment mit großem Hunger zurückdenkst, was hat dich davor vom Essen abgehalten?", "bedingungen": {"signal": "grosserHunger"}},
+    {"id": "v-hunger-3", "stufe": "vertiefen", "thema": "hunger", "text": "Was könnte dir helfen, schon beim kleinen Hunger etwas zu essen, bevor dein Körper ganz leer ist?", "bedingungen": {"signal": "grosserHunger"}},
+    {"id": "h-trinken-1", "stufe": "hineinfinden", "thema": "trinken", "text": "Du hast etwas über dein Trinken notiert. Was macht es dir leicht, zwischendurch einen Schluck zu nehmen?", "bedingungen": {"signal": "trinken"}},
+    {"id": "w-trinken-2", "stufe": "wahrnehmen", "thema": "trinken", "text": "Wie fühlt sich dein Körper an Tagen an, an denen du gut getrunken hast?", "bedingungen": {"signal": "trinken"}},
+    {"id": "w-trinken-3", "stufe": "wahrnehmen", "thema": "trinken", "text": "Wo stand deine Wasserflasche in diesen Tagen, und hat das etwas verändert?", "bedingungen": {"experimentEnthaelt": "wasser"}},
+    {"id": "v-trinken-4", "stufe": "vertiefen", "thema": "trinken", "text": "Gibt es Momente, in denen dir das Trinken schwerfällt? Was ist dann gerade los?", "bedingungen": {"signal": "trinken"}},
     {
       "id": "v-essen-1",
       "stufe": "vertiefen",
@@ -3396,7 +3405,7 @@
       {
         "id": "wasser",
         "titel": "Wasser griffbereit",
-        "beschreibung": "Eine Flasche Wasser steht immer in meiner Nähe, und ich schaue, ob ich seltener zum Snack greife.",
+        "beschreibung": "Eine Flasche Wasser steht immer in meiner Nähe, und ich schaue, wie viel leichter mir das Trinken dann fällt.",
         "sanft": 1,
         "passt": [
           {
