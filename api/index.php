@@ -73,9 +73,8 @@ switch ($anfrage['aktion'] ?? '') {
 
 function emona_code_pruefen(string $code): void
 {
-    $config = emona_config();
-    $erwartet = (string) ($config['zugangscode'] ?? '');
-    if ($erwartet === '' || $erwartet === 'HIER-DEINEN-CODE-EINTRAGEN') {
+    $codes = emona_zugangscodes();
+    if (!$codes) {
         emona_fehler(500, 'In der Datei api/config.php steht noch kein Zugangscode. Bitte trag dort deinen Code ein.');
     }
 
@@ -92,7 +91,13 @@ function emona_code_pruefen(string $code): void
         emona_fehler(429, 'Es gab gerade zu viele Versuche. Bitte probier es in einer Viertelstunde noch einmal.');
     }
 
-    if (!hash_equals($erwartet, $code)) {
+    $treffer = null;
+    foreach ($codes as $erwartet => $name) {
+        if (hash_equals((string) $erwartet, $code)) {
+            $treffer = $name;
+        }
+    }
+    if ($treffer === null) {
         $sperre[$wer] = ['anzahl' => ($sperre[$wer]['anzahl'] ?? 0) + 1, 'seit' => $sperre[$wer]['seit'] ?? $jetzt];
         file_put_contents($sperrDatei, json_encode($sperre), LOCK_EX);
         sleep(1);
@@ -102,6 +107,7 @@ function emona_code_pruefen(string $code): void
         unset($sperre[$wer]);
         file_put_contents($sperrDatei, json_encode($sperre), LOCK_EX);
     }
+    emona_nutzerin($treffer);
 }
 
 /* ---------- Synchronisation ---------- */

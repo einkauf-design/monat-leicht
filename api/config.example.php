@@ -8,6 +8,14 @@ return [
     // Dein persönlicher Zugangscode. Wähle etwas, das nur du kennst (mindestens 8 Zeichen).
     'zugangscode' => 'HIER-DEINEN-CODE-EINTRAGEN',
 
+    // Für mehrere Testerinnen (seit 1.7.0): pro Frau ein eigener Code und ein Kurzname
+    // (kleine Buchstaben, Ziffern, Bindestrich). Jede Frau bekommt eine eigene Datendatei.
+    // Wer nur diese Liste nutzt, setzt „zugangscode“ auf ''.
+    // 'zugangscodes' => [
+    //     'LANGER-CODE-FUER-FRAU-1' => 'frau-1',
+    //     'LANGER-CODE-FUER-FRAU-2' => 'frau-2',
+    // ],
+
     // Ordner, in dem die Einträge als JSON-Datei liegen.
     // Am sichersten ist ein Ordner außerhalb des Web-Verzeichnisses, zum Beispiel '/www/htdocs/w0123456/emona-daten'.
     // Standard ist der geschützte Ordner „daten“ direkt neben dieser Datei.

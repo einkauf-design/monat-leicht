@@ -32,7 +32,16 @@ if (PHP_SAPI !== 'cli') {
 
 const EMONA_FENSTER_MINUTEN = 90;
 
-$ergebnis = emona_mit_daten(function (array &$daten) {
+// Seit 1.7.0: Jede Nutzerin mit eigenem Zugangscode hat eigene Daten, deshalb wird jede einzeln geprüft.
+$alle = [];
+foreach (array_unique(array_values(emona_zugangscodes())) as $nutzerin) {
+    emona_nutzerin($nutzerin);
+    $alle[$nutzerin === '' ? 'hauptfassung' : $nutzerin] = emona_mit_daten('emona_erinnern');
+}
+emona_antwort(['ok' => true, 'nutzerinnen' => $alle]);
+
+function emona_erinnern(array &$daten): array
+{
     $einstellungen = $daten['docs']['einstellungen']['wert'] ?? [];
     // Schultern-Erinnerungen: ohne eigene Einstellung in Anemones Fassung (Ordnername mit „anemone“) an, sonst aus.
     $barometerAn = array_key_exists('barometerAn', $einstellungen)
@@ -127,6 +136,4 @@ $ergebnis = emona_mit_daten(function (array &$daten) {
         $daten['system']['abos'] = $behalten;
     }
     return ['gesendet' => $gesendet];
-});
-
-emona_antwort(['ok' => true] + $ergebnis);
+}

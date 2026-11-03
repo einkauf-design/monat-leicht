@@ -46,12 +46,58 @@ function emona_pfad(string $name): string
 }
 
 /*
+ * Mehrere Testerinnen (seit 1.7.0): In config.php kann neben „zugangscode“ eine Liste
+ * „zugangscodes“ stehen, zum Beispiel ['CODE-1' => 'birgit', 'CODE-2' => 'uschi'].
+ * Jede Frau hat dann eine eigene Datendatei unter daten/nutzerinnen/<kurzname>.json.
+ * Der alte Einzelcode benutzt weiter emona-daten.json, damit bestehende Fassungen unverändert laufen.
+ */
+function emona_nutzerin(?string $neu = null): string
+{
+    static $aktuell = '';
+    if ($neu !== null) {
+        $aktuell = $neu;
+    }
+    return $aktuell;
+}
+
+function emona_zugangscodes(): array
+{
+    $config = emona_config();
+    $codes = [];
+    $einzel = (string) ($config['zugangscode'] ?? '');
+    if ($einzel !== '' && strpos($einzel, 'HIER-') !== 0) {
+        $codes[$einzel] = '';
+    }
+    foreach ((array) ($config['zugangscodes'] ?? []) as $code => $name) {
+        $code = (string) $code;
+        $name = strtolower((string) $name);
+        if (strlen($code) >= 8 && preg_match('/^[a-z0-9-]{2,40}$/', $name)) {
+            $codes[$code] = $name;
+        }
+    }
+    return $codes;
+}
+
+function emona_datendatei(): string
+{
+    $name = emona_nutzerin();
+    if ($name === '') {
+        return emona_pfad('emona-daten.json');
+    }
+    $ordner = emona_pfad('nutzerinnen');
+    if (!is_dir($ordner)) {
+        @mkdir($ordner, 0700, true);
+    }
+    return $ordner . '/' . $name . '.json';
+}
+
+/*
  * Öffnet die Datendatei mit exklusiver Sperre, ruft $veraendern mit dem Inhalt auf
  * und schreibt das Ergebnis zurück. Gibt den Rückgabewert von $veraendern zurück.
  */
 function emona_mit_daten(callable $veraendern)
 {
-    $pfad = emona_pfad('emona-daten.json');
+    $pfad = emona_datendatei();
     $handle = fopen($pfad, 'c+');
     if ($handle === false) {
         emona_fehler(500, 'Ich kann die Datendatei gerade nicht öffnen. Bitte prüf die Schreibrechte des Datenordners.');
@@ -90,12 +136,13 @@ function emona_sicherung(string $alterInhalt): void
     if (!is_dir($ordner)) {
         @mkdir($ordner, 0700, true);
     }
-    $datei = $ordner . '/emona-daten-' . date('Y-m-d') . '.json';
+    $praefix = emona_nutzerin() === '' ? 'emona-daten-' : 'nutzerin-' . emona_nutzerin() . '-';
+    $datei = $ordner . '/' . $praefix . date('Y-m-d') . '.json';
     if (is_file($datei)) {
         return;
     }
     file_put_contents($datei, $alterInhalt);
-    $alle = glob($ordner . '/emona-daten-*.json') ?: [];
+    $alle = glob($ordner . '/' . $praefix . '*.json') ?: [];
     sort($alle);
     while (count($alle) > 30) {
         @unlink(array_shift($alle));
