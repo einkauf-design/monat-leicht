@@ -86,7 +86,7 @@ Die Seite muss über `https://` erreichbar sein, sonst lässt sie sich nicht ins
 
 ## Updates
 
-Jedes Update geht in beide Ordner auf dem Server: `/emona-leicht/` und `/emona-leicht-anemone/`. Die `config.php` bleibt dabei in jedem Ordner unberührt. Jede Fassung hat ihren eigenen Zugangscode, ihre eigenen Daten und einen eigenen Cronjob. Auch auf dem Handy liegen die Daten der beiden Fassungen getrennt.
+Jedes Update geht in alle drei Ordner auf dem Server: `/emona-leicht/` (Katjuscha), `/emona-leicht-anemone/` (Anemone) und `/emona-leicht-test/` (Testerinnen, seit 1.7.0). Die `config.php` bleibt dabei in jedem Ordner unberührt. Jede Fassung hat ihren eigenen Zugangscode, ihre eigenen Daten und einen eigenen Cronjob. Auch auf dem Handy liegen die Daten der beiden Fassungen getrennt.
 
 Die App holt sich neue Fassungen von selbst. Lade geänderte Dateien einfach hoch. Wenn du an `sw.js` oder an der Liste der Dateien etwas änderst, erhöhe `VERSION` in `sw.js` und `VERSION` in `js/version.js`. Die neue Fassung wird dann still geladen, sobald die App das nächste Mal im Hintergrund war.
 
@@ -197,7 +197,7 @@ Der Aufbau ist offen für Erweiterungen:
 - **Daten:** Alles liegt als einzelne Dokumente mit Schlüsseln wie `tag:2026-10-19`, `freude`, `experiment:2026-10`, `regal`, `erfolge`, `einstellungen`. Neue Bereiche (etwa `stressquellen` oder `rueckblick:2026-10`) lassen sich einfach als weitere Dokumente ergänzen. Der Abgleich funktioniert für jeden Schlüssel von selbst.
 - **Ansichten:** Jede Ansicht ist eine eigene Datei in `js/ansichten/`. Eine neue Ansicht wird in `js/app.js` bei `ANSICHTEN` eingetragen.
 - **Abendspiele:** Das Abendregal steckt in `js/regal.js`. Weitere ruhige Spiele können nach demselben Muster daneben entstehen.
-- **Kursfassung:** Texte stecken in der Inhaltsdatei. Für mehrere Frauen müsste die Schnittstelle pro Zugangscode eine eigene Datendatei anlegen.
+- **Mehrere Frauen (seit 1.7.0):** In `api/config.php` steht unter `zugangscodes` pro Frau ein eigener Code mit Kurzname. Jede Frau hat ihre eigene Datendatei in `api/daten/nutzerinnen/`. Der Cronjob prüft alle Frauen in einem Durchgang. Der alte Einzelcode `zugangscode` funktioniert weiter.
 
 ## Dateien im Überblick
 
