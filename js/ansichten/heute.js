@@ -283,6 +283,12 @@ function experimentSeite() {
     `<p class="ueberzeile">${esc(vorbei ? t('experiment.titel') : t('experimentwahl.laeuft', { ende: datumKurz(v.ende) }))}</p>`,
     `<h2 class="experiment-name">${esc(v.titel)} ${infoKnopf(v.info || infoFuerExperiment(v.titel))}</h2>`,
   ];
+  // Das Notizfeld steht direkt unter dem Namen, damit es niemand suchen muss (seit 1.6.1).
+  bloecke.push(notizFeld());
+  const alle = beobachtungen();
+  if (alle.length && !alle.some((b) => b.datum === heuteKey())) {
+    bloecke.push(`<a class="knopf-text" href="#notizen">${esc(t('experiment.fruehere_zeigen'))}</a>`);
+  }
   if (v.beschreibung) bloecke.push(...textBloecke(v.beschreibung));
   // Beim Experiment „Abends ist alles erledigt“ liegt hier, was gestern Abend abgelegt wurde.
   const gestern = mitAblage(v) ? tag(plusTage(heuteKey(), -1)).abgelegt : '';
@@ -305,27 +311,32 @@ function experimentSeite() {
   return { id: 'experiment', klasse: 'seite-experiment', bloecke };
 }
 
+// Das Feld für Beobachtungen. Man kann so oft schreiben, wie man mag; jede Notiz wird ein eigener Eintrag.
+function notizFeld() {
+  return `<div class="beobachtung-form">
+    <label class="feld">
+      ${feldKopf(t('experiment.notiz_label'), 'beobachtungen')}
+      <textarea name="beobachtung" rows="3" maxlength="1500" placeholder="${esc(t('experiment.notiz_platzhalter'))}" aria-describedby="beobachtung-hilfe"></textarea>
+      <span class="feld-hilfe" id="beobachtung-hilfe">${esc(t('experiment.notiz_hilfe'))}</span>
+    </label>
+    <button class="knopf knopf-zweit" data-aktion="beobachtung-speichern">${esc(t('experiment.notiz_speichern'))}</button>
+  </div>`;
+}
+
 function beobachtungsSeiten(datum) {
   const alle = beobachtungen();
   const heutige = alle.filter((b) => b.datum === datum);
-  const seiten = [{
-    id: 'beobachtung',
-    bloecke: [
-      `<label class="feld">
-        ${feldKopf(t('experiment.notiz_label'), 'beobachtungen')}
-        <textarea name="beobachtung" rows="3" maxlength="1500" placeholder="${esc(t('experiment.notiz_platzhalter'))}" aria-describedby="beobachtung-hilfe"></textarea>
-        <span class="feld-hilfe" id="beobachtung-hilfe">${esc(t('experiment.notiz_hilfe'))}</span>
-      </label>`,
-      `<button class="knopf knopf-zweit" data-aktion="beobachtung-speichern">${esc(t('experiment.notiz_speichern'))}</button>`,
-      alle.some((b) => b.datum !== datum) ? `<a class="knopf-text" href="#notizen">${esc(t('experiment.fruehere_zeigen'))}</a>` : '',
-    ],
-  }];
+  const frueher = alle.some((b) => b.datum !== datum) ? `<a class="knopf-text" href="#notizen">${esc(t('experiment.fruehere_zeigen'))}</a>` : '';
+  const seiten = [];
+  // Ohne laufendes Experiment gibt es das Feld weiter auf einer eigenen Seite.
+  if (!experimentJetzt()) seiten.push({ id: 'beobachtung', bloecke: [notizFeld(), frueher] });
   if (heutige.length) {
     seiten.push({
       id: 'beobachtung-heute',
       bloecke: [
         `<p class="feld-name">${esc(t('experiment.heute_notiert'))}</p>`,
-        ...heutige.map((b) => `<div class="beobachtung">${textBloecke(b.text, 'beobachtung-text').join('')}</div>`),
+        ...heutige.map((b) => `<div class="beobachtung">${b.zeit ? `<p class="beobachtung-datum">${esc(b.zeit)} Uhr</p>` : ''}${textBloecke(b.text, 'beobachtung-text').join('')}</div>`),
+        frueher,
       ],
     });
   }
