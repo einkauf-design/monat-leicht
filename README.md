@@ -137,7 +137,7 @@ Was Mitteilungen können:
 - iPhone: nur, wenn die App auf dem Home-Bildschirm liegt (ab iOS 16.4) und Mitteilungen erlaubt sind. Den Ton bestimmt das iPhone, Fokus-Modi können Mitteilungen zurückhalten.
 - Der Cronjob läuft alle 15 Minuten, eine Erinnerung kann also bis zu 15 Minuten später kommen.
 
-**Info-Text:** `infos.barometer` ist mit „zu prüfen“ markiert.
+**Info-Text:** `infos.barometer` ist geprüft am 03.11.2026.
 
 ## Neu in Version 1.5.0
 
