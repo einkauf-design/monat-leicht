@@ -12,10 +12,14 @@
  *   abo_loeschen   – { endpunkt } entfernt ein Gerät
  *   spaeter        – { art } bittet um genau eine weitere Erinnerung in einer Stunde
  *   export         – { format: "json"|"csv", monat?: "2026-10" } liefert die Einträge als Datei
+ *   ki_status      – ist die Begleitung eingeschaltet, pausiert sie, wie viele Nachrichten heute noch gehen
+ *   ki_chat        – { einwilligung, kontext, verlauf, nachricht } → { text }
+ *   ki_woche       – { einwilligung, kontext } → { text } (Vorschlag für die nächste Woche im Rückblick)
  */
 
 declare(strict_types=1);
 require __DIR__ . '/lib.php';
+require __DIR__ . '/ki.php';
 
 $config = emona_config();
 
@@ -64,6 +68,15 @@ switch ($anfrage['aktion'] ?? '') {
 
     case 'export':
         emona_export($anfrage);
+
+    case 'ki_status':
+        emona_ki_status();
+
+    case 'ki_chat':
+        emona_ki_anfrage($anfrage, 'chat');
+
+    case 'ki_woche':
+        emona_ki_anfrage($anfrage, 'woche');
 
     default:
         emona_fehler(400, 'Diese Aktion kennt die Schnittstelle nicht.');

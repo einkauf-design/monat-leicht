@@ -30,4 +30,13 @@ return [
     // Geheimer Schlüssel für den Cronjob, der die Erinnerungen verschickt.
     // Der Cronjob ruft dann auf: https://deine-domain.de/emona/api/erinnerung.php?schluessel=DIESER-WERT
     'cron_schluessel' => 'HIER-EINEN-LANGEN-ZUFALLSWERT-EINTRAGEN',
+
+    // KI-Begleitung (seit 1.8.0): Gespräch „Frag mich“ und Vorschlag für die nächste Woche im Rückblick.
+    // Ohne Schlüssel bleibt die Begleitung aus. Den Schlüssel gibt es unter console.anthropic.com → API Keys.
+    'ki_schluessel' => 'HIER-DEN-API-SCHLUESSEL-EINTRAGEN',
+    'ki_modell' => 'claude-sonnet-5-5',
+    // Für alle Frauen zusammen. Ist die Grenze erreicht, pausiert die Begleitung bis zum Monatsersten.
+    'ki_monatsgrenze_euro' => 10,
+    // Nachrichten pro Frau und Tag.
+    'ki_tagesgrenze' => 30,
 ];

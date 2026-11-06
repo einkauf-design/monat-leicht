@@ -135,5 +135,13 @@ function emona_erinnern(array &$daten): array
         }
         $daten['system']['abos'] = $behalten;
     }
+    // Seit 1.8.0: Protokoll der letzten 40 Erinnerungen mit der Antwort des Dienstes (201 = angenommen).
+    if ($gesendet) {
+        $protokoll = $daten['system']['protokoll'] ?? [];
+        foreach ($gesendet as $eintrag) {
+            $protokoll[] = ['zeit' => date('Y-m-d H:i'), 'art' => $eintrag['art'], 'status' => $eintrag['status']];
+        }
+        $daten['system']['protokoll'] = array_slice($protokoll, -40);
+    }
     return ['gesendet' => $gesendet];
 }
