@@ -77,6 +77,16 @@ So verhalten sich die Erinnerungen:
 
 Danach in der App unter „Mehr“ auf „Erinnerungen einschalten“ tippen. Auf dem iPhone geht das nur, wenn die App vorher auf den Home-Bildschirm gelegt und von dort geöffnet wurde (ab iOS 16.4).
 
+### 4b. Die KI-Begleitung einschalten (seit 1.8.0, freiwillig)
+
+Die App kann mit den Frauen sprechen („Frag mich etwas“ auf der Startseite) und schreibt nach jedem Rückblick einen kurzen Vorschlag für die nächste Woche. Dafür fragt sie Claude von Anthropic.
+
+1. Unter console.anthropic.com ein Konto anlegen, Guthaben aufladen und unter „Limits“ eine Monatsgrenze setzen.
+2. Unter „API Keys“ einen Schlüssel erzeugen.
+3. In `config.php` bei `ki_schluessel` eintragen. `ki_monatsgrenze_euro` begrenzt die Kosten zusätzlich auf dem Server, `ki_tagesgrenze` die Nachrichten pro Frau und Tag.
+
+Ohne Schlüssel bleibt die Begleitung aus. Jede Frau stimmt in der App einmal ausdrücklich zu, bevor etwas an Anthropic geht, und kann das unter „Mehr“ zurücknehmen.
+
 ### 5. Auf den Startbildschirm legen
 
 - **iPhone:** Die Adresse in Safari öffnen, auf „Teilen“ und dann auf „Zum Home-Bildschirm“ tippen.
