@@ -33,6 +33,12 @@ export function t(pfad, werte = {}) {
 // Platzhalter: {name} setzt den Wert ein, {name:wort} schreibt kleine Zahlen als Wort („zwei“),
 // {name:mal} ergibt „einmal“, „dreimal“ oder bei großen Zahlen „15-mal“.
 export function fuelle(text, werte = {}) {
+  // {name|Stern|Sterne} ergibt „1 Stern“ oder „3 Sterne“.
+  text = text.replace(/\{(\w+)\|([^|}]+)\|([^}]+)\}/g, (ganz, name, eins, viele) => {
+    if (!(name in werte)) return ganz;
+    const wert = werte[name];
+    return `${wert} ${String(wert) === '1' ? eins : viele}`;
+  });
   return text.replace(/\{(\w+)(?::(wort|mal))?\}/g, (ganz, name, form) => {
     if (!(name in werte)) return ganz;
     const wert = werte[name];

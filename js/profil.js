@@ -321,3 +321,26 @@ export function merkeNachfrage(frageId, rueckblickNummer) {
     if (!liste.includes(rueckblickNummer)) p.nachgefragt[frageId] = [...liste, rueckblickNummer];
   }, {});
 }
+
+// Bis Version 1.7.2 hat die App bei Fragen mit Mehrfachauswahl den Freitext der ersten Frage mit Freitextfeld
+// in spätere Fragen kopiert. Einmalig aufräumen: Steht derselbe Text bei mehreren Fragen, bleibt er nur bei der
+// ersten Frage in der Reihenfolge des Kennenlernens stehen.
+export function bereinigeFreitexte() {
+  const p = profil();
+  if (p.freitextBereinigt || !Object.keys(p.freitext || {}).length) return 0;
+  const reihenfolge = eingangsfragen().map((f) => f.id);
+  const gesehen = new Set();
+  const doppelt = [];
+  for (const id of reihenfolge) {
+    const text = (p.freitext?.[id] || '').trim();
+    if (!text) continue;
+    if (gesehen.has(text)) doppelt.push(id);
+    else gesehen.add(text);
+  }
+  aendere('profil', (doc) => {
+    doc.freitext ||= {};
+    for (const id of doppelt) delete doc.freitext[id];
+    doc.freitextBereinigt = heuteKey();
+  }, {});
+  return doppelt.length;
+}

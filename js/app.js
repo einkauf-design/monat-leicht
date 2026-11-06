@@ -5,12 +5,13 @@ import { ablageLesen, ablageSchreiben } from './ablage.js';
 import { $, esc, ganz, rattern, toast, sternchen, zeitZuMinuten } from './util.js';
 import { beiAenderung, sync, syncZustand } from './speicher.js';
 import { einstellungen, uebernimmAlteNotizen, uebernimmAltesExperiment, eintragsTage, experimentJetzt, heuteKey } from './daten.js';
-import { profil, markiereProfil, kennenlernenBegonnen } from './profil.js';
+import { profil, markiereProfil, kennenlernenBegonnen, bereinigeFreitexte } from './profil.js';
 import { seitenBeimOeffnen } from './seiten.js';
 import { merkeErinnerungszeiten } from './erinnerung.js';
 import { gesamt, pruefeErfolge } from './belohnung.js';
 import { pruefeRueckblicke } from './rueckblick.js';
 import { infoAktivieren } from './info.js';
+import { begleitungStatus } from './begleitung.js';
 import * as heute from './ansichten/heute.js';
 import * as verlauf from './ansichten/verlauf.js';
 import * as freude from './ansichten/freude.js';
@@ -23,14 +24,15 @@ import * as experimentAnsicht from './ansichten/experiment.js';
 import * as angaben from './ansichten/angaben.js';
 import * as angebot from './ansichten/angebot.js';
 import * as barometer from './ansichten/barometer.js';
+import * as frag from './ansichten/frag.js';
 
 const ANSICHTEN = {
   heute, verlauf, freude, abend, mehr,
-  rueckblick: rueckblickAnsicht, kennenlernen, experiment: experimentAnsicht, angaben, angebot, barometer,
+  rueckblick: rueckblickAnsicht, kennenlernen, experiment: experimentAnsicht, angaben, angebot, barometer, frag,
 };
 const NAVIGATION = ['heute', 'verlauf', 'freude', 'abend', 'mehr'];
 // Unterseiten zeigen in der Navigation auf ihren Bereich.
-const BEREICH = { rueckblick: 'verlauf', kennenlernen: 'mehr', angaben: 'mehr', experiment: 'heute', angebot: 'heute', barometer: 'heute' };
+const BEREICH = { rueckblick: 'verlauf', kennenlernen: 'mehr', angaben: 'mehr', experiment: 'heute', angebot: 'heute', barometer: 'heute', frag: 'heute' };
 // Kurzadressen für eine bestimmte Seite in einer Ansicht.
 const ABKUERZUNGEN = { notizen: ['verlauf', 'notizen'] };
 const SYMBOLE = {
@@ -181,6 +183,9 @@ async function vorbereiten() {
   const nutzteAppSchon = eintragsTage().length > 0;
   uebernimmAlteNotizen();
   uebernimmAltesExperiment();
+  bereinigeFreitexte();
+  // Ist die KI-Begleitung eingeschaltet, erscheint danach auf der Startseite „Frag mich etwas“.
+  begleitungStatus().then((st) => { if (st.aktiv && aktuell === 'heute' && !document.activeElement?.matches('input, textarea, select')) zeichne(); });
   // Erfolge aus früheren Einträgen werden still nachgetragen, ohne eine Flut von Meldungen.
   pruefeErfolge();
   kopfAktualisieren();
