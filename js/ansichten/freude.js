@@ -52,13 +52,14 @@ export function zeige(wurzel, ctx) {
     })
     ;
 
-  zeigeSeiten(wurzel, [
+  const steuerung = zeigeSeiten(wurzel, [
     {
       id: 'liste',
       bloecke: [
         `<h1>${esc(t('freude.titel'))} ${infoKnopf('freude')}</h1>`,
         ...textBloecke(t('freude.einleitung'), 'leise klein'),
         ...eintraege,
+        `<button class="knopf knopf-haupt" data-aktion="zu-neu">${esc(t('freude.eigene_knopf'))}</button>`,
         `<button class="knopf-text" data-aktion="bearbeiten">${esc(bearbeiten ? t('freude.fertig') : t('freude.bearbeiten'))}</button>`,
       ],
     },
@@ -83,6 +84,11 @@ export function zeige(wurzel, ctx) {
       if (bearbeiten) speichereBearbeitung(wurzel);
       bearbeiten = !bearbeiten;
       ctx.zeichne();
+      return;
+    }
+    if (aktion === 'zu-neu') {
+      steuerung?.gehe?.('neu');
+      wurzel.querySelector('[name="titel"]')?.focus();
       return;
     }
     if (aktion === 'hinzufuegen') {

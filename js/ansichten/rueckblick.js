@@ -10,6 +10,10 @@ import { eingangsfrage, antwort, status, speichereAntwort, STATUS, profil } from
 import { zeigeSeiten, textBloecke, merkeSeite } from '../seiten.js';
 import { datumLang, auswahlKnoepfe } from './teile.js';
 import { vergleichGruppe } from '../schultern.js';
+import { begleitungErlaubt, wochenVorschlag, fehlerText } from '../begleitung.js';
+
+// Läuft gerade ein Vorschlag für die nächste Woche? Pro Rückblick nur einmal gleichzeitig.
+const vorschlagLaeuft = new Map();
 
 let steuerung = null;
 
@@ -82,6 +86,42 @@ function frageSeite(rb, f, i) {
   };
 }
 
+// Seit 1.8.0: ein kurzer Rückblick der Begleitung und zwei, drei Vorschläge für die nächste Woche.
+function vorschlagSeite(rb, ctx) {
+  const kopf = `<h2>${esc(t('begleitung.woche_titel'))}</h2>`;
+  if (rb.vorschlag?.text) return { id: 'vorschlag', bloecke: [kopf, ...textBloecke(rb.vorschlag.text)] };
+  if (!begleitungErlaubt()) {
+    return {
+      id: 'vorschlag',
+      mitte: true,
+      bloecke: [kopf, `<p>${esc(t('begleitung.woche_ohne_zustimmung'))}</p>`, `<a class="knopf knopf-zweit" href="#frag">${esc(t('begleitung.woche_zustimmen'))}</a>`],
+    };
+  }
+  const zustand = vorschlagLaeuft.get(rb.nummer);
+  if (zustand?.fehler) {
+    return {
+      id: 'vorschlag',
+      mitte: true,
+      bloecke: [kopf, `<p>${esc(zustand.fehler)}</p>`, `<button type="button" class="knopf knopf-zweit" data-aktion="vorschlag-neu">${esc(t('begleitung.woche_nochmal'))}</button>`],
+    };
+  }
+  if (!zustand) starteVorschlag(rb, ctx);
+  return { id: 'vorschlag', mitte: true, bloecke: [kopf, `<p class="chat-wartet" aria-live="polite">${esc(t('begleitung.woche_schreibt'))}</p>`] };
+}
+
+function starteVorschlag(rb, ctx) {
+  vorschlagLaeuft.set(rb.nummer, { laeuft: true });
+  wochenVorschlag(rb)
+    .then(() => vorschlagLaeuft.delete(rb.nummer))
+    .catch((fehler) => vorschlagLaeuft.set(rb.nummer, { fehler: fehlerText(fehler) }))
+    .finally(() => {
+      if (location.hash === `#rueckblick/${rb.nummer}` && !document.activeElement?.matches('input, textarea, select')) {
+        merkeSeite(`rueckblick-${rb.nummer}`, steuerung?.gruppe?.() || 'kopf');
+        ctx.zeichne();
+      }
+    });
+}
+
 export function zeige(wurzel, ctx) {
   const nummer = Number(ctx.param);
   const rb = rueckblick(nummer);
@@ -149,6 +189,7 @@ export function zeige(wurzel, ctx) {
       ],
     });
   }
+  gruppen.push(vorschlagSeite(rb, ctx));
   gruppen.push({
     id: 'abschluss',
     mitte: true,
@@ -187,6 +228,12 @@ export function zeige(wurzel, ctx) {
     }
     if (aktion === 'erkenntnis-ohne') {
       steuerung.weiter();
+      return;
+    }
+    if (aktion === 'vorschlag-neu') {
+      vorschlagLaeuft.delete(nummer);
+      merkeSeite(`rueckblick-${nummer}`, 'vorschlag');
+      ctx.zeichne();
       return;
     }
     if (aktion === 'bleiben') {

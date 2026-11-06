@@ -207,7 +207,8 @@ export function zeige(wurzel, ctx) {
         if (alt.includes(ziel.dataset.option)) neu = alt.filter((o) => o !== ziel.dataset.option);
         else if ((frage.exklusiv || []).includes(ziel.dataset.option)) neu = [ziel.dataset.option];
         else neu = [...alt.filter((o) => !(frage.exklusiv || []).includes(o)), ziel.dataset.option];
-        const freitext = wurzel.querySelector('[name="freitext"]')?.value.trim();
+        // Nur das Freitextfeld unter genau dieser Frage lesen (bis 1.7.2 wurde das erste Feld der ganzen Strecke gelesen).
+        const freitext = freitextFeld(wurzel, frage.id)?.value.trim();
         speichereAntwort(frage.id, neu, neu.length ? STATUS.BEANTWORTET : STATUS.OHNE, frage.freitext ? freitext : undefined);
         merkeHier(`f-${frage.id}`);
         ctx.zeichne();
@@ -257,12 +258,35 @@ export function zeige(wurzel, ctx) {
     }
   };
 
-  wurzel.onchange = (e) => {
+  // Freitext: beim Tippen kurz nach der letzten Taste speichern, beim Verlassen des Feldes sofort.
+  const freitextSichern = (feld) => {
+    const id = feld.dataset.frage;
+    if (!id) return;
+    clearTimeout(tippZeit);
+    const wert = Array.isArray(antwort(id)) ? antwort(id) : antwort(id) ?? [];
+    const text = feld.value.trim();
+    const hatWert = Array.isArray(wert) ? wert.length > 0 : wert !== null && wert !== undefined && wert !== '';
+    speichereAntwort(id, wert, hatWert || text ? STATUS.BEANTWORTET : STATUS.OHNE, text);
+  };
+  let tippZeit = null;
+  wurzel.oninput = (e) => {
     const feld = e.target.closest('[name="freitext"]');
     if (!feld) return;
-    const id = feld.dataset.frage;
-    const wert = Array.isArray(antwort(id)) ? antwort(id) : [];
-    const text = feld.value.trim();
-    speichereAntwort(id, wert, wert.length || text ? STATUS.BEANTWORTET : STATUS.OHNE, text);
+    clearTimeout(tippZeit);
+    tippZeit = setTimeout(() => freitextSichern(feld), 800);
   };
+  wurzel.onchange = (e) => {
+    const feld = e.target.closest('[name="freitext"]');
+    if (feld) freitextSichern(feld);
+  };
+  // Vor jedem Seitenwechsel offene Eingaben sichern, damit nichts verloren geht.
+  wurzel.onpointerdown = (e) => {
+    if (e.target.closest('[name="freitext"]')) return;
+    const aktiv = document.activeElement;
+    if (aktiv?.matches?.('[name="freitext"]') && wurzel.contains(aktiv)) freitextSichern(aktiv);
+  };
+}
+
+function freitextFeld(wurzel, frageId) {
+  return [...wurzel.querySelectorAll('[name="freitext"]')].find((f) => f.dataset.frage === frageId) || null;
 }

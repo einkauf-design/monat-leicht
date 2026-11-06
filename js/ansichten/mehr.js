@@ -11,6 +11,7 @@ import { geraetDaten, setzeGeraet, syncZustand, sync, api, vonVorneSynchronisier
 import { unterstuetzt, istIphoneImBrowser, erlaubnis, einschalten, ausschalten, merkeErinnerungszeiten } from '../erinnerung.js';
 import { verfuegbareMonate, exportiereCsv, exportiereJson } from '../export.js';
 import { VERSION } from '../version.js';
+import { begleitungErlaubt, nimmBegleitungZurueck } from '../begleitung.js';
 
 let installAufforderung = null;
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -120,7 +121,7 @@ export function zeige(wurzel, ctx) {
 
   // Die erste Seite ist ein Inhaltsverzeichnis. Jede Kachel springt direkt zur passenden Seite.
   const inhaltsKacheln = [
-    ['sammlung', '★'], ['erfolge', '🏅'], ['kennenlernen', '💬'], ['einstellungen', '⚙️'],
+    ['sammlung', '★'], ['erfolge', '🏅'], ['kennenlernen', '💬'], ['begleitung', '🌿'], ['einstellungen', '⚙️'],
     ['erinnerungen', '🔔'], ['sync', '☁️'], ['export', '📄'], ['ende', '📱'],
   ];
   const steuerung = zeigeSeiten(wurzel, [
@@ -168,6 +169,16 @@ export function zeige(wurzel, ctx) {
         `<a class="knopf knopf-zweit" href="#angaben">${esc(t('angaben.knopf'))}</a>`,
         `<a class="knopf-text" href="#kennenlernen/mehr">${esc(t('mehr.mehr_erzaehlen'))}</a>`,
         kennenlernenFertig() ? '' : `<a class="knopf-text" href="#kennenlernen">${esc(t('angaben.weitermachen'))}</a>`,
+      ],
+    },
+    {
+      id: 'begleitung',
+      mitte: true,
+      bloecke: [
+        `<h2>${esc(t('begleitung.mehr_titel'))}</h2>`,
+        `<p>${esc(begleitungErlaubt() ? t('begleitung.mehr_text_an') : t('begleitung.mehr_text_aus'))}</p>`,
+        `<a class="knopf knopf-zweit" href="#frag">${esc(t('begleitung.mehr_oeffnen'))}</a>`,
+        begleitungErlaubt() ? `<button type="button" class="knopf-text" data-aktion="begleitung-zuruecknehmen">${esc(t('begleitung.zuruecknehmen'))}</button>` : '',
       ],
     },
     {
@@ -249,6 +260,12 @@ export function zeige(wurzel, ctx) {
       return;
     }
     const monat = wurzel.querySelector('[data-feld="export-monat"]')?.value || '';
+    if (aktion === 'begleitung-zuruecknehmen') {
+      nimmBegleitungZurueck();
+      toast(t('begleitung.zurueckgenommen'));
+      ctx.zeichne();
+      return;
+    }
     if (aktion === 'csv') exportiereCsv(monat);
     if (aktion === 'json') exportiereJson(monat);
     if (aktion === 'sync') {

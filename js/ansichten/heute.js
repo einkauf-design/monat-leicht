@@ -11,7 +11,8 @@ import {
 import { infoKnopf, infoFuerExperiment } from '../info.js';
 import { rueckblicke, ungelesenerRueckblick, datumKurz } from '../rueckblick.js';
 import { gewichtModus, sprunghaft, gesundheitHat, mehrAnbieten, profil, markiereProfil } from '../profil.js';
-import { api } from '../speicher.js';
+import { api, geraetDaten } from '../speicher.js';
+import { begleitungBekanntAktiv } from '../begleitung.js';
 import { zeigeSeiten, textBloecke } from '../seiten.js';
 import { feldKopf, stundenText, bestaetige } from './teile.js';
 import { stand } from '../weg.js';
@@ -179,6 +180,10 @@ function startSeite(datum, zeit, uebersicht = '') {
       </a>`);
   } else if (!rueckblicke().length) {
     bloecke.push(`<p class="leise klein block-abstand">${esc(t('rueckblick.hinweis_sieben'))} ${infoKnopf('rueckblick')}</p>`);
+  }
+  // „Frag mich“: der Weg ins Gespräch mit der Begleitung, ruhig als eine Zeile.
+  if (geraetDaten().code && begleitungBekanntAktiv()) {
+    bloecke.push(`<a class="frag-kachel" href="#frag"><span aria-hidden="true">🌿</span> ${esc(t('begleitung.kachel'))} →</a>`);
   }
   return { id: 'start', bloecke, mitte: true };
 }
