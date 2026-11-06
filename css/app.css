@@ -1470,3 +1470,34 @@ a.tag-schritt { text-decoration: none; }
 /* 1.6.1: Notizfeld direkt auf der Experiment-Seite */
 .seite-experiment .beobachtung-form { margin: 6px 0 18px; }
 .seite-experiment .beobachtung-form .knopf { margin-top: 4px; }
+
+/* ---------- Frag mich (seit 1.8.0) ---------- */
+.frag-kachel {
+  display: block;
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: var(--rund-klein);
+  background: var(--pflaume-weich);
+  border-left: 4px solid var(--pflaume);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 0.92rem;
+  text-decoration: none;
+  text-align: left;
+}
+.chat-nachricht {
+  margin: 8px 0;
+  padding: 9px 12px;
+  border-radius: var(--rund-klein);
+  text-align: left;
+}
+.chat-nachricht p { margin: 0 0 6px; text-wrap: pretty; }
+.chat-nachricht p:last-child { margin-bottom: 0; }
+.chat-ich { background: var(--flaeche-2); margin-left: 18%; }
+.chat-ki { background: var(--petrol-weich); margin-right: 8%; }
+.chat-wer { display: block; font-size: 0.78rem; font-weight: 700; color: var(--text-2); margin-bottom: 2px; }
+.chat-wartet { color: var(--text-2); font-style: italic; }
+.chat-vorschlaege { display: grid; gap: 6px; margin: 8px 0; }
+.chat-vorschlaege .auswahl { text-align: left; }
+.chat-eingabe { margin-top: 10px; }
+.chat-eingabe textarea { min-height: 3.2em; }
