@@ -1,12 +1,10 @@
 {
   "version": 4,
-
   "app": {
     "name": "EMONA leicht",
     "kurzname": "EMONA",
     "untertitel": "Ich begleite dich leise durch deinen Tag."
   },
-
   "texte": {
     "nav": {
       "heute": "Heute",
@@ -38,7 +36,7 @@
       "name_label": "Wie darf ich dich nennen?",
       "name_platzhalter": "Hier steht dein Vorname.",
       "code_label": "Wie lautet dein persönlicher Zugangscode?",
-      "code_hilfe": "Mit dem Code werden deine Einträge sicher auf deinem Server gespeichert.\n\nOhne Code bleibt alles nur auf diesem Gerät. Du kannst ihn später unter „Mehr“ eintragen.",
+      "code_hilfe": "Mit dem Code werden deine Einträge sicher gespeichert und nur du kommst an sie heran.\n\nOhne Code bleibt alles nur auf diesem Gerät. Du kannst ihn später unter „Mehr“ eintragen.",
       "code_platzhalter": "Hier steht dein Code.",
       "los": "Fang einfach an",
       "pruefe": "Ich prüfe gerade deinen Code …",
@@ -146,7 +144,7 @@
     },
     "freude": {
       "titel": "Das ist deine Freude-Liste.",
-      "einleitung": "Hier stehen die Dinge, die dir guttun.\n\nTipp auf den Kreis, wenn etwas heute ein Freude-Platz sein soll.",
+      "einleitung": "Hier stehen die Dinge, die dir guttun. Drei Beispiele sind schon da. Alles andere kennst nur du.\n\nTipp’ auf den Kreis, wenn etwas heute ein Freude-Platz sein soll.",
       "heute": "Heute ist es dabei.",
       "heute_kurz": "Mach es zu einem Freude-Platz für heute",
       "pause": "Das passt als Pause.",
@@ -161,7 +159,8 @@
       "titel_aendern": "Wie soll diese Freude-Quelle heißen?",
       "pause_hilfe": "Freude-Quellen, die als Pause passen, schlage ich dir vor, wenn es in deinem Kopf summt.",
       "zaehler": "Du hast es schon {anzahl:mal} genossen.",
-      "zaehler_eins": "Du hast es schon einmal genossen."
+      "zaehler_eins": "Du hast es schon einmal genossen.",
+      "eigene_knopf": "Trag’ deine eigene Freude ein"
     },
     "abend": {
       "titel": "Es ist Zeit zum Landen.",
@@ -169,7 +168,7 @@
       "ideen_titel": "Diese Ideen helfen dir beim Runterkommen.",
       "regal_titel": "Das Abendregal wartet auf dich.",
       "regal_text": "Es ist ein ruhiges Sortierspiel. Es gibt keinen Timer und kein Verlieren, nur Ordnung, die langsam entsteht.",
-      "regal_stand": "Im Abendregal hast du schon {sterne} Sterne und {punkte} Punkte gesammelt.",
+      "regal_stand": "Im Abendregal hast du schon {sterne|Stern|Sterne} und {punkte|Punkt|Punkte} gesammelt.",
       "regal_stand_leer": "Dein erstes Regal steht schon bereit.",
       "regal_start": "Räum das Regal ein",
       "regal_weiter": "Räum weiter ein",
@@ -268,7 +267,7 @@
     "mehr": {
       "titel": "Hier findest du alles Weitere.",
       "sammlung_titel": "Das hast du schon gesammelt.",
-      "sammlung_satz": "Du hast schon {sterne} Sterne und {punkte} Punkte gesammelt.",
+      "sammlung_satz": "Du hast schon {sterne|Stern|Sterne} und {punkte|Punkt|Punkte} gesammelt.",
       "einstellungen_titel": "Hier stellst du die App für dich ein.",
       "name": "Wie darf ich dich nennen?",
       "abendmodus_ab": "Ab wann soll der Abendmodus beginnen?",
@@ -326,7 +325,8 @@
       "inhalt_erinnerungen": "Erinnerungen",
       "inhalt_sync": "Sicherung",
       "inhalt_export": "Export",
-      "inhalt_ende": "App und Version"
+      "inhalt_ende": "App und Version",
+      "inhalt_begleitung": "Frag mich"
     },
     "belohnung": {
       "sterne": "Sterne",
@@ -807,9 +807,42 @@
       "einstellung_zeiten": "Zu diesen Zeiten fragt die App nach deinen Schultern.",
       "einstellung_zeit": "{nummer}. Zeit",
       "einstellung_zeiten_hilfe": "Lass’ ein Feld leer, wenn dir zwei Zeiten genügen."
+    },
+    "begleitung": {
+      "titel": "Frag mich etwas.",
+      "kachel": "Frag mich etwas",
+      "wer_ich": "Du",
+      "wer_ki": "Deine Begleitung",
+      "leer": "Hier kannst du mir alles erzählen, was dich gerade beschäftigt. Ich kenne dein Kennenlernen, dein Experiment und deine letzten Einträge und antworte dir passend dazu.",
+      "vorschlaege": "Ich schlafe schlecht ein. Was kann ich tun?|Wie fange ich mein Experiment gut an?|Heute ist mir alles zu viel.",
+      "eingabe_label": "Deine Nachricht",
+      "eingabe_platzhalter": "Schreib’ mir, was dich beschäftigt.",
+      "schicken": "Abschicken",
+      "denkt": "Ich denke kurz nach …",
+      "frueher_hinweis": "Unser früheres Gespräch findest du auf der nächsten Seite.",
+      "frueher_titel": "Unser bisheriges Gespräch",
+      "ohne_code": "Damit wir miteinander sprechen können, braucht die App deinen Zugangscode. Du trägst ihn unter „Mehr“ bei „Sicherung“ ein.",
+      "zustimmung_text": "Hier kannst du mir Fragen stellen und über das sprechen, was dich gerade beschäftigt. Damit meine Antworten wirklich zu dir passen, schaue ich mir dafür an, was du im Kennenlernen erzählt hast, dein Experiment und deine letzten Einträge. Dazu gehören auch Angaben über deine Gesundheit, wenn du sie freigegeben hast.\n\nDeine Antworten schreibt eine künstliche Intelligenz von Anthropic (Claude). Dafür gehen deine Nachricht und diese Angaben verschlüsselt an Anthropic in den USA. Anthropic nutzt sie nicht, um seine KI zu trainieren. Ich bin keine Ärztin und keine Therapeutin und ersetze auch keine.\n\nDu kannst deine Zustimmung jederzeit unter „Mehr“ zurücknehmen. Dann lösche ich auch unser Gespräch.",
+      "zustimmen": "Ja, ich bin einverstanden",
+      "lieber_nicht": "Lieber nicht",
+      "zugestimmt": "Danke für dein Vertrauen.",
+      "nicht_aktiv": "Die Begleitung wird gerade eingerichtet. Sobald sie bereit ist, kannst du hier schreiben.",
+      "pausiert": "Die Begleitung macht diesen Monat eine Pause. Ab dem Ersten bin ich wieder für dich da.",
+      "offline": "Gerade gibt es keine Verbindung zum Server. Probier’ es gleich noch einmal.",
+      "fehler": "Das hat gerade nicht geklappt. Probier’ es bitte gleich noch einmal.",
+      "mehr_titel": "Frag mich etwas.",
+      "mehr_text_an": "Du kannst mir jederzeit Fragen stellen. Nach jedem Rückblick bekommst du außerdem einen Vorschlag für deine nächste Woche.",
+      "mehr_text_aus": "Hier kannst du mit deiner Begleitung sprechen und bekommst nach jedem Rückblick einen Vorschlag für deine nächste Woche. Vorher fragt die App dich um deine Zustimmung.",
+      "mehr_oeffnen": "Zum Gespräch",
+      "zuruecknehmen": "Zustimmung zurücknehmen und Gespräch löschen",
+      "zurueckgenommen": "Deine Zustimmung ist zurückgenommen und unser Gespräch ist gelöscht.",
+      "woche_titel": "Mein Vorschlag für deine nächste Woche",
+      "woche_schreibt": "Ich schaue mir deine Woche an und schreibe dir gerade ein paar Gedanken dazu …",
+      "woche_ohne_zustimmung": "Hier kann dir deine Begleitung einen kurzen Blick auf deine Woche schreiben und zwei, drei kleine Vorschläge für die nächste Woche machen. Dafür braucht sie einmal deine Zustimmung.",
+      "woche_zustimmen": "Mehr darüber erfahren",
+      "woche_nochmal": "Noch einmal versuchen"
     }
   },
-
   "erinnerungen": {
     "morgen": {
       "titel": "Guten Morgen.",
@@ -832,22 +865,11 @@
       "text": "Magst du kurz deine Schultern fragen?"
     }
   },
-
   "freudeStartwerte": [
     {
-      "titel": "Zeit mit den Tieren",
+      "titel": "Zeit mit meinem Tier",
       "symbol": "🐾",
       "pause": true
-    },
-    {
-      "titel": "Stricken",
-      "symbol": "🧶",
-      "pause": true
-    },
-    {
-      "titel": "Line Dance",
-      "symbol": "💃",
-      "pause": false
     },
     {
       "titel": "Musik hören",
@@ -855,22 +877,11 @@
       "pause": true
     },
     {
-      "titel": "Spanisch",
-      "symbol": "🇪🇸",
-      "pause": false
-    },
-    {
-      "titel": "Ein gemütlicher Krimi",
-      "symbol": "📖",
-      "pause": true
-    },
-    {
-      "titel": "Ein Powernap von einer halben Stunde",
-      "symbol": "😴",
+      "titel": "Ein paar Minuten an der frischen Luft",
+      "symbol": "🌿",
       "pause": true
     }
   ],
-
   "freudeSymbole": [
     "🐾",
     "🐴",
@@ -893,19 +904,16 @@
     "🌙",
     "💛"
   ],
-
   "pausenImpulse": [
     "Dein Kopf hat heute schon viel getragen. Vielleicht tut dir jetzt das gut: {freude}.",
     "Eine kleine Pause darf jetzt sein. Wie wäre es hiermit: {freude}?",
     "Du darfst kurz aussteigen. Magst du dir das hier gönnen: {freude}?",
     "Das Summen darf leiser werden. Vielleicht hilft dir jetzt das: {freude}."
   ],
-
   "experimentStartwert": {
     "titel": "Kaffee nur bis mittags",
     "beschreibung": "Ich schaue, ob ich abends leichter zur Ruhe komme, wenn der letzte Kaffee vor zwölf Uhr getrunken ist."
   },
-
   "runterkommen": [
     {
       "titel": "Stell dein Handy auf Night Shift und Dunkelmodus.",
@@ -938,7 +946,6 @@
       "info": "abendregal"
     }
   ],
-
   "regal": {
     "warenProRegal": 3,
     "faecherStart": 3,
@@ -1055,7 +1062,6 @@
       "meditation"
     ]
   },
-
   "belohnungen": {
     "punkteFreudePlatz": 10,
     "punktePause": 5,
@@ -1072,7 +1078,6 @@
     },
     "punkteHinhoeren": 2
   },
-
   "erfolge": [
     {
       "id": "frueh-3",
@@ -1255,7 +1260,6 @@
       "titel": "Du hast dreißigmal in deine Schultern gehorcht."
     }
   ],
-
   "infos": {
     "_hinweis": "Alle Info-Texte wurden am 25.10.2026 an einer zweiten Quelle geprüft. Vor einem Verkauf der App sollte sie zusätzlich eine Fachperson lesen.",
     "kaffee": {
@@ -1442,12 +1446,10 @@
       ]
     }
   },
-
   "infoStichworte": {
     "kaffee": "kaffee",
     "koffein": "kaffee"
   },
-
   "signale": {
     "_hinweis": "Kommt eines dieser Wörter in einer Antwort, einer Beobachtung oder einer Körper-Notiz vor, greifen spätere Fragen das Thema behutsam auf. Die Wörter werden klein geschrieben verglichen.",
     "hastig": [
@@ -1465,8 +1467,40 @@
       "am handy",
       "beim fernsehen"
     ],
-    "grosserHunger": ["hungrig", "ausgehungert", "riesenhunger", "großen hunger", "großer hunger", "so leer", "ganz leer", "magen knurrt", "verhungert", "zu lange nicht gegessen", "nichts gegessen", "mahlzeit ausgelassen", "frühstück ausgelassen", "reinschling"],
-    "trinken": ["wasser", "flasche", "durst", "schluck", "zu wenig getrunken", "genug getrunken", "mehr getrunken", "viel getrunken", "kaum getrunken", "vergesse zu trinken", "vergesse das trinken", "vergessen zu trinken", "trinke mehr", "trinke zu wenig", "trinke kaum", "trinken fällt"],
+    "grosserHunger": [
+      "hungrig",
+      "ausgehungert",
+      "riesenhunger",
+      "großen hunger",
+      "großer hunger",
+      "so leer",
+      "ganz leer",
+      "magen knurrt",
+      "verhungert",
+      "zu lange nicht gegessen",
+      "nichts gegessen",
+      "mahlzeit ausgelassen",
+      "frühstück ausgelassen",
+      "reinschling"
+    ],
+    "trinken": [
+      "wasser",
+      "flasche",
+      "durst",
+      "schluck",
+      "zu wenig getrunken",
+      "genug getrunken",
+      "mehr getrunken",
+      "viel getrunken",
+      "kaum getrunken",
+      "vergesse zu trinken",
+      "vergesse das trinken",
+      "vergessen zu trinken",
+      "trinke mehr",
+      "trinke zu wenig",
+      "trinke kaum",
+      "trinken fällt"
+    ],
     "geschmackFehlt": [
       "kaum geschmeckt",
       "nichts geschmeckt",
@@ -1580,13 +1614,11 @@
       "faul"
     ]
   },
-
   "fragenStufen": {
     "hineinfinden": "Die erste Zeit ist zum Hineinfinden. Die Fragen sind leicht und schauen auf das Kaffee-Experiment und erste Eindrücke.",
     "wahrnehmen": "Danach geht es ums Wahrnehmen: Wie fühlt sich Essen an, wie Kaffee, was ist im Körper los?",
     "vertiefen": "Wer schon einige Fragen beantwortet hat, bekommt vertiefende Fragen zu Bedürfnissen und Gewohnheiten."
   },
-
   "fragenThemen": {
     "ankommen": "Ankommen",
     "kaffee": "Kaffee",
@@ -1597,7 +1629,6 @@
     "freude": "Freude",
     "beduerfnisse": "Bedürfnisse"
   },
-
   "fragenRegeln": {
     "_hinweis": "So wählt die App die Fragen aus. Bedingungen in einer Frage müssen alle zutreffen. Mögliche Bedingungen: nurErsterRueckblick, abRueckblick, experimentEnthaelt, anspannungAb, anspannungBis, einschlafenNach, schlafUnter, summenTageAb, freudeAb, freudeBis, signal, ohneSignal, nachAntwortAuf, koerperNotizen, eingangOffen (Nummer der Eingangsfrage). Vertiefungsfragen aus dem Kennenlernen kommen ab dem Rückblick „vertiefungAbRueckblick“, mit „vertiefungAbstand“ Rückblicken dazwischen, und teilen sich den Platz der Nachfrage.",
     "anzahlErsterRueckblick": 2,
@@ -1616,7 +1647,6 @@
     "vertiefungAbstand": 1,
     "themaGewichtVertiefung": 1
   },
-
   "fragen": [
     {
       "id": "h-kaffee-1",
@@ -1915,13 +1945,69 @@
         "signal": "troestendEssen"
       }
     },
-    {"id": "w-hunger-1", "stufe": "wahrnehmen", "thema": "hunger", "text": "Du hast beschrieben, dass du manchmal sehr hungrig bist, bevor du isst. Woran merkst du den Hunger als Erstes, lange bevor er groß wird?", "bedingungen": {"signal": "grosserHunger"}},
-    {"id": "w-hunger-2", "stufe": "wahrnehmen", "thema": "hunger", "text": "Wenn du an einen Moment mit großem Hunger zurückdenkst, was hat dich davor vom Essen abgehalten?", "bedingungen": {"signal": "grosserHunger"}},
-    {"id": "v-hunger-3", "stufe": "vertiefen", "thema": "hunger", "text": "Was könnte dir helfen, schon beim kleinen Hunger etwas zu essen, bevor dein Körper ganz leer ist?", "bedingungen": {"signal": "grosserHunger"}},
-    {"id": "h-trinken-1", "stufe": "hineinfinden", "thema": "trinken", "text": "Du hast etwas über dein Trinken notiert. Was macht es dir leicht, zwischendurch einen Schluck zu nehmen?", "bedingungen": {"signal": "trinken"}},
-    {"id": "w-trinken-2", "stufe": "wahrnehmen", "thema": "trinken", "text": "Wie fühlt sich dein Körper an Tagen an, an denen du gut getrunken hast?", "bedingungen": {"signal": "trinken"}},
-    {"id": "w-trinken-3", "stufe": "wahrnehmen", "thema": "trinken", "text": "Wo stand deine Wasserflasche in diesen Tagen, und hat das etwas verändert?", "bedingungen": {"experimentEnthaelt": "wasser"}},
-    {"id": "v-trinken-4", "stufe": "vertiefen", "thema": "trinken", "text": "Gibt es Momente, in denen dir das Trinken schwerfällt? Was ist dann gerade los?", "bedingungen": {"signal": "trinken"}},
+    {
+      "id": "w-hunger-1",
+      "stufe": "wahrnehmen",
+      "thema": "hunger",
+      "text": "Du hast beschrieben, dass du manchmal sehr hungrig bist, bevor du isst. Woran merkst du den Hunger als Erstes, lange bevor er groß wird?",
+      "bedingungen": {
+        "signal": "grosserHunger"
+      }
+    },
+    {
+      "id": "w-hunger-2",
+      "stufe": "wahrnehmen",
+      "thema": "hunger",
+      "text": "Wenn du an einen Moment mit großem Hunger zurückdenkst, was hat dich davor vom Essen abgehalten?",
+      "bedingungen": {
+        "signal": "grosserHunger"
+      }
+    },
+    {
+      "id": "v-hunger-3",
+      "stufe": "vertiefen",
+      "thema": "hunger",
+      "text": "Was könnte dir helfen, schon beim kleinen Hunger etwas zu essen, bevor dein Körper ganz leer ist?",
+      "bedingungen": {
+        "signal": "grosserHunger"
+      }
+    },
+    {
+      "id": "h-trinken-1",
+      "stufe": "hineinfinden",
+      "thema": "trinken",
+      "text": "Du hast etwas über dein Trinken notiert. Was macht es dir leicht, zwischendurch einen Schluck zu nehmen?",
+      "bedingungen": {
+        "signal": "trinken"
+      }
+    },
+    {
+      "id": "w-trinken-2",
+      "stufe": "wahrnehmen",
+      "thema": "trinken",
+      "text": "Wie fühlt sich dein Körper an Tagen an, an denen du gut getrunken hast?",
+      "bedingungen": {
+        "signal": "trinken"
+      }
+    },
+    {
+      "id": "w-trinken-3",
+      "stufe": "wahrnehmen",
+      "thema": "trinken",
+      "text": "Wo stand deine Wasserflasche in diesen Tagen, und hat das etwas verändert?",
+      "bedingungen": {
+        "experimentEnthaelt": "wasser"
+      }
+    },
+    {
+      "id": "v-trinken-4",
+      "stufe": "vertiefen",
+      "thema": "trinken",
+      "text": "Gibt es Momente, in denen dir das Trinken schwerfällt? Was ist dann gerade los?",
+      "bedingungen": {
+        "signal": "trinken"
+      }
+    },
     {
       "id": "v-essen-1",
       "stufe": "vertiefen",
@@ -2126,7 +2212,6 @@
       "text": "Woran merkst du, dass etwas für heute gut genug ist?"
     }
   ],
-
   "eingangsfragen": [
     {
       "id": "wunsch",
@@ -2354,7 +2439,7 @@
     {
       "id": "trinken",
       "nummer": 4,
-      "text": "Was trinkst du über den Tag?",
+      "text": "Was trinkst du über den Tag mit Koffein?",
       "mehrfach": true,
       "nochNicht": true,
       "optionen": [
@@ -2372,7 +2457,7 @@
         },
         {
           "id": "kaum",
-          "text": "Kaum etwas mit Koffein"
+          "text": "Kaum etwas mit Koffein, eher Wasser oder Kräutertee"
         }
       ],
       "exklusiv": [
@@ -3150,7 +3235,6 @@
       ]
     }
   ],
-
   "freudeVorschlaege": {
     "bewegung": {
       "titel": "Ein kleiner Spaziergang",
@@ -3194,7 +3278,6 @@
       "pause": true
     }
   },
-
   "experimente": {
     "_hinweis": "Die App schlägt nach den Eingangsfragen genau ein Experiment vor. „passt“ nennt Antworten, die ein Experiment nach vorn bringen. „sanft“ reicht von 1 (sehr sanft) bis 3. Reserve-Experimente erscheinen erst bei „Zeig mir ein anderes“ oder in der ganzen Liste.",
     "liste": [
@@ -3524,7 +3607,6 @@
       }
     ]
   },
-
   "verbotsWoerter": [
     "nie",
     "niemals",
